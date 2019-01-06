@@ -38,46 +38,7 @@ brew install mas
 # Install applications
 # ---------------------------------------------------------
 
-brew install git
-brew install git-lfs
-brew install gibo
-brew install iproute2mac
-brew install coreutils
-brew install jq
-brew install curl
-brew install gnu-sed --with-default-names
-brew install gawk --with-default-names
-brew install tree
-brew install hugo
-brew install bash-completion
-
-brew cask install hyperswitch
-brew cask install hyperdock
-brew cask install appcleaner
-brew cask install bettertouchtool
-brew cask install docker
-brew cask install microsoft-office
-brew cask install clipy
-brew cask install caffeine
-brew cask install google-chrome
-brew cask install firefox
-brew cask install thunderbird
-brew cask install skype
-brew cask install evernote
-brew cask install dropbox
-brew cask install adobe-photoshop-cc
-brew cask install adobe-photoshop-lightroom
-brew cask install clip-studio-paint
-brew cask install postman
-brew cask install slack
-brew cask install visual-studio-code
-brew cask install vmware-fusion10
-brew cask install karabiner-elements
-
-mas install 442168834 # SiteSucker
-mas install 457622435 # Yoink
-mas install 539883307 # LINE
-mas install 557168941 # Tweetbot
+brew bundle
 
 # ---------------------------------------------------------
 # Configure Bash
