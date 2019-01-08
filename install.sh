@@ -44,35 +44,12 @@ brew bundle
 # Configure Bash
 # ---------------------------------------------------------
 
-# create .bash_profile and .bashrc
-touch ~/.bash_profile
-touch ~/.bashrc
-
-# make .bash_profile to load .bashrc
-cat << EOS >> ~/.bash_profile
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
-EOS
-
-# configure environment variables
-cat << EOS >> ~/.bash_profile
-# set it to refer applications installed with Homebrew
-export PATH='/usr/local/bin:$PATH'
-# set it to refer GNU-applications installed with Homebrew instead of BSD-applications
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:${PATH}
-EOS
-
-# configure bash completion
-cat << EOS >> ~/.bashrc
-# load bash-completion
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  source $(brew --prefix)/etc/bash_completion
-fi
-EOS
+# link .bash_profile and .bashrc
+ln -is ~/dotfiles/.bash_profile ~/
+ln -is ~/dotfiles/.bashrc ~/
 
 # link readline config
-ln -s ~/dotfiles/.inputrc ~/.inputrc
+ln -s ~/dotfiles/.inputrc ~/
 
 # ---------------------------------------------------------
 # Configure Git
