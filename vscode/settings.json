@@ -1,0 +1,27 @@
+{
+    "editor.fontSize": 15,
+    "editor.fontFamily": "'Roboto Mono'",
+    "editor.fontLigatures": true,
+    "editor.fontWeight": "400",
+
+    "workbench.colorTheme": "Ayu Light Bordered",
+    "files.associations": {
+        "Vagrantfile": "ruby",
+        "Dangerfile": "ruby"
+    },
+
+    "jetbrainsKeymap.promptV3Features": true,
+
+    "editor.multiCursorModifier": "ctrlCmd",
+
+    "editor.formatOnPaste": true,
+
+    "javascript.validate.enable": false,
+
+    "gitlens.advanced.messages": {
+        "suppressShowKeyBindingsNotice": true
+    },
+    "git.autofetch": true,
+
+    "liveServer.settings.donotShowInfoMsg": true
+}
