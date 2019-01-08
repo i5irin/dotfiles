@@ -45,11 +45,11 @@ brew bundle
 # ---------------------------------------------------------
 
 # link .bash_profile and .bashrc
-ln -is ~/dotfiles/.bash_profile ~/
-ln -is ~/dotfiles/.bashrc ~/
+ln -is ~/dotfiles/.bash_profile ~/.bash_profile
+ln -is ~/dotfiles/.bashrc ~/.bashrc
 
 # link readline config
-ln -s ~/dotfiles/.inputrc ~/
+ln -s ~/dotfiles/.inputrc ~/.inputrc
 
 # ---------------------------------------------------------
 # Configure Git
