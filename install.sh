@@ -71,6 +71,9 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
 fi
 EOS
 
+# link readline config
+ln -s ~/dotfiles/.inputrc ~/.inputrc
+
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
