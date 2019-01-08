@@ -22,6 +22,7 @@
         "suppressShowKeyBindingsNotice": true
     },
     "git.autofetch": true,
+    "git.path": "/usr/local/bin/git",
 
     "liveServer.settings.donotShowInfoMsg": true
 }
