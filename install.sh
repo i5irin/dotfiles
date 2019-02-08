@@ -63,3 +63,9 @@ git config --global color.diff auto
 git config --global color.status auto
 git config --global color.branch auto
 git lfs install
+
+# ---------------------------------------------------------
+# Configure Visual Studio Code
+# ---------------------------------------------------------
+
+source ./vsocde/vsocde-setup.sh
