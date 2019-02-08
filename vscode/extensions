@@ -1,12 +1,10 @@
 8amjp.charactercount
-CoenraadS.bracket-pair-colorizer
-EditorConfig.EditorConfig
-PeterJausovec.vscode-docker
-WakaTime.vscode-wakatime
 bungcip.better-toml
+CoenraadS.bracket-pair-colorizer
 dbaeumer.vscode-eslint
 donjayamanne.githistory
 eamodio.gitlens
+EditorConfig.EditorConfig
 eg2.tslint
 isudox.vscode-jetbrains-keybindings
 jebbs.plantuml
@@ -15,7 +13,8 @@ mikestead.dotenv
 ms-python.python
 ms-vscode.Go
 octref.vetur
+PeterJausovec.vscode-docker
 ritwickdey.LiveServer
 sidneys1.gitconfig
-teabyii.ayu
+WakaTime.vscode-wakatime
 zxh404.vscode-proto3
