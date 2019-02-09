@@ -15,3 +15,21 @@ defaults write com.apple.finder ShowPathbar -bool true
 
 # Show the ~/Library directory
 chflags nohidden ~/Library
+
+# Set Function key like F1, F12 to default behavior
+defaults write -g com.apple.keyboard.fnState -bool true
+
+# Enable 'click right side of mouse to right-click'
+defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string 'TwoButton'
+defaults write com.apple.driver.AppleHIDMouse Button2 -int 2
+
+# Automatically hide or show the Dock
+defaults write com.apple.dock autohide -bool true
+# Wipe all app icons except Finder and Trushbox from the Dock
+defaults write com.apple.dock persistent-apps -array
+# Magnificate the Dock
+defaults write com.apple.dock magnification -bool true
+
+# Restart applications to activate above preferences
+killall Finder
+killall Dock
