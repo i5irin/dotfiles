@@ -65,6 +65,12 @@ git config --global color.branch auto
 git lfs install
 
 # ---------------------------------------------------------
+# Configure macOS preference
+# ---------------------------------------------------------
+
+source ./macos/macos-preferences.sh
+
+# ---------------------------------------------------------
 # Configure Visual Studio Code
 # ---------------------------------------------------------
 
