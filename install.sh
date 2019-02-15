@@ -76,4 +76,4 @@ source "${SCRIPT_PATH}/macos/macos-preferences.sh"
 # Configure Visual Studio Code
 # ---------------------------------------------------------
 
-source "${SCRIPT_PATH}/vsocde/vsocde-setup.sh"
+source "${SCRIPT_PATH}/vscode/vscode-setup.sh"

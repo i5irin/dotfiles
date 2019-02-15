@@ -25,5 +25,6 @@
     "git.path": "/usr/local/bin/git",
 
     "liveServer.settings.donotShowInfoMsg": true,
-    "workbench.iconTheme": "material-icon-theme"
+    "workbench.iconTheme": "material-icon-theme",
+    "explorer.confirmDelete": false
 }
