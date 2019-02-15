@@ -1,5 +1,7 @@
 #!/bin/bash
 
+readonly SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE}); pwd)
+
 # ---------------------------------------------------------
 # Ask username and email for git config
 # ---------------------------------------------------------
@@ -68,10 +70,10 @@ git lfs install
 # Configure macOS preference
 # ---------------------------------------------------------
 
-source ./macos/macos-preferences.sh
+source "${SCRIPT_PATH}/macos/macos-preferences.sh"
 
 # ---------------------------------------------------------
 # Configure Visual Studio Code
 # ---------------------------------------------------------
 
-source ./vsocde/vsocde-setup.sh
+source "${SCRIPT_PATH}/vsocde/vsocde-setup.sh"
