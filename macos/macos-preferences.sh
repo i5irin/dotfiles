@@ -33,3 +33,7 @@ defaults write com.apple.dock magnification -bool true
 # Restart applications to activate above preferences
 killall Finder
 killall Dock
+
+# Disable border-shadow around screenshot
+defaults write com.apple.screencapture disable-shadow -boolean true
+killall SystemUIServer
