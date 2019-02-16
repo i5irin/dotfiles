@@ -77,3 +77,9 @@ source "${INSTALL_SCRIPT_PATH}/macos/macos-preferences.sh"
 # ---------------------------------------------------------
 
 source "${INSTALL_SCRIPT_PATH}/vscode/vscode-setup.sh"
+
+# ---------------------------------------------------------
+# Configure Hyper (terminal emulator)
+# ---------------------------------------------------------
+
+ln -is "${INSTALL_SCRIPT_PATH}~/dotfiles/.hyper.js" ~/.hyper.js
