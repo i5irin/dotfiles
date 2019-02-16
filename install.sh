@@ -47,11 +47,11 @@ brew bundle
 # ---------------------------------------------------------
 
 # link .bash_profile and .bashrc
-ln -is ~/dotfiles/.bash_profile ~/.bash_profile
-ln -is ~/dotfiles/.bashrc ~/.bashrc
+ln -is "${INSTALL_SCRIPT_PATH}/.bash_profile" ~/.bash_profile
+ln -is "${INSTALL_SCRIPT_PATH}/.bashrc" ~/.bashrc
 
 # link readline config
-ln -s ~/dotfiles/.inputrc ~/.inputrc
+ln -s "${INSTALL_SCRIPT_PATH}/.inputrc" ~/.inputrc
 
 # ---------------------------------------------------------
 # Configure Git
