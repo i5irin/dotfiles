@@ -30,10 +30,19 @@ defaults write com.apple.dock persistent-apps -array
 # Magnificate the Dock
 defaults write com.apple.dock magnification -bool true
 
-# Restart applications to activate above preferences
-killall Finder
-killall Dock
+# Show all extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Disable "Show recent applications in Dock"
+defaults write com.apple.dock show-recents -bool false
+
+# Set the Menubar time format to M月d日(EEE) H:mm
+defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)  H:mm"
 
 # Disable border-shadow around screenshot
 defaults write com.apple.screencapture disable-shadow -boolean true
+
+# Restart applications to activate above preferences
+killall Finder
+killall Dock
 killall SystemUIServer
