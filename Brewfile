@@ -41,6 +41,7 @@ cask "hyperswitch"
 cask "java"
 cask "karabiner-elements"
 cask "microsoft-office"
+cask "microsoft-teams"
 cask "postman"
 cask "skitch"
 cask "skype"
@@ -49,6 +50,7 @@ cask "thunderbird"
 cask "visual-studio-code"
 cask "vmware-fusion10"
 mas "LINE", id: 539883307
+mas "Microsoft Remote Desktop", id: 715768417
 mas "SiteSucker", id: 442168834
 mas "Tweetbot", id: 557168941
 mas "Xcode", id: 497799835
