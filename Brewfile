@@ -26,6 +26,7 @@ cask "caffeine"
 cask "chatwork"
 cask "clip-studio-paint"
 cask "clipy"
+cask "discord"
 cask "docker"
 cask "dropbox"
 cask "evernote"
@@ -41,6 +42,7 @@ cask "java"
 cask "karabiner-elements"
 cask "microsoft-office"
 cask "postman"
+cask "skitch"
 cask "skype"
 cask "slack"
 cask "thunderbird"
@@ -49,4 +51,5 @@ cask "vmware-fusion10"
 mas "LINE", id: 539883307
 mas "SiteSucker", id: 442168834
 mas "Tweetbot", id: 557168941
+mas "Xcode", id: 497799835
 mas "Yoink", id: 457622435
