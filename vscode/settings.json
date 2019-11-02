@@ -1,10 +1,10 @@
 {
-    "editor.fontSize": 16,
+    "editor.fontSize": 17,
     "editor.fontFamily": "Menlo, 'NatsumeOS', Monaco, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "editor.fontWeight": "600",
 
-    "workbench.colorTheme": "soft era",
+    "workbench.colorTheme": "Monokai Dimmed",
     "files.associations": {
         "Vagrantfile": "ruby",
         "Dangerfile": "ruby"
