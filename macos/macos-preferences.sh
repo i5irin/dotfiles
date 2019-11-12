@@ -13,6 +13,12 @@ defaults write com.apple.AppleMultitouchTrackpad Dragging -int 1
 # Show Path bar in Finder
 defaults write com.apple.finder ShowPathbar -bool true
 
+# Show status bar at the bottom of Finder
+defaults write com.apple.finder ShowStatusBar -bool true
+
+# Display full path in Finder title
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
 # Show the ~/Library directory
 chflags nohidden ~/Library
 
