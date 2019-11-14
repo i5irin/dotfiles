@@ -19,6 +19,9 @@ defaults write com.apple.finder ShowStatusBar -bool true
 # Display full path in Finder title
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
+# Change screenshot file name prefix to "screenshot-"
+defaults write com.apple.screencapture name "screenshot-"
+
 # Show the ~/Library directory
 chflags nohidden ~/Library
 
