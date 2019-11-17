@@ -86,3 +86,9 @@ source "${INSTALL_SCRIPT_PATH}/vscode/vscode-setup.sh"
 # ---------------------------------------------------------
 
 ln -is "${INSTALL_SCRIPT_PATH}~/dotfiles/.hyper.js" ~/.hyper.js
+
+# ---------------------------------------------------------
+# Configure Karabiner-Elements
+# ---------------------------------------------------------
+
+ln -s "${INSTALL_SCRIPT_PATH}/dotfiles/karabiner" ~/.config/karabiner
