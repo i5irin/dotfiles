@@ -82,6 +82,12 @@ source "${INSTALL_SCRIPT_PATH}/macos/macos-preferences.sh"
 source "${INSTALL_SCRIPT_PATH}/vscode/vscode-setup.sh"
 
 # ---------------------------------------------------------
+# Configure Alacritty (terminal emulator)
+# ---------------------------------------------------------
+
+ln -is "${INSTALL_SCRIPT_PATH}/dotfiles/alacritty" ~/.config/alacritty
+
+# ---------------------------------------------------------
 # Configure Karabiner-Elements
 # ---------------------------------------------------------
 
