@@ -46,7 +46,6 @@ cask "postman"
 cask "skitch"
 cask "skype"
 cask "slack"
-cask "thunderbird"
 cask "visual-studio-code"
 cask "vmware-fusion10"
 mas "LINE", id: 539883307
