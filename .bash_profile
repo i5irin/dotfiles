@@ -6,6 +6,8 @@
 export PATH="/usr/local/bin:${PATH}"
 # set it to refer GNU-applications installed with Homebrew instead of BSD-applications
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
+# set it to refer GNU-sed installed with Homebrew instead of BSD one.
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:${PATH}"
 
 # make .bash_profile to load .bashrc
 if [ -L ~/.bashrc ]; then
