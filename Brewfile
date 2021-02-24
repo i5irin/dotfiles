@@ -47,6 +47,7 @@ cask "skype"
 cask "slack"
 cask "visual-studio-code"
 cask "vmware-fusion10"
+cask "zoom"
 mas "LINE", id: 539883307
 mas "Microsoft Remote Desktop", id: 715768417
 mas "SiteSucker", id: 442168834
