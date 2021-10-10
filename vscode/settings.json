@@ -4,7 +4,7 @@
     "editor.fontLigatures": true,
     "editor.fontWeight": "600",
 
-    "workbench.colorTheme": "Monokai Dimmed",
+    "workbench.colorTheme": "Monokai Pro",
     "files.associations": {
         "Vagrantfile": "ruby",
         "Dangerfile": "ruby"
