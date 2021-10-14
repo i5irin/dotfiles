@@ -1,0 +1,78 @@
+{
+  "title": "Japanese Command-key settings for US keyboard in a Windows environment",
+  "rules": [
+    {
+      "description": "When the Command-key is pressed in a Windows environment, if it's pressed alone, chilled-key and left-Alt-key will be sent, and if it's pressed with another key, the Command-key will be replaced with the left-Ctrl-key.",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_command",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "left_control"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "grave_accent_and_tilde",
+              "modifiers": [
+                "left_option"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc.mac$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^com\\.vmware\\.fusion$"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "right_command",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "right_control"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "grave_accent_and_tilde",
+              "modifiers": [
+                "left_option"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": [
+                "^com\\.microsoft\\.rdc.mac$",
+                "^com\\.parallels\\.desktop\\.console$",
+                "^com\\.vmware\\.fusion$"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
