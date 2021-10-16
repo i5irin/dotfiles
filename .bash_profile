@@ -8,6 +8,8 @@ export PATH="/usr/local/bin:${PATH}"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
 # set it to refer GNU-sed installed with Homebrew instead of BSD one.
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:${PATH}"
+# Make OpenJDK that is installed with Homebrew be used as default.
+export PATH="/usr/local/opt/openjdk/bin:${PATH}"
 
 # make .bash_profile to load .bashrc
 if [ -L ~/.bashrc ]; then
