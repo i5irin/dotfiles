@@ -49,7 +49,7 @@ cask "visual-studio-code"
 cask "vmware-fusion10"
 cask "zoom"
 mas "LINE", id: 539883307
-mas "Microsoft Remote Desktop", id: 715768417
+mas "Microsoft Remote Desktop", id: 1295203466
 mas "SiteSucker", id: 442168834
 mas "Twitter", id: 1482454543
 mas "Xcode", id: 497799835
