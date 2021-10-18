@@ -1,26 +1,26 @@
 {
-    "editor.fontSize": 17,
-    "editor.fontFamily": "Menlo, 'NatsumeOS', Monaco, 'Courier New', monospace",
-    "editor.fontLigatures": true,
-    "editor.fontWeight": "600",
+  "editor.fontSize": 17,
+  "editor.fontFamily": "'Fira Code'",
+  "editor.fontLigatures": true,
+  "editor.fontWeight": "500",
 
-    "workbench.colorTheme": "Monokai Pro",
-    "files.associations": {
-        "Vagrantfile": "ruby",
-        "Dangerfile": "ruby"
-    },
+  "workbench.colorTheme": "Monokai Pro",
+  "files.associations": {
+    "Vagrantfile": "ruby",
+    "Dangerfile": "ruby"
+  },
 
-    "editor.formatOnPaste": true,
+  "editor.formatOnPaste": true,
 
-    "javascript.validate.enable": false,
+  "javascript.validate.enable": false,
 
-    "gitlens.advanced.messages": {
-        "suppressShowKeyBindingsNotice": true
-    },
-    "git.autofetch": true,
-    "git.path": "/usr/local/bin/git",
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true
+  },
+  "git.autofetch": true,
+  "git.path": "/usr/local/bin/git",
 
-    "liveServer.settings.donotShowInfoMsg": true,
-    "workbench.iconTheme": "material-icon-theme",
-    "explorer.confirmDelete": false
+  "liveServer.settings.donotShowInfoMsg": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDelete": false
 }
