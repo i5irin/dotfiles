@@ -22,6 +22,9 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 # Show all file extensions.
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
+# Disable the warning when changing a file extension.
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
 # Change screenshot file name prefix to "screenshot-"
 defaults write com.apple.screencapture name "screenshot-"
 
