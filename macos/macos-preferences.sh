@@ -25,6 +25,9 @@ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 # Disable the warning when changing a file extension.
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
+# Prevent creating ".DS_Store" files on the USB flash drive.
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
 # Change screenshot file name prefix to "screenshot-"
 defaults write com.apple.screencapture name "screenshot-"
 
