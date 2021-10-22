@@ -28,6 +28,9 @@ defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 # Prevent creating ".DS_Store" files on the USB flash drive.
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
+# Prevent creating ".DS_Store" files on network storage.
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
 # Change screenshot file name prefix to "screenshot-"
 defaults write com.apple.screencapture name "screenshot-"
 
