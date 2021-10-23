@@ -63,7 +63,12 @@ defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)
 # Disable border-shadow around screenshot
 defaults write com.apple.screencapture disable-shadow -boolean true
 
+# Prevent Safari from sending search queries to Apple.
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+
 # Restart applications to activate above preferences
 killall Finder
 killall Dock
 killall SystemUIServer
+killall Safari
