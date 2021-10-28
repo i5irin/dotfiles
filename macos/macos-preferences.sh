@@ -70,6 +70,12 @@ defaults write com.apple.TextEdit RichText -int 0
 defaults write com.apple.Safari SuppressSearchSuggestions -bool true
 defaults write com.apple.Safari UniversalSearchEnabled -bool false
 
+# Prevent Safari from auto filling forms.
+defaults write com.apple.Safari AutoFillFromAddressBook -bool false
+defaults write com.apple.Safari AutoFillPasswords -bool false
+defaults write com.apple.Safari AutoFillCreditCardData -bool false
+defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
+
 # Restart applications to activate above preferences
 killall Finder
 killall Dock
