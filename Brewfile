@@ -47,7 +47,7 @@ cask "skype"
 cask "slack"
 cask "tradingview"
 cask "visual-studio-code"
-cask "vmware-fusion10"
+cask "vmware-fusion"
 cask "zoom"
 mas "LINE", id: 539883307
 mas "Microsoft Remote Desktop", id: 1295203466
