@@ -76,6 +76,9 @@ defaults write com.apple.Safari AutoFillPasswords -bool false
 defaults write com.apple.Safari AutoFillCreditCardData -bool false
 defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
 
+# Prevent Safari from opening a downloaded file.
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+
 # Restart applications to activate above preferences
 killall Finder
 killall Dock
