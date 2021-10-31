@@ -66,6 +66,9 @@ defaults write com.apple.screencapture disable-shadow -boolean true
 # Set TextEdit to open the document in plain text mode.
 defaults write com.apple.TextEdit RichText -int 0
 
+# Prevent Photos from launching automatically when devices are plugged in.
+defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
+
 # Prevent Safari from sending search queries to Apple.
 defaults write com.apple.Safari SuppressSearchSuggestions -bool true
 defaults write com.apple.Safari UniversalSearchEnabled -bool false
@@ -84,4 +87,5 @@ killall Finder
 killall Dock
 killall SystemUIServer
 killall TextEdit
+killall Photos
 killall Safari
