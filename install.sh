@@ -60,14 +60,9 @@ ln -s "${INSTALL_SCRIPT_PATH}/.inputrc" ~/.inputrc
 # Configure Git
 # ---------------------------------------------------------
 
+git config --global --add include.path "${INSTALL_SCRIPT_PATH}/.gitconfig"
 git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
-git config --global core.editor 'vim -c "set fenc=utf-8"'
-git config --global core.quotepath false
-git config --global color.diff auto
-git config --global color.status auto
-git config --global color.branch auto
-git lfs install
 
 # ---------------------------------------------------------
 # Configure macOS preference
