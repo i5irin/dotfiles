@@ -5,10 +5,6 @@
   "editor.fontWeight": "400",
 
   "workbench.colorTheme": "Monokai Pro",
-  "files.associations": {
-    "Vagrantfile": "ruby",
-    "Dangerfile": "ruby"
-  },
 
   "editor.formatOnPaste": true,
 
