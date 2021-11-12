@@ -87,3 +87,9 @@ ln -is "${INSTALL_SCRIPT_PATH}/dotfiles/alacritty" ~/.config/alacritty
 # ---------------------------------------------------------
 
 ln -s "${INSTALL_SCRIPT_PATH}/dotfiles/karabiner" ~/.config/karabiner
+
+# ---------------------------------------------------------
+# Register periodic tasks.
+# ---------------------------------------------------------
+
+crontab crontab

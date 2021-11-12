@@ -1,0 +1,6 @@
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+
+# run-parts
+# Audit Homebrew and update itself and its packages.
+0 0 * * * { brew doctor && brew update && brew upgrade; } 2>&1 | logger -ip 'user.info'
