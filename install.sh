@@ -92,4 +92,6 @@ ln -s "${INSTALL_SCRIPT_PATH}/dotfiles/karabiner" ~/.config/karabiner
 # Register periodic tasks.
 # ---------------------------------------------------------
 
-crontab crontab
+# Grant execution permissions to ShellScript executed from cron.
+chmod u+x "${INSTALL_SCRIPT_PATH}/macos/update_brew.sh"
+sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" crontab | crontab -

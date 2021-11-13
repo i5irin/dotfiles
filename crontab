@@ -1,6 +1,10 @@
 SHELL=/bin/bash
 PATH=/usr/local/bin:/usr/bin:/bin
+# The following commented out "DOTFILES_PATH" will be replaced with
+# the actual dotofiles path during dotfiles setup and used to
+# locate the ShellScript for the cron job.
+# DOTFILES_PATH=/Users/your username/dotfiles
 
 # run-parts
 # Audit Homebrew and update itself and its packages.
-0 0 * * * { brew doctor && brew update && brew upgrade; } 2>&1 | logger -ip 'user.info'
+0 0 * * * $DOTFILES_PATH/macos/update_brew.sh
