@@ -41,9 +41,6 @@ brew install mas
 # ---------------------------------------------------------
 
 brew bundle
-# replace default gcc and g++ with the links of those installed with brew
-ln -fs /usr/local/bin/gcc-5 /usr/local/bin/gcc
-ln -fs /usr/local/bin/g++-5 /usr/local/bin/g++
 
 # ---------------------------------------------------------
 # Configure Bash
