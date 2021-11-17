@@ -36,4 +36,4 @@ function git_commit_at() {
   GIT_COMMITTER_DATE="${at}" git commit --date="${at}" -m "${comment}"
 }
 
-alias ls='ls --color'
+alias ls='ls -G'
