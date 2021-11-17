@@ -77,13 +77,13 @@ source "${INSTALL_SCRIPT_PATH}/vscode/vscode-setup.sh"
 # Configure Alacritty (terminal emulator)
 # ---------------------------------------------------------
 
-ln -is "${INSTALL_SCRIPT_PATH}/dotfiles/alacritty" ~/.config/alacritty
+ln -is "${INSTALL_SCRIPT_PATH}/alacritty" ~/.config/alacritty
 
 # ---------------------------------------------------------
 # Configure Karabiner-Elements
 # ---------------------------------------------------------
 
-ln -s "${INSTALL_SCRIPT_PATH}/dotfiles/karabiner" ~/.config/karabiner
+ln -s "${INSTALL_SCRIPT_PATH}/karabiner" ~/.config/karabiner
 
 # ---------------------------------------------------------
 # Register periodic tasks.
