@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load the library functions.
+. ./lib.sh
+
 readonly INSTALL_SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE}); pwd)
 
 # ---------------------------------------------------------
@@ -9,6 +12,9 @@ readonly INSTALL_SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE}); pwd)
 while true; do
   read -p 'Enter your name for use in git > ' GIT_USER_NAME
   read -p 'Enter your email address for use in git > ' GIT_USER_EMAIL
+  if ! validate_github_username $GIT_USER_NAME; then
+    continue;
+  fi
   while true; do
     read -p "Make sure name($GIT_USER_NAME) and email($GIT_USER_EMAIL) you input, is this ok? [Y/n] > " YN
     case $YN in
