@@ -82,6 +82,9 @@ defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
 # Prevent Safari from opening a downloaded file.
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 
+# Allow all people to share via AirDrop.
+defaults write com.apple.sharingd DiscoverableMode -string "Everyone"
+
 # Restart applications to activate above preferences
 killall Finder
 killall Dock
@@ -89,3 +92,4 @@ killall SystemUIServer
 killall TextEdit
 killall Photos
 killall Safari
+killall sharingd
