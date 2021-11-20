@@ -51,9 +51,6 @@ defaults write com.apple.dock persistent-apps -array
 # Magnificate the Dock
 defaults write com.apple.dock magnification -bool true
 
-# Show all extensions
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
 # Disable "Show recent applications in Dock"
 defaults write com.apple.dock show-recents -bool false
 
