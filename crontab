@@ -6,5 +6,5 @@ PATH=/usr/local/bin:/usr/bin:/bin
 # DOTFILES_PATH=/Users/your username/dotfiles
 
 # run-parts
-# Audit Homebrew and update itself and its packages.
-0 0 * * * $DOTFILES_PATH/macos/update_brew.sh
+# Update installed applications.
+0 0 * * * $DOTFILES_PATH/macos/update_applications.sh
