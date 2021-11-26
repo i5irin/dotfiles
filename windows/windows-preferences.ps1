@@ -15,3 +15,20 @@ Set-ItemProperty -LiteralPath 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\E
 
 # Restart explorer.
 Stop-Process -ProcessName explorer
+
+# Remove pre-installed applications.
+
+# Remove Maps.
+Get-AppxPackage 'Microsoft.WindowsMaps' | Remove-AppxPackage
+
+# Remove Get Started.
+Get-AppxPackage 'Microsoft.Getstarted' | Remove-AppxPackage
+
+# Remove Zune Music (Groove).
+Get-AppxPackage 'Microsoft.ZuneMusic' | Remove-AppxPackage
+
+# Remove Zune Video (Movies & TV).
+Get-AppxPackage 'Microsoft.ZuneVideo' | Remove-AppxPackage
+
+# Remove Paint3D.
+Get-AppxPackage "Microsoft.MSPaint" | Remove-AppxPackage
