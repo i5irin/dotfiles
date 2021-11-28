@@ -32,3 +32,13 @@ Get-AppxPackage 'Microsoft.ZuneVideo' | Remove-AppxPackage
 
 # Remove Paint3D.
 Get-AppxPackage "Microsoft.MSPaint" | Remove-AppxPackage
+
+# Configure Edge.
+
+if (-not (Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Edge')) {
+  Write-Output 'The registry key "HKLM:\SOFTWARE\Policies\Microsoft\Edge" does not exist. A new one is  created.'
+  New-Item 'HKLM:\SOFTWARE\Policies\Microsoft\Edge'
+}
+
+# Disable storing passwords.
+Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'PasswordManagerEnabled' -Value 0
