@@ -42,3 +42,9 @@ if (-not (Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Edge')) {
 
 # Disable storing passwords.
 Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'PasswordManagerEnabled' -Value 0
+
+# Disable auto-filling your address.
+Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'AutofillAddressEnabled' -Value 0
+
+# Disable auto-filling your credit card information.
+Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'AutofillCreditCardEnabled' -Value 0
