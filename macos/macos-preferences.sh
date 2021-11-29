@@ -72,6 +72,7 @@ defaults write com.apple.Safari UniversalSearchEnabled -bool false
 
 # Prevent Safari from auto filling forms.
 defaults write com.apple.Safari AutoFillFromAddressBook -bool false
+# REVIEW: It seems that plist changes are not written unless Safari is running.
 defaults write com.apple.Safari AutoFillPasswords -bool false
 defaults write com.apple.Safari AutoFillCreditCardData -bool false
 defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
