@@ -48,3 +48,7 @@ Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'Au
 
 # Disable auto-filling your credit card information.
 Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'AutofillCreditCardEnabled' -Value 0
+
+# Install applications.
+
+winget install 'Git.Git'
