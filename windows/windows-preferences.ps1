@@ -4,6 +4,25 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   exit 1
 }
 
+Set-Variable -Name INSTALL_SCRIPT_PATH -Value $(Convert-Path "${PSScriptRoot}\..") -Option ReadOnly
+
+# Ask username and email for git config.
+while ($true) {
+  $GIT_USER_NAME = Read-Host 'Enter your name for use in git > '
+  $GIT_USER_EMAIL = Read-Host 'Enter your email address for use in git > '
+  while ($true) {
+    $YN = Read-Host "Make sure name($GIT_USER_NAME) and email($GIT_USER_EMAIL) you input, is this ok? [Y/n] > "
+    if ($YN -cmatch '[YNn]') {
+      break
+    } else {
+      Write-Output '[Y/n]'
+    }
+  }
+  if ($YN -eq 'Y') {
+    break;
+  }
+}
+
 # Activate Developer Mode.
 Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock' -Name 'AllowDevelopmentWithoutDevLicense' -Value '1'
 
@@ -52,3 +71,9 @@ Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'Au
 # Install applications.
 
 winget install 'Git.Git'
+
+# Configure Git
+# NOTE: Git can be installed on both WSL and Windows. This script will install Git on Windows and set up a .gitconfig for it.
+git config --global --add include.path "${INSTALL_SCRIPT_PATH}\.gitconfig"
+git config --global user.name $GIT_USER_NAME
+git config --global user.email $GIT_USER_EMAIL
