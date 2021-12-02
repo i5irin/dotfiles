@@ -37,3 +37,11 @@ function git_commit_at() {
 }
 
 alias ls='ls -G'
+
+# Attach to a tmux session at shell startup.
+tmux_count=$(pgrep tmux | wc -l)
+if [ "$tmux_count" -eq 0 ]; then
+  tmux
+elif [ "$tmux_count" -eq 1 ]; then
+  tmux a
+fi
