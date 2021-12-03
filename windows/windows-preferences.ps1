@@ -4,12 +4,19 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   exit 1
 }
 
+# Load the library functions.
+Import-Module "${PSScriptRoot}\Lib"
+
 Set-Variable -Name INSTALL_SCRIPT_PATH -Value $(Convert-Path "${PSScriptRoot}\..") -Option ReadOnly
 
 # Ask username and email for git config.
 while ($true) {
   $GIT_USER_NAME = Read-Host 'Enter your name for use in git > '
   $GIT_USER_EMAIL = Read-Host 'Enter your email address for use in git > '
+  if (Test-GitHubUsername -Name $GIT_USER_NAME -eq 1) {
+    Write-Output 'The username you entered is invalid for GitHub.'
+    continue
+  }
   while ($true) {
     $YN = Read-Host "Make sure name($GIT_USER_NAME) and email($GIT_USER_EMAIL) you input, is this ok? [Y/n] > "
     if ($YN -cmatch '[YNn]') {
