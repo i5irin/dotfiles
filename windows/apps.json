@@ -6,6 +6,15 @@
       "Packages": [
         {
           "PackageIdentifier": "Git.Git"
+        },
+        {
+          "PackageIdentifier": "Microsoft.Office"
+        },
+        {
+          "PackageIdentifier": "SlackTechnologies.Slack"
+        },
+        {
+          "PackageIdentifier": "Zoom.Zoom"
         }
       ],
       "SourceDetails": {
