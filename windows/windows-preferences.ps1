@@ -73,7 +73,7 @@ Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'Au
 
 # Install applications.
 
-winget install 'Git.Git'
+winget import -i apps.json
 
 # Configure Git
 # NOTE: Git can be installed on both WSL and Windows. This script will install Git on Windows and set up a .gitconfig for it.
