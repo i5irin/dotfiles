@@ -8,6 +8,18 @@
           "PackageIdentifier": "Git.Git"
         },
         {
+          "PackageIdentifier": "Docker.DockerDesktop"
+        },
+        {
+          "PackageIdentifier": "Postman.Postman"
+        },
+        {
+          "PackageIdentifier": "Microsoft.VisualStudioCode"
+        },
+        {
+          "PackageIdentifier": "VMware.WorkstationPlayer"
+        },
+        {
           "PackageIdentifier": "Microsoft.Office"
         },
         {
