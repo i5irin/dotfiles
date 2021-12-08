@@ -9,6 +9,14 @@ Import-Module "${PSScriptRoot}\Lib"
 
 Set-Variable -Name INSTALL_SCRIPT_PATH -Value $(Convert-Path "${PSScriptRoot}\..") -Option ReadOnly
 
+# Install WSL.
+# Check if the build number is 19041 or later.
+if ((Get-WmiObject Win32_OperatingSystem).BuildNumber -lt 19041) {
+  Write-Output 'To install WSL2 with this script, Upgrade to Windows build 19041 or later.'
+  exit 1
+}
+wsl --install
+
 # Ask username and email for git config.
 while ($true) {
   $GIT_USER_NAME = Read-Host 'Enter your name for use in git > '
