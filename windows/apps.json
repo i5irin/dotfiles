@@ -27,6 +27,12 @@
         },
         {
           "PackageIdentifier": "Zoom.Zoom"
+        },
+        {
+          "PackageIdentifier": "Google.Chrome"
+        },
+        {
+          "PackageIdentifier": "Mozilla.Firefox"
         }
       ],
       "SourceDetails": {
