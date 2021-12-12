@@ -50,6 +50,9 @@ Set-ItemProperty -LiteralPath 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\E
 # Restart explorer.
 Stop-Process -ProcessName explorer
 
+# Make event log record the task scheduler actions.
+Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-TaskScheduler\Operational' -Name 'Enabled' -Value 1
+
 # Remove pre-installed applications.
 
 # Remove Maps.
