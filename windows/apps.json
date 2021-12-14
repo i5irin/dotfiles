@@ -33,6 +33,12 @@
         },
         {
           "PackageIdentifier": "Mozilla.Firefox"
+        },
+        {
+          "PackageIdentifier": "Microsoft.Skype"
+        },
+        {
+          "PackageIdentifier": "LINE.LINE"
         }
       ],
       "SourceDetails": {
