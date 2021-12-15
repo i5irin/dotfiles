@@ -20,6 +20,9 @@
           "PackageIdentifier": "Microsoft.VisualStudioCode"
         },
         {
+          "PackageIdentifier": "Alacritty.Alacritty"
+        },
+        {
           "PackageIdentifier": "VMware.WorkstationPlayer"
         },
         {
