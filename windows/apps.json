@@ -23,6 +23,9 @@
           "PackageIdentifier": "VMware.WorkstationPlayer"
         },
         {
+          "PackageIdentifier": "Microsoft.OpenJDK.17"
+        },
+        {
           "PackageIdentifier": "Microsoft.Office"
         },
         {
