@@ -54,6 +54,9 @@
         },
         {
           "PackageIdentifier": "LINE.LINE"
+        },
+        {
+          "PackageIdentifier": "TradingView.TradingViewDesktop"
         }
       ],
       "SourceDetails": {
