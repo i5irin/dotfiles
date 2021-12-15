@@ -38,6 +38,9 @@
           "PackageIdentifier": "Zoom.Zoom"
         },
         {
+          "PackageIdentifier": "Dropbox.Dropbox"
+        },
+        {
           "PackageIdentifier": "Google.Chrome"
         },
         {
