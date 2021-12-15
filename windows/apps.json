@@ -50,6 +50,9 @@
           "PackageIdentifier": "Microsoft.Skype"
         },
         {
+          "PackageIdentifier": "Discord.Discord"
+        },
+        {
           "PackageIdentifier": "LINE.LINE"
         }
       ],
