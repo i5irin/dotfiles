@@ -7,6 +7,9 @@ if [ -f $(brew --prefix)/etc/bash_completion.d/git-prompt.sh ]; then
   source $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
 fi
 
+# don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+
 #######################################
 # Create a directory and move into it
 # Globals:
