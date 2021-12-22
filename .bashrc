@@ -10,6 +10,10 @@ fi
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
 
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=500
+HISTFILESIZE=500
+
 #######################################
 # Create a directory and move into it
 # Globals:
