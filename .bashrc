@@ -1,3 +1,12 @@
+# Settings to be applied when the program is launched in interactive mode.
+# Aliases and functions used by scripts, periodic tasks, etc. should not be defined here!
+
+# If not running interactively, don't do anything
+case $- in
+  *i*) ;;
+  *) return;;
+esac
+
 # configure bash completion
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   source $(brew --prefix)/etc/bash_completion
