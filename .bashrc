@@ -23,6 +23,10 @@ HISTCONTROL=ignoreboth
 HISTSIZE=500
 HISTFILESIZE=500
 
+# make less more friendly for non-text input files, see lesspipe(1)
+# Ubuntu-like linux and macOS with brew
+[ -x /usr/bin/lesspipe -o -x /usr/local/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
 #######################################
 # Create a directory and move into it
 # Globals:
