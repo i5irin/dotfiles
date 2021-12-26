@@ -1,6 +1,32 @@
 #!bin/sh
 
 ########################################################################
+# Add the path to the PATH environment variable without duplication.
+# Arguments:
+#   path
+# Returns:
+#   Status of whether the path has been added to the PATH environment variable
+########################################################################
+add_path() {
+  directory="$1"
+  if [ -d "${directory}" ] ; then
+    case ":${PATH}:" in
+      *:$directory:*)
+        echo "The path you specifed already exists in the PATH." 1>&2
+        return 1
+        ;;
+      *)
+        PATH="${directory}:${PATH}"
+        return 0
+        ;;
+    esac
+  else
+    echo "The path you specifed does not exist." 1>&2
+    return 1
+  fi
+}
+
+########################################################################
 # Validate GitHub username format.
 # Arguments:
 #   GitHub username
