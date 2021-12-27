@@ -1,27 +1,20 @@
+# Load the library functions.
+. ./lib.sh
+
 # ---------------------------------------------------------
 # Configure environment variables
 # ---------------------------------------------------------
 
+# Configure PATH
+
 # set it to refer applications installed with Homebrew
-export PATH="/usr/local/bin:${PATH}"
+add_path '/usr/local/bin'
 # Make OpenJDK that is installed with Homebrew be used as default.
-export PATH="/usr/local/opt/openjdk/bin:${PATH}"
-
+add_path '/usr/local/opt/openjdk/bin'
 # set PATH so it includes user's private bin if it exists. (from Ubuntu's ~/.profile)
-if [ -d "$HOME/bin" ] ; then
-  case ":$PATH:" in
-    *:$HOME/bin:*) ;;
-    *) PATH="$HOME/bin:$PATH" ;;
-  esac
-fi
-
+add_path "$HOME/bin"
 # set PATH so it includes user's private bin if it exists. (from Ubuntu's ~/.profile)
-if [ -d "$HOME/.local/bin" ] ; then
-  case ":$PATH:" in
-    *:$HOME/.local/bin:*) ;;
-    *) PATH="$HOME/.local/bin:$PATH" ;;
-  esac
-fi
+add_path "$HOME/.local/bin"
 
 # make .bash_profile to load .bashrc
 if [ -L ~/.bashrc ]; then
