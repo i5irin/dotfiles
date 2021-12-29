@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Load the library functions.
-. ./lib.sh
-
 readonly INSTALL_SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE}); pwd)
+
+# Load the library functions.
+. "${INSTALL_SCRIPT_PATH}/lib.sh"
 
 # ---------------------------------------------------------
 # Ask username and email for git config
