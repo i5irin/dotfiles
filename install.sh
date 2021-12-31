@@ -5,6 +5,11 @@ readonly INSTALL_SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE}); pwd)
 # Load the library functions.
 . "${INSTALL_SCRIPT_PATH}/lib.sh"
 
+# Create a symbolic link for the library to be used by dotfiles placed in symbolic links such as .bashrc and .bash_profile.
+if [ ! -e '~/lib.sh' ] && [ ! -h '~/lib.sh' ]; then
+  ln -is "${INSTALL_SCRIPT_PATH}/lib.sh" ~/lib.sh
+fi
+
 # ---------------------------------------------------------
 # Ask username and email for git config
 # ---------------------------------------------------------
