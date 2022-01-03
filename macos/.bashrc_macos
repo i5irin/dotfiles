@@ -1,0 +1,16 @@
+# Load the library functions.
+. ./lib.sh
+
+BASHRC_MACOS_PATH="$(dirname "$(readlinkf "$BASH_SOURCE")")"
+
+# Load the common .bashrc.
+. "${BASHRC_MACOS_PATH}/../.bashrc"
+
+# configure bash completion
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  source $(brew --prefix)/etc/bash_completion
+fi
+
+if [ -f $(brew --prefix)/etc/bash_completion.d/git-prompt.sh ]; then
+  source $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
+fi
