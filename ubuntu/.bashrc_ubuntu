@@ -1,0 +1,12 @@
+# Load the library functions.
+. ./lib.sh
+
+BASHRC_UBUNTU_PATH="$(dirname "$(readlinkf "$BASH_SOURCE")")"
+
+# Load the common .bashrc.
+. "${BASHRC_UBUNTU_PATH}/../.bashrc"
+
+# enable bash completion in interactive shells
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+  . /etc/bash_completion
+fi

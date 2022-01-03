@@ -12,3 +12,5 @@ ln -is "${INSTALL_SCRIPT_PATH}/.bashrc" ~/.bashrc
 
 # link readline config
 ln -s "${INSTALL_SCRIPT_PATH}/.inputrc" ~/.inputrc
+
+apt install -y bash-completion
