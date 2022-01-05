@@ -50,9 +50,9 @@ function git_commit_at() {
 alias ls='ls -G'
 
 # Attach to a tmux session at shell startup.
-tmux_count=$(pgrep tmux | wc -l)
-if [ "$tmux_count" -eq 0 ]; then
+tmux ls > /dev/null
+if [ $? -eq 1 ] && [ -z "$TMUX" ]; then
   tmux
-elif [ "$tmux_count" -eq 1 ]; then
-  tmux a
+elif [ -z "$TMUX" ] ; then
+  tmux attach
 fi
