@@ -1,1 +1,10 @@
 bash-completion
+curl
+gcc
+git
+git-lfs
+iproute2
+jq
+openjdk-17-jdk
+tmux
+tree
