@@ -11,28 +11,6 @@ if [ ! -e '~/lib.sh' ] && [ ! -h '~/lib.sh' ]; then
 fi
 
 # ---------------------------------------------------------
-# Ask username and email for git config
-# ---------------------------------------------------------
-
-while true; do
-  read -p 'Enter your name for use in git > ' GIT_USER_NAME
-  read -p 'Enter your email address for use in git > ' GIT_USER_EMAIL
-  if ! validate_github_username $GIT_USER_NAME; then
-    continue;
-  fi
-  while true; do
-    read -p "Make sure name($GIT_USER_NAME) and email($GIT_USER_EMAIL) you input, is this ok? [Y/n] > " YN
-    case $YN in
-      [YNn] ) break;;
-      * ) echo '[Y/n]'
-    esac
-  done
-  case $YN in
-    [Y] ) break;;
-  esac
-done
-
-# ---------------------------------------------------------
 # Install Xcode CommandLineTool
 # ---------------------------------------------------------
 
@@ -67,10 +45,7 @@ ln -s "${INSTALL_SCRIPT_PATH}/.inputrc" ~/.inputrc
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
-
-git config --global --add include.path "${INSTALL_SCRIPT_PATH}/.gitconfig"
-git config --global user.name $GIT_USER_NAME
-git config --global user.email $GIT_USER_EMAIL
+source "${INSTALL_SCRIPT_PATH}/setup_git.sh" "${INSTALL_SCRIPT_PATH}"
 
 # ---------------------------------------------------------
 # Configure macOS preference

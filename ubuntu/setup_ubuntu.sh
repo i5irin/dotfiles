@@ -15,3 +15,8 @@ ln -s "${INSTALL_SCRIPT_PATH}/.inputrc" ~/.inputrc
 
 # Install applications
 xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/packages.txt"
+
+# ---------------------------------------------------------
+# Configure Git
+# ---------------------------------------------------------
+source "${INSTALL_SCRIPT_PATH}/setup_git.sh" "${INSTALL_SCRIPT_PATH}"
