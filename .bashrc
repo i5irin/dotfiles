@@ -47,4 +47,28 @@ function git_commit_at() {
   GIT_COMMITTER_DATE="${at}" git commit --date="${at}" -m "${comment}"
 }
 
+#######################################
+# Attaches to or creates a tmux session with the specified name.
+# Globals:
+#   $TMUX: Path to tmux temporary files
+# Arguments:
+#   Tmux sesesion name
+# Returns:
+#   None
+#######################################
+function tmux_start() {
+  session_name="${1:-localhost}"
+  tmux has-session -t=$session_name 2> /dev/null
+  # Create the session if it doesn't exists. (Only create!)
+  if [ "$?" -ne 0 ]; then
+    TMUX='' tmux new-session -d -s "$session_name"
+  fi
+  # Attach if outside of tmux, switch if you're in tmux.
+  if [ -z "$TMUX" ]; then
+    tmux attach -t "$session_name"
+  else
+    tmux switch-client -t "$session_name"
+  fi
+}
+
 alias ls='ls -G'
