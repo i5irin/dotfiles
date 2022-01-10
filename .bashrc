@@ -48,11 +48,3 @@ function git_commit_at() {
 }
 
 alias ls='ls -G'
-
-# Attach to a tmux session at shell startup.
-tmux ls > /dev/null
-if [ $? -eq 1 ] && [ -z "$TMUX" ]; then
-  tmux
-elif [ -z "$TMUX" ] ; then
-  tmux attach
-fi
