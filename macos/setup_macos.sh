@@ -48,8 +48,8 @@ ln -s "${INSTALL_SCRIPT_PATH}/karabiner" ~/.config/karabiner
 # ---------------------------------------------------------
 
 # Grant execution permissions to ShellScript executed from cron.
-chmod u+x "${INSTALL_SCRIPT_PATH}/macos/update_brew.sh"
-sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" crontab | crontab -
+chmod u+x "${INSTALL_SCRIPT_PATH}/macos/update_applications.sh"
+sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" "${INSTALL_SCRIPT_PATH}/macos/crontab_macos" | crontab -
 
 # ---------------------------------------------------------
 # Set up settings that are common across platforms.

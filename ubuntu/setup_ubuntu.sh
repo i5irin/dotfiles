@@ -14,6 +14,14 @@ ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bashrc_ubuntu" ~/.bashrc
 xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/packages.txt"
 
 # ---------------------------------------------------------
+# Register periodic tasks.
+# ---------------------------------------------------------
+
+# Grant execution permissions to ShellScript executed from cron.
+chmod u+x "${INSTALL_SCRIPT_PATH}/ubuntu/update_applications.sh"
+sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" "${INSTALL_SCRIPT_PATH}/ubuntu/crontab_ubuntu" | crontab -
+
+# ---------------------------------------------------------
 # Set up settings that are common across platforms.
 # ---------------------------------------------------------
 source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
