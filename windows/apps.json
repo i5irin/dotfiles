@@ -1,6 +1,6 @@
 {
   "$schema": "https://aka.ms/winget-packages.schema.2.0.json",
-  "CreationDate": "2022-01-14T00:04:42.116-00:00",
+  "CreationDate": "2022-01-15T22:19:37.103-00:00",
   "Sources": [
     {
       "Packages": [
@@ -60,6 +60,9 @@
         },
         {
           "PackageIdentifier": "Valve.Steam"
+        },
+        {
+          "PackageIdentifier": "Nvidia.GeForceNow"
         }
       ],
       "SourceDetails": {
