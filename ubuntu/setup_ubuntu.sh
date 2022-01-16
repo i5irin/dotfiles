@@ -10,6 +10,9 @@ readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})../"; pwd)
 ln -is "${INSTALL_SCRIPT_PATH}/.bash_profile" ~/.bash_profile
 ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bashrc_ubuntu" ~/.bashrc
 
+# Install gdebi to install deb package application with resolving dependencies.
+apt install -y gdebi
+
 # Install applications
 xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/packages.txt"
 
