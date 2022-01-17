@@ -8,3 +8,5 @@ jq
 openjdk-17-jdk
 tmux
 tree
+firefox
+fonts-firacode
