@@ -29,3 +29,6 @@ GIT_PS1_SHOWSTASHSTATE=1
 # set it to change prompt
 # e.g. ~/hoge (master) $
 export PS1='\w\[\033[1;31m\]$(__git_ps1)\[\033[00m\] \$ '
+
+# Set the default options for less.
+export LESS='-iMR'
