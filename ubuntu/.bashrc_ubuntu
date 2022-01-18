@@ -10,3 +10,8 @@ BASHRC_UBUNTU_PATH="$(dirname "$(readlinkf "$BASH_SOURCE")")"
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
   . /etc/bash_completion
 fi
+
+# make less more friendly for non-text input files, see lesspipe(1)
+if [ -x /usr/bin/lesspipe ]; then
+  eval "$(SHELL=/bin/sh lesspipe)"
+fi

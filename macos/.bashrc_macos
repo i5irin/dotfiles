@@ -14,3 +14,9 @@ fi
 if [ -f $(brew --prefix)/etc/bash_completion.d/git-prompt.sh ]; then
   source $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
 fi
+
+# For lesspipe installed by brew.
+# Make less more friendly for non-text input files, see lesspipe(1)
+if [ -x /usr/local/bin/lesspipe.sh ]; then
+  eval "$(SHELL=/bin/sh lesspipe.sh)"
+fi
