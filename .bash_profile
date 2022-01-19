@@ -32,3 +32,12 @@ export PS1='\w\[\033[1;31m\]$(__git_ps1)\[\033[00m\] \$ '
 
 # Set the default options for less.
 export LESS='-iMR'
+# Apply syntax highlighting to less.
+# macOS
+if [ -x /usr/local/bin/src-hilite-lesspipe.sh ]; then
+export LESSOPEN="| src-hilite-lesspipe.sh %s"
+fi
+# Ubuntu
+if [ -x /usr/share/source-highlight/src-hilite-lesspipe.sh ]; then
+  export LESSOPEN='| /usr/share/source-highlight/src-hilite-lesspipe.sh %s'
+fi

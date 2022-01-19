@@ -6,6 +6,7 @@ git-lfs
 iproute2
 jq
 openjdk-17-jdk
+source-highlight
 tmux
 tree
 firefox
