@@ -49,7 +49,9 @@ ln -s "${INSTALL_SCRIPT_PATH}/karabiner" ~/.config/karabiner
 
 # Grant execution permissions to ShellScript executed from cron.
 chmod u+x "${INSTALL_SCRIPT_PATH}/macos/update_applications.sh"
-sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" "${INSTALL_SCRIPT_PATH}/macos/crontab_macos" | crontab -
+# In order to be used with launchd, it must be a real file, not a symbolic link.
+cp "${INSTALL_SCRIPT_PATH}/macos/com.i5irin.dotfiles.updateapps.plist" ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
+launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 
 # ---------------------------------------------------------
 # Set up settings that are common across platforms.

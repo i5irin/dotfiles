@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.i5irin.dotfiles.updateapps</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/i5irin/dotfiles/macos/update_applications.sh</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>0</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+  <key>ExitTimeOut</key>
+  <integer>600</integer>
+  <key>EnvironmentVariables</key>
+  <dict>
+      <key>PATH</key>
+      <string>/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>/var/tmp/i5irin/dotfiles/application_update.log</string>
+  <key>StandardErrorPath</key>
+  <string>/var/tmp/i5irin/dotfiles/application_update.log</string>
+</dict>
+</plist>
