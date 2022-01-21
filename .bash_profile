@@ -30,6 +30,8 @@ GIT_PS1_SHOWSTASHSTATE=1
 # e.g. ~/hoge (master) $
 export PS1='\w\[\033[1;31m\]$(__git_ps1)\[\033[00m\] \$ '
 
+export PROMPT_DIRTRIM=4
+
 # Set the default options for less.
 export LESS='-iMR'
 # Apply syntax highlighting to less.
