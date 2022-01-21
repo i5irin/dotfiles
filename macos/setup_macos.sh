@@ -21,7 +21,7 @@ brew install mas
 # Install applications
 # ---------------------------------------------------------
 
-brew bundle
+brew bundle --file "${INSTALL_SCRIPT_PATH}/macos/Brewfile"
 
 # ---------------------------------------------------------
 # Configure Bash
