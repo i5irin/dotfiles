@@ -18,7 +18,7 @@ add_path "$HOME/.local/bin" 2> /dev/null
 
 # make .bash_profile to load .bashrc
 if [ -L ~/.bashrc ]; then
-    source ~/.bashrc
+  source ~/.bashrc
 fi
 
 # configure and use GIT_PS1 variable after load git-prompt.sh with .bashrc
@@ -35,7 +35,7 @@ export LESS='-iMR'
 # Apply syntax highlighting to less.
 # macOS
 if [ -x /usr/local/bin/src-hilite-lesspipe.sh ]; then
-export LESSOPEN="| src-hilite-lesspipe.sh %s"
+  export LESSOPEN="| src-hilite-lesspipe.sh %s"
 fi
 # Ubuntu
 if [ -x /usr/share/source-highlight/src-hilite-lesspipe.sh ]; then
