@@ -11,6 +11,11 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
   . /etc/bash_completion
 fi
 
+# enable git completion in interactive shells
+if [ -f /usr/share/bash-completion/completions/git ] && ! shopt -oq posix; then
+  . /usr/share/bash-completion/completions/git
+fi
+
 # Terminal coloring and displaying Git information
 if [ -e /etc/bash_completion.d/git-prompt ]; then
   source /etc/bash_completion.d/git-prompt
