@@ -1,5 +1,5 @@
 # Load the library functions.
-. ./lib.sh
+. ~/lib.sh
 
 BASHRC_MACOS_PATH="$(dirname "$(readlinkf "$BASH_SOURCE")")"
 

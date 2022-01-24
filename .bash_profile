@@ -1,5 +1,5 @@
 # Load the library functions.
-. ./lib.sh
+. ~/lib.sh
 
 # ---------------------------------------------------------
 # Configure environment variables
