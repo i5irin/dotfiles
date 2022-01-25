@@ -4,8 +4,8 @@ set -eu
 DOTFILES_PATH=$0
 
 # Create a symbolic link for the library to be used by dotfiles placed in symbolic links such as .bashrc and .bash_profile.
-if [ ! -e '~/lib.sh' ] && [ ! -h '~/lib.sh' ]; then
-  ln -is "${DOTFILES_PATH}/lib.sh" ~/lib.sh
+if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ]; then
+  mkdir ~/dotfiles/lib/posix_dotfiles_utils && ln -is "${DOTFILES_PATH}/lib/posix_dotfiles_utils/utils.sh" ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
 fi
 
 # link readline config

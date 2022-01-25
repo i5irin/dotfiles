@@ -5,7 +5,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 # Load the library functions.
-Import-Module "${PSScriptRoot}\Lib"
+Import-Module "${PSScriptRoot}\..\lib\WindowsDotfilesUtils"
 
 Set-Variable -Name INSTALL_SCRIPT_PATH -Value $(Convert-Path "${PSScriptRoot}\..") -Option ReadOnly
 

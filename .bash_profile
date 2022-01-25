@@ -1,5 +1,5 @@
 # Load the library functions.
-. ~/lib.sh
+. ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
 
 # ---------------------------------------------------------
 # Configure environment variables
