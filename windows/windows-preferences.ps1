@@ -88,7 +88,7 @@ winget import -i apps.json
 
 # Configure Git
 # NOTE: Git can be installed on both WSL and Windows. This script will install Git on Windows and set up a .gitconfig for it.
-git config --global --add include.path "${INSTALL_SCRIPT_PATH}\.gitconfig"
+git config --global --add include.path "${INSTALL_SCRIPT_PATH}\git\.gitconfig"
 git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
 

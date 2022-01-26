@@ -14,7 +14,7 @@ ln -s "${DOTFILES_PATH}/.inputrc" ~/.inputrc
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
-source "${DOTFILES_PATH}/setup_git.sh" "${DOTFILES_PATH}"
+source "${DOTFILES_PATH}/git/setup_git.sh" "${DOTFILES_PATH}"
 
 # ---------------------------------------------------------
 # Configure Visual Studio Code

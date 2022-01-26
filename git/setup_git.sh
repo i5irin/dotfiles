@@ -52,7 +52,7 @@ done
 # Configure Git
 # ---------------------------------------------------------
 
-git config --global --add include.path "${DOTFILES_PATH}/.gitconfig"
+git config --global --add include.path "${DOTFILES_PATH}/git/.gitconfig"
 git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
 
