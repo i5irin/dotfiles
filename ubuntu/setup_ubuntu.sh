@@ -20,6 +20,9 @@ apt upgrade -y
 # Install gdebi to install deb package application with resolving dependencies.
 apt install -y gdebi
 
+# Install Snap package management system.
+apt install -y snapd
+
 # Install applications
 xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/packages.txt"
 
