@@ -24,12 +24,12 @@ brew install mas
 brew bundle --file "${INSTALL_SCRIPT_PATH}/macos/Brewfile"
 
 # ---------------------------------------------------------
-# Configure Bash
+# Configure Zsh
 # ---------------------------------------------------------
 
 # link .bash_profile and .bashrc
-ln -is "${INSTALL_SCRIPT_PATH}/.bash_profile" ~/.bash_profile
-ln -is "${INSTALL_SCRIPT_PATH}/macos/.bashrc_macos" ~/.bashrc
+ln -is "${INSTALL_SCRIPT_PATH}/macos/.zprofile" ~/.zprofile
+ln -is "${INSTALL_SCRIPT_PATH}/macos/.zshrc" ~/.zshrc
 
 # ---------------------------------------------------------
 # Configure macOS preference
