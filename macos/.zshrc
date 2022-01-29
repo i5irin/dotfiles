@@ -3,6 +3,9 @@
 
 ZSHRC_MACOS_PATH="$(dirname "$(readlinkf ${(%):-%N})")"
 
+# Ignore case when no candidate is found.
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
+
 # configure Zsh completion.
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH

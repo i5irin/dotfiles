@@ -8,9 +8,6 @@ if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles
   mkdir ~/dotfiles/lib/posix_dotfiles_utils && ln -is "${DOTFILES_PATH}/lib/posix_dotfiles_utils/utils.sh" ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
 fi
 
-# link readline config
-ln -s "${DOTFILES_PATH}/.inputrc" ~/.inputrc
-
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
