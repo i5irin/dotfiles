@@ -1,10 +1,22 @@
-# Load the library functions.
-. ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
+# Settings to be applied when the program is launched in interactive mode.
+# Aliases and functions used by scripts, periodic tasks, etc. should not be defined here!
 
-BASHRC_UBUNTU_PATH="$(dirname "$(readlinkf "$BASH_SOURCE")")"
+# If not running interactively, don't do anything
+case $- in
+  *i*) ;;
+  *) return;;
+esac
 
-# Load the common .bashrc.
-. "${BASHRC_UBUNTU_PATH}/../.bashrc"
+# don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+
+# 複数の端末でコマンドの履歴を共有する（反映はプロンプトをサイア表示したとき）
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+shopt -u histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=500
+HISTFILESIZE=500
 
 # enable bash completion in interactive shells
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
@@ -32,3 +44,8 @@ fi
 if [ -x /usr/bin/lesspipe ]; then
   eval "$(SHELL=/bin/sh lesspipe)"
 fi
+
+# Load the functions definition.
+. "${BASHRC_UBUNTU_PATH}/../alias/functions.sh"
+
+alias ls='ls -G'

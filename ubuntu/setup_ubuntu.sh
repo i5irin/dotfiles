@@ -7,8 +7,8 @@ readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})../"; pwd)
 # ---------------------------------------------------------
 
 # link .bash_profile and .bashrc
-ln -is "${INSTALL_SCRIPT_PATH}/.bash_profile" ~/.bash_profile
-ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bashrc_ubuntu" ~/.bashrc
+ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bash_profile" ~/.bash_profile
+ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bashrc" ~/.bashrc
 
 # ---------------------------------------------------------
 # Install applications
