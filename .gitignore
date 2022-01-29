@@ -31,4 +31,7 @@ Temporary Items
 # Karabiner-Elements config backups
 Karabiner/automatic_backups/
 
+# Externally libraries
+lib/vendor/
+
 
