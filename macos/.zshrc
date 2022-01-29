@@ -27,3 +27,6 @@ fi
 if [ -x /usr/local/bin/lesspipe.sh ]; then
   eval "$(SHELL=/bin/sh lesspipe.sh)"
 fi
+
+# Load the functions definition.
+. "${ZSHRC_MACOS_PATH}/../alias/functions.sh"
