@@ -3,6 +3,14 @@
 readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${(%):-%N})/../"; pwd)
 
 # ---------------------------------------------------------
+# Configure Zsh
+# ---------------------------------------------------------
+
+# link .zprofile and .zshrc
+ln -is "${INSTALL_SCRIPT_PATH}/macos/.zprofile" ~/.zprofile
+ln -is "${INSTALL_SCRIPT_PATH}/macos/.zshrc" ~/.zshrc
+
+# ---------------------------------------------------------
 # Install Xcode CommandLineTool
 # ---------------------------------------------------------
 
@@ -22,14 +30,6 @@ brew install mas
 # ---------------------------------------------------------
 
 brew bundle --file "${INSTALL_SCRIPT_PATH}/macos/Brewfile"
-
-# ---------------------------------------------------------
-# Configure Zsh
-# ---------------------------------------------------------
-
-# link .bash_profile and .bashrc
-ln -is "${INSTALL_SCRIPT_PATH}/macos/.zprofile" ~/.zprofile
-ln -is "${INSTALL_SCRIPT_PATH}/macos/.zshrc" ~/.zshrc
 
 # ---------------------------------------------------------
 # Configure macOS preference
