@@ -17,6 +17,15 @@ ln -is "${INSTALL_SCRIPT_PATH}/macos/.zshrc" ~/.zshrc
 xcode-select --install
 
 # ---------------------------------------------------------
+# X86 applications settings (Apple silicon Mac only)
+# TODO: Display current architecture (x86_64 or arm64e) on tmux status bar
+# ---------------------------------------------------------
+
+if [ "$(uname -m)" = "arm64" ]; then
+  softwareupdate --install-rosetta --agree-to-license
+fi
+
+# ---------------------------------------------------------
 # Configure Homebrew
 # ---------------------------------------------------------
 

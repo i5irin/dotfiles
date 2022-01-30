@@ -6,6 +6,13 @@ ZSHRC_MACOS_PATH="$(dirname "$(readlinkf ${(%):-%N})")"
 # Ignore case when no candidate is found.
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
 
+# Make it possible to refer apps installed by Homebrew by name for each Mac architecture.
+if [ "$(uname -m)" = "arm64" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ "$(uname -m)" = "x86_64" ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 # configure Zsh completion.
 if [ -d /usr/local/bin/zsh-completions ]; then
   fpath=(/usr/local/bin/zsh-completions/src $fpath)
@@ -26,7 +33,7 @@ fi
 
 # For lesspipe installed by brew.
 # Make less more friendly for non-text input files, see lesspipe(1)
-if [ -x /usr/local/bin/lesspipe.sh ]; then
+if [ -x "$(brew --prefix)/bin/lesspipe.sh" ]; then
   eval "$(SHELL=/bin/sh lesspipe.sh)"
 fi
 
