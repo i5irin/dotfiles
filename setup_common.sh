@@ -23,4 +23,4 @@ source "${DOTFILES_PATH}/vscode/vscode-setup.sh"
 # Configure Alacritty (terminal emulator)
 # ---------------------------------------------------------
 
-ln -is "${DOTFILES_PATH}/alacritty" ~/.config/alacritty
+mkdir -p ~/.config && ln -is "${DOTFILES_PATH}/alacritty" ~/.config/alacritty
