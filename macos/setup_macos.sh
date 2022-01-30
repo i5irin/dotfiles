@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/zsh
 
-readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})../"; pwd)
+readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${(%):-%N})/../"; pwd)
 
 # ---------------------------------------------------------
 # Install Xcode CommandLineTool
