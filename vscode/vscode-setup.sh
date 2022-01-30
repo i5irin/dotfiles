@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-readonly VSCODE_SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE}); pwd)
+set -eu
+readonly VSCODE_SCRIPT_PATH=$1
 
 # install extensions
 for extension in $(cat "${VSCODE_SCRIPT_PATH}/extensions"); do

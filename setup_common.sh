@@ -17,7 +17,7 @@ fi
 # Configure Visual Studio Code
 # ---------------------------------------------------------
 
-source "${DOTFILES_PATH}/vscode/vscode-setup.sh"
+/bin/sh "${DOTFILES_PATH}/vscode/vscode-setup.sh" "${DOTFILES_PATH}/vscode"
 
 # ---------------------------------------------------------
 # Configure Alacritty (terminal emulator)
