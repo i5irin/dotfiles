@@ -20,7 +20,8 @@ xcode-select --install
 # Configure Homebrew
 # ---------------------------------------------------------
 
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+source ~/.zshrc
 brew doctor
 brew update
 brew install mas
