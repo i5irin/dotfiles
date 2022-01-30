@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eu
-DOTFILES_PATH=$1
+readonly GIT_SCRIPT_PATH=$1
 
 git version &> /dev/null
 if [ $? -ne 0 ]; then
@@ -52,7 +52,7 @@ done
 # Configure Git
 # ---------------------------------------------------------
 
-git config --global --add include.path "${DOTFILES_PATH}/git/.gitconfig"
+readonly git config --global --add include.path "${GIT_SCRIPT_PATH}/.gitconfig"
 git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
 

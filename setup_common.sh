@@ -11,7 +11,7 @@ fi
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
-source "${DOTFILES_PATH}/git/setup_git.sh" "${DOTFILES_PATH}"
+/bin/sh "${DOTFILES_PATH}/git/setup_git.sh" "${DOTFILES_PATH}/git"
 
 # ---------------------------------------------------------
 # Configure Visual Studio Code
