@@ -60,8 +60,8 @@ launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
 
 # ---------------------------------------------------------
-# Complete the setup of zsh-completions.
+# Setup zsh-completions.
 # ---------------------------------------------------------
+git clone git://github.com/zsh-users/zsh-completions.git
 source ~/.zshrc
-chmod go-w '/usr/local/share'
 rm -f ~/.zcompdump; compinit

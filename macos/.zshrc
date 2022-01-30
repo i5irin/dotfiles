@@ -7,10 +7,9 @@ ZSHRC_MACOS_PATH="$(dirname "$(readlinkf ${(%):-%N})")"
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
 
 # configure Zsh completion.
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-  autoload -Uz compinit
-  compinit
+if [ -d /usr/local/bin/zsh-completions ]; then
+  fpath=(/usr/local/bin/zsh-completions/src $fpath)
+  autoload -U compinit && compinit
 fi
 
 # Terminal coloring, displaying Git information and reducing directory information.
