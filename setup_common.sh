@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -eu
-DOTFILES_PATH=$0
+DOTFILES_PATH=$1
 
 # Create a symbolic link for the library to be used by dotfiles placed in symbolic links such as .bashrc and .bash_profile.
 if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ]; then

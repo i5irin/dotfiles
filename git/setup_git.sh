@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -eu
-DOTFILES_PATH=$0
+DOTFILES_PATH=$1
 
 git version &> /dev/null
 if [ $? -ne 0 ]; then
