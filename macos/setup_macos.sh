@@ -74,3 +74,10 @@ source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
 git clone git://github.com/zsh-users/zsh-completions.git
 source ~/.zshrc
 rm -f ~/.zcompdump; compinit
+
+# ---------------------------------------------------------
+#  Configure applications
+# ---------------------------------------------------------
+
+# Configure AltTab
+/bin/sh "${DOTFILES_PATH}/apps/setup_alttab.sh"
