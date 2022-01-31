@@ -15,8 +15,6 @@ defaults write -g com.apple.keyboard.fnState -bool true
 defaults write com.apple.AppleMultitouchMouse MouseButtonMode -string 'TwoButton'
 defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string 'TwoButton'
 defaults write com.apple.driver.AppleHIDMouse Button2 -int 2
-defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
 # ---------------------------------------------------------
 #  Configure Trackpad
