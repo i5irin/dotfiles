@@ -81,3 +81,6 @@ rm -f ~/.zcompdump; compinit
 
 # Configure AltTab
 /bin/sh "${DOTFILES_PATH}/apps/setup_alttab.sh"
+# Configure Clipy
+/bin/sh "${DOTFILES_PATH}/apps/setup_clipy.sh"
+
