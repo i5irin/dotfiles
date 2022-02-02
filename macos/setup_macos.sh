@@ -2,6 +2,75 @@
 
 readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${(%):-%N})/../"; pwd)
 
+# Load the library functions.
+source "${INSTALL_SCRIPT_PATH}/lib/posix_dotfiles_utils/utils.sh"
+
+# ---------------------------------------------------------
+# Configure Mac hostnames
+# ---------------------------------------------------------
+
+while true; do
+  echo 'Name your machine. (LocalHostName and ComputerName)\nThis is used by Bonjour and AppleTalk.'
+  echo -n '> '
+  read mac_machine_name
+  if ! validate_rfc952_hostname $mac_machine_name; then
+    continue;
+  fi
+  while true; do
+    echo -n "Make sure machine name($mac_machine_name) you input, is this ok? [Y/n] > "
+    read YN
+    case $YN in
+      [YNn] ) break;;
+      * ) echo '[Y/n]'
+    esac
+  done
+  case $YN in
+    [Y] ) break;;
+  esac
+done
+
+echo 'Setting up ComputerName.'
+scutil --set ComputerName $mac_machine_name
+if [ $? = 0 ]; then
+  echo 'completed!'
+else
+  echo "Failed. Try \`scutil --set ComputerName ${mac_machine_name}\` later."
+fi
+echo 'Setting up LocalHostName.'
+scutil --set LocalHostName $mac_machine_name
+if [ $? = 0 ]; then
+  echo 'completed!'
+else
+  echo "Failed. Try \`scutil --set LocalHostName ${mac_machine_name}\` later."
+fi
+
+while true; do
+  echo 'Name your machine. (LocalHostName and ComputerName)'
+  echo -n '> '
+  read machostname
+  if ! validate_rfc952_hostname $machostname; then
+    continue;
+  fi
+  while true; do
+    read -p "Make sure hostname($machostname) you input, is this ok? [Y/n] > " YN
+    case $YN in
+      [YNn] ) break;;
+      * ) echo '[Y/n]'
+    esac
+  done
+  case $YN in
+    [Y] ) break;;
+  esac
+done
+
+echo 'Setting up HostName.'
+scutil --set HostName $machostname
+if [ $? = 0 ]; then
+  echo 'completed!'
+else
+  echo "Failed. Try \`scutil --set HostName ${machostname}\` later."
+fi
+
 # ---------------------------------------------------------
 # Configure Zsh
 # ---------------------------------------------------------
