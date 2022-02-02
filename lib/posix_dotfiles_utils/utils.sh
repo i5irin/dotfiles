@@ -113,3 +113,20 @@ sort_brewfile() {
   # output the sorted brewfile, adding then removing the sort column
   awk "$awkcmd" "$brewfile" | sort | awk 'BEGIN{FS="\t";OFS=""}{$1=""; print $0}'
 }
+
+########################################################################
+# Validate hostname with RFC 952 format.
+# Arguments:
+#   host name
+# Returns:
+#   Status of whether hostname is valid
+# Todo:
+#   Support for hostnames containing periods.
+########################################################################
+validate_rfc952_hostname() {
+  if echo "$1" | grep -q -E '^[a-zA-Z][0-9a-zA-Z\-]{0,22}[0-9a-zA-Z]$'; then
+    return 0
+  fi
+  echo "The hostname you entered is invalid for RFC 952." 1>&2
+  return 1
+}
