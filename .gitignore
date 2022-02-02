@@ -34,4 +34,7 @@ Karabiner/automatic_backups/
 # Externally libraries
 lib/vendor/
 
+# Definition files for user-installed applications
+MyBrewfile
+
 
