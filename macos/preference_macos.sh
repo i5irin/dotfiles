@@ -6,6 +6,8 @@
 
 # Set Function key like F1, F12 to default behavior
 defaults write -g com.apple.keyboard.fnState -bool true
+# Enable the tab key to move the focus.
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 # ---------------------------------------------------------
 #  Configure Mouse
