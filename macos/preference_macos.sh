@@ -123,6 +123,16 @@ defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 # Allow all people to share via AirDrop.
 defaults write com.apple.sharingd DiscoverableMode -string "Everyone"
 
+# ---------------------------------------------------------
+#  Configure Privacy
+# ---------------------------------------------------------
+
+# Disable crash reports.
+# TODO: Prepare an app that crashes on purpose for testing.
+defaults write com.apple.CrashReporter DialogType -string 'none'
+# Disable sending feedback.
+defaults write com.apple.appleseed.FeedbackAssistant Autogather -bool false
+
 # Restart applications to activate above preferences
 killall Finder
 killall Dock
