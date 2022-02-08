@@ -4,10 +4,10 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   exit 1
 }
 
-# Load the library functions.
-Import-Module "${PSScriptRoot}\..\lib\WindowsDotfilesUtils"
-
 Set-Variable -Name INSTALL_SCRIPT_PATH -Value $(Convert-Path "${PSScriptRoot}\..") -Option ReadOnly
+
+# Load the library functions.
+Import-Module "${INSTALL_SCRIPT_PATH}\lib\WindowsDotfilesUtils"
 
 # Install WSL.
 # Check if the build number is 19041 or later.
