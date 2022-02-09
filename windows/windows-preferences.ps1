@@ -95,9 +95,12 @@ git config --global user.email $GIT_USER_EMAIL
 
 # Register periodic tasks.
 
+if (![System.Diagnostics.EventLog]::SourceExists('WingetUpdate')) {
 New-EventLog -LogName Application -Source WingetUpdate
-
+}
+if ((Get-ScheduledTask -TaskName "UpdateWingetPackages" -ErrorAction SilentlyContinue) -eq $null) {
 # Register the update of the winget package in the task scheduler.
 Register-ScheduledTask -TaskName 'UpdateWingetPackages' -Description 'Update the packages installed by winget.' `
   -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-File ${INSTALL_SCRIPT_PATH}\windows\UpdatePackages.ps1") `
   -Trigger (New-ScheduledTaskTrigger -Daily -At '00:00')
+}
