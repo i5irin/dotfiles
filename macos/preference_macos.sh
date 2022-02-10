@@ -17,6 +17,8 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 defaults write com.apple.AppleMultitouchMouse MouseButtonMode -string 'TwoButton'
 defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string 'TwoButton'
 defaults write com.apple.driver.AppleHIDMouse Button2 -int 2
+# Turn off the acceleration of the mouse pointer.
+defaults write NSGlobalDomain com.apple.mouse.scaling -1
 
 # ---------------------------------------------------------
 #  Configure Trackpad
