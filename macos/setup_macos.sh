@@ -151,6 +151,11 @@ source ~/.zshrc
 rm -f ~/.zcompdump; compinit
 
 # ---------------------------------------------------------
+# Configure Git
+# ---------------------------------------------------------
+/bin/zsh "${INSTALL_SCRIPT_PATH}/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/git"
+
+# ---------------------------------------------------------
 #  Configure applications
 # ---------------------------------------------------------
 

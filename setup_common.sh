@@ -9,11 +9,6 @@ if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles
 fi
 
 # ---------------------------------------------------------
-# Configure Git
-# ---------------------------------------------------------
-/bin/sh "${DOTFILES_PATH}/git/setup_git.sh" "${DOTFILES_PATH}/git"
-
-# ---------------------------------------------------------
 # Configure Visual Studio Code
 # ---------------------------------------------------------
 

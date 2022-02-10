@@ -40,3 +40,8 @@ sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" "${INSTALL_SCR
 # Set up settings that are common across platforms.
 # ---------------------------------------------------------
 source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
+
+# ---------------------------------------------------------
+# Configure Git
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/git"
