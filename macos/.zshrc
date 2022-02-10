@@ -20,13 +20,14 @@ if [ -d /usr/local/bin/zsh-completions ]; then
 fi
 
 # Terminal coloring, displaying Git information and reducing directory information.
-if [ -f "${ZSHRC_MACOS_PATH}/../lib/vendor/git-prompt.sh" ]; then
-  source "${ZSHRC_MACOS_PATH}/../lib/vendor/git-prompt.sh"
+if [ -f /usr/local/bin/git-prompt/git-prompt.sh ]; then
+  setopt PROMPT_SUBST
+  source /usr/local/bin/git-prompt/git-prompt.sh
   GIT_PS1_SHOWDIRTYSTATE=1
   GIT_PS1_SHOWUPSTREAM=1
   GIT_PS1_SHOWUNTRACKEDFILES=1
   GIT_PS1_SHOWSTASHSTATE=1
-  PROMPT="%B%F{green}%n@%m%f%b:%B%F{blue}%(5~|%-1~/…/%3~|%4~)%f%F{red}$(__git_ps1)%f%b $ "
+  PROMPT='%B%F{green}%n@%m%f%b:%B%F{blue}%(5~|%-1~/…/%3~|%4~)%f%F{red}$(__git_ps1 "(%s)")%f%b $ '
 else
   PROMPT='%B%F{green}%n@%m%f%b:%B%F{blue}%(5~|%-1~/…/%3~|%4~)%f%b $ '
 fi
