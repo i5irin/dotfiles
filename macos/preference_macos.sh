@@ -83,6 +83,11 @@ defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)
 #  Configure Screen Capture
 # ---------------------------------------------------------
 
+# Configure where to save the screenshot.
+if [ ! -d "$HOME/Pictures/Screenshots" ]; then
+  mkdir -p "$HOME/Pictures/Screenshots"
+fi
+defaults write com.apple.screencapture location -string '~/Pictures/Screenshots'
 # Change screenshot file name prefix to "screenshot-"
 defaults write com.apple.screencapture name "screenshot-"
 # Disable border-shadow around screenshot
