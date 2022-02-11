@@ -87,6 +87,9 @@ defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)
 defaults write com.apple.screencapture name "screenshot-"
 # Disable border-shadow around screenshot
 defaults write com.apple.screencapture disable-shadow -boolean true
+# Disable thumbnails when taking screenshots.
+# (To prevent the thumbnail from being captured when taking a continuous screenshot of the entire screen.)
+defaults write com.apple.screencapture show-thumbnail -bool false
 
 # ---------------------------------------------------------
 #  Configure TextEdit
