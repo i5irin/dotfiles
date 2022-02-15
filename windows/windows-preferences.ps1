@@ -17,27 +17,6 @@ if ((Get-WmiObject Win32_OperatingSystem).BuildNumber -lt 19041) {
 }
 wsl --install
 
-# Ask username and email for git config.
-while ($true) {
-  $GIT_USER_NAME = Read-Host 'Enter your name for use in git > '
-  $GIT_USER_EMAIL = Read-Host 'Enter your email address for use in git > '
-  if (Test-GitHubUsername -Name $GIT_USER_NAME -eq 1) {
-    Write-Output 'The username you entered is invalid for GitHub.'
-    continue
-  }
-  while ($true) {
-    $YN = Read-Host "Make sure name($GIT_USER_NAME) and email($GIT_USER_EMAIL) you input, is this ok? [Y/n] > "
-    if ($YN -cmatch '[YNn]') {
-      break
-    } else {
-      Write-Output '[Y/n]'
-    }
-  }
-  if ($YN -eq 'Y') {
-    break;
-  }
-}
-
 # Activate Developer Mode.
 Set-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock' -Name 'AllowDevelopmentWithoutDevLicense' -Value '1'
 
@@ -89,9 +68,8 @@ winget import -i "${INSTALL_SCRIPT_PATH}\windows\apps.json"
 
 # Configure Git
 # NOTE: Git can be installed on both WSL and Windows. This script will install Git on Windows and set up a .gitconfig for it.
-git config --global --add include.path "${INSTALL_SCRIPT_PATH}\git\.gitconfig"
-git config --global user.name $GIT_USER_NAME
-git config --global user.email $GIT_USER_EMAIL
+Import-Module "${INSTALL_SCRIPT_PATH}\git\SetupGitWindows"
+Receive-GitConfig -Path "${INSTALL_SCRIPT_PATH}\git\.gitconfig"
 
 # Register periodic tasks.
 
