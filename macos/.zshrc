@@ -10,6 +10,9 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:
 setopt hist_reduce_blanks
 setopt hist_ignore_all_dups
 
+# Share command history between Zsh.
+setopt share_history
+
 # Make it possible to refer apps installed by Homebrew by name for each Mac architecture.
 if [ "$(uname -m)" = "arm64" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
