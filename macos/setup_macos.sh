@@ -159,6 +159,8 @@ rm -f ~/.zcompdump; compinit
 #  Configure applications
 # ---------------------------------------------------------
 
+# Configure Hyper.js
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
 # Configure AltTab
 /bin/sh "${DOTFILES_PATH}/apps/setup_alttab.sh"
 # Configure Clipy

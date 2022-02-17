@@ -32,6 +32,9 @@ winget import -i "${INSTALL_SCRIPT_PATH}\Windows\apps.json"
 Import-Module "${INSTALL_SCRIPT_PATH}\apps\git\SetupGitWindows"
 Receive-GitConfig -Path "${INSTALL_SCRIPT_PATH}\apps\git\.gitconfig"
 
+# Configure Hyper.js
+& "${INSTALL_SCRIPT_PATH}\apps\hyper\SetupHyper.ps1" "${INSTALL_SCRIPT_PATH}\apps\hyper"
+
 # Register periodic tasks.
 
 if (![System.Diagnostics.EventLog]::SourceExists('WingetUpdate')) {
