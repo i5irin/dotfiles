@@ -16,5 +16,6 @@
 
   "liveServer.settings.donotShowInfoMsg": true,
   "workbench.iconTheme": "material-icon-theme",
-  "explorer.confirmDelete": false
+  "explorer.confirmDelete": false,
+  "editor.bracketPairColorization.enabled": true
 }
