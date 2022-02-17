@@ -6,6 +6,10 @@ ZSHRC_MACOS_PATH="$(dirname "$(readlinkf ${(%):-%N})")"
 # Ignore case when no candidate is found.
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
 
+# Don't let Zsh save meanless command history.
+setopt hist_reduce_blanks
+setopt hist_ignore_all_dups
+
 # Make it possible to refer apps installed by Homebrew by name for each Mac architecture.
 if [ "$(uname -m)" = "arm64" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
