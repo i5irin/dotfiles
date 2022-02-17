@@ -29,8 +29,8 @@ winget import -i "${INSTALL_SCRIPT_PATH}\Windows\apps.json"
 
 # Configure Git
 # NOTE: Git can be installed on both WSL and Windows. This script will install Git on Windows and set up a .gitconfig for it.
-Import-Module "${INSTALL_SCRIPT_PATH}\git\SetupGitWindows"
-Receive-GitConfig -Path "${INSTALL_SCRIPT_PATH}\git\.gitconfig"
+Import-Module "${INSTALL_SCRIPT_PATH}\apps\git\SetupGitWindows"
+Receive-GitConfig -Path "${INSTALL_SCRIPT_PATH}\apps\git\.gitconfig"
 
 # Register periodic tasks.
 

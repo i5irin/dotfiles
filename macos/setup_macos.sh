@@ -153,7 +153,7 @@ rm -f ~/.zcompdump; compinit
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
-/bin/zsh "${INSTALL_SCRIPT_PATH}/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/git"
+/bin/zsh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
 
 # ---------------------------------------------------------
 #  Configure applications

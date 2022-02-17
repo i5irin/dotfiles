@@ -44,4 +44,4 @@ source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
-/bin/sh "${INSTALL_SCRIPT_PATH}/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/git"
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
