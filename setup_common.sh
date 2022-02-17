@@ -13,9 +13,3 @@ fi
 # ---------------------------------------------------------
 
 /bin/sh "${DOTFILES_PATH}/apps/vscode/setup_vscode.sh" "${DOTFILES_PATH}/apps/vscode"
-
-# ---------------------------------------------------------
-# Configure Alacritty (terminal emulator)
-# ---------------------------------------------------------
-
-mkdir -p ~/.config && ln -is "${DOTFILES_PATH}/alacritty" ~/.config/alacritty
