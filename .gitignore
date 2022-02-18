@@ -29,7 +29,7 @@ Temporary Items
 .apdisk
 
 # Karabiner-Elements config backups
-Karabiner/automatic_backups/
+apps/Karabiner/automatic_backups/
 
 # Externally libraries
 lib/vendor/

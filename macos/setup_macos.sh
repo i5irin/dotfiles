@@ -126,7 +126,7 @@ source "${INSTALL_SCRIPT_PATH}/macos/macos-preferences.sh"
 # Configure Karabiner-Elements
 # ---------------------------------------------------------
 
-mkdir -p ~/.config/karabiner && ln -s "${INSTALL_SCRIPT_PATH}/karabiner" ~/.config/karabiner
+mkdir -p ~/.config/karabiner && ln -s "${INSTALL_SCRIPT_PATH}/apps/karabiner" ~/.config/karabiner
 
 # ---------------------------------------------------------
 # Register periodic tasks.
