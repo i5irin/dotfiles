@@ -25,8 +25,17 @@ apt install -y gdebi
 # Install Snap package management system.
 apt install -y snapd
 
+# ---------------------------------------------------------
 # Install applications
-xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/packages.txt"
+# ---------------------------------------------------------
+
+# Update the application to be installed according to the user's apt_installs.txt if it exists.
+if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" ]; then
+  sort "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" \
+    | uniq -u | sed 's/^#.*//g' | sed '/^$/d' | xargs apt-get install -y
+else
+  xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt"
+fi
 
 # ---------------------------------------------------------
 # Register periodic tasks.
