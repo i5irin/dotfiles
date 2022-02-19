@@ -78,6 +78,8 @@ defaults write com.apple.dock show-recents -bool false
 
 # Set the Menubar time format to M月d日(EEE) H:mm
 defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)  H:mm"
+# Displays the remaining battery power in %.
+defaults write com.apple.controlcenter BatteryShowPercentage -bool true
 
 # ---------------------------------------------------------
 #  Configure Screen Capture
