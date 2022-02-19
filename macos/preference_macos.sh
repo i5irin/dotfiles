@@ -71,7 +71,8 @@ defaults write com.apple.dock persistent-apps -array
 defaults write com.apple.dock magnification -bool true
 # Disable "Show recent applications in Dock"
 defaults write com.apple.dock show-recents -bool false
-
+# Disable automatic reordering of the operation space (desktop).
+defaults write com.apple.dock mru-spaces -bool false
 # ---------------------------------------------------------
 #  Configure Manubar
 # ---------------------------------------------------------
