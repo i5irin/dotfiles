@@ -37,5 +37,6 @@ lib/vendor/
 # Definition files for user-installed applications
 MyBrewfile
 my_apt_installs.txt
+MyWinget.json
 
 

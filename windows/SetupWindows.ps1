@@ -17,9 +17,18 @@ if ((Get-WmiObject Win32_OperatingSystem).BuildNumber -lt 19041) {
 }
 wsl --install
 
-# Install applications.
+# ---------------------------------------------------------
+# Install applications
+# ---------------------------------------------------------
 
-winget import -i "${INSTALL_SCRIPT_PATH}\Windows\apps.json"
+# Update the application to be installed according to the user's Winget.json if it exists.
+$baseApplications = (Get-Content -Path "${INSTALL_SCRIPT_PATH}\Windows\Winget.json" | ConvertFrom-Json).Sources[0].Packages | ForEach-Object { $_.PackageIdentifier };
+$installApplications = $baseApplications
+if (Test-PathTest-Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json") {
+  $userApplications = (Get-Content -Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json" | ConvertFrom-Json).Packages | ForEach-Object { $_.PackageIdentifier }
+  $installApplications = ($baseApplications | Where-Object { $userApplications -notcontains $_ }) + ($userApplications | Where-Object { $baseApplications -notcontains $_ })
+}
+$installApplications | ForEach-Object { winget install --id $_ }
 
 # ---------------------------------------------------------
 # Configure Windows preference
