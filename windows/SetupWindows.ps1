@@ -17,8 +17,28 @@ if ((Get-WmiObject Win32_OperatingSystem).BuildNumber -lt 19041) {
 }
 wsl --install
 
+# ---------------------------------------------------------
+# Configure PowerShell
+# ---------------------------------------------------------
+New-Item -Type SymbolicLink ~\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -Value "${INSTALL_SCRIPT_PATH}\Windows\Microsoft.PowerShell_profile.ps1"
+
 # Install Scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+
+# Install Nerd Fonts
+if (!(Test-PathTest -Path $Env:LOCALAPPDATA\Microsoft\Windows\Fonts)) {
+  New-Item -ItemType Directory $Env:LOCALAPPDATA\Microsoft\Windows\Fonts
+}
+Set-Location $Env:LOCALAPPDATA\Microsoft\Windows\fonts
+Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Bold/complete/Fira Code Bold Nerd Font Complete Windows Compatible.ttf' -outfile 'Fira Code Bold Nerd Font Complete Windows Compatible.ttf'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Light/complete/Fira Code Light Nerd Font Complete Windows Compatible.ttf'  -outfile 'Fira Code Light Nerd Font Complete Windows Compatible.ttf'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Medium/complete/Fira Code Medium Nerd Font Complete Windows Compatible.ttf'  -outfile 'Fira Code Medium Nerd Font Complete Windows Compatible.ttf'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira Code Regular Nerd Font Complete Windows Compatible.ttf'  -outfile 'Fira Code Regular Nerd Font Complete Windows Compatible.ttf'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Retina/complete/Fira Code Retina Nerd Font Complete Windows Compatible.ttf'  -outfile 'Fira Code Retina Nerd Font Complete Windows Compatible.ttf'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete Windows Compatible.ttf'  -outfile 'Fira Code SemiBold Nerd Font Complete Windows Compatible.ttf'
+# Install Starship
+# TODO: Install Starship without Scoop.
+scoop install starship
 
 # ---------------------------------------------------------
 # Install applications

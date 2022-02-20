@@ -47,3 +47,6 @@ fi
 
 # Load the functions definition.
 . "${ZSHRC_MACOS_PATH}/../alias/functions.sh"
+
+# Setup Starship
+eval "$(starship init zsh)"

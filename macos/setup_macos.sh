@@ -79,6 +79,22 @@ fi
 ln -is "${INSTALL_SCRIPT_PATH}/macos/.zprofile" ~/.zprofile
 ln -is "${INSTALL_SCRIPT_PATH}/macos/.zshrc" ~/.zshrc
 
+# Setup zsh-completions.
+git clone git://github.com/zsh-users/zsh-completions.git
+source ~/.zshrc
+rm -f ~/.zcompdump; compinit
+
+# Install Nerd Font
+cd ~/Library/Fonts && curl -L \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Bold/complete/Fira Code Bold Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Light/complete/Fira Code Light Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Medium/complete/Fira Code Medium Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira Code Regular Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Retina/complete/Fira Code Retina Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete.ttf'
+# Install Starship
+sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+
 # ---------------------------------------------------------
 # Install Xcode CommandLineTool
 # ---------------------------------------------------------
@@ -142,13 +158,6 @@ launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 # Set up settings that are common across platforms.
 # ---------------------------------------------------------
 source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
-
-# ---------------------------------------------------------
-# Setup zsh-completions.
-# ---------------------------------------------------------
-git clone git://github.com/zsh-users/zsh-completions.git
-source ~/.zshrc
-rm -f ~/.zcompdump; compinit
 
 # ---------------------------------------------------------
 # Configure Git

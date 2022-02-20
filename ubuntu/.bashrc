@@ -49,3 +49,6 @@ fi
 . "${BASHRC_UBUNTU_PATH}/../alias/functions.sh"
 
 alias ls='ls -G'
+
+# Setup Starship
+eval "$(starship init bash)"
