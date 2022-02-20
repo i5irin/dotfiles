@@ -17,6 +17,9 @@ if ((Get-WmiObject Win32_OperatingSystem).BuildNumber -lt 19041) {
 }
 wsl --install
 
+# Install Scoop
+Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+
 # ---------------------------------------------------------
 # Install applications
 # ---------------------------------------------------------
