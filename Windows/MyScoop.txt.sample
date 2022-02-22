@@ -1,0 +1,7 @@
+# The order does not matter whether you install it or not,
+# but it is better to set your own rules for readability.
+
+# Additional applications to be installed that are not listed in the apt_packages.txt.
+monolith
+# Applications already listed in apt_packages.txt that you do not want to install.
+jq

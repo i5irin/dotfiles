@@ -53,6 +53,13 @@ if (Test-PathTest-Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json") {
 }
 $installApplications | ForEach-Object { winget install --id $_ }
 
+# Update the application to be installed according to the user's Scoop.txt if it exists.
+if (Test-PathTest-Path "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt") {
+  ((Get-Content -Encoding UTF8 "${INSTALL_SCRIPT_PATH}\Windows\Scoop.txt", "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt" | Select-String -NotMatch '^#').Line | Select-String -NotMatch '^$').Line | Sort-Object | Get-Unique | ForEach-Object { scoop install $_ }
+} else {
+  Get-Content -Encoding UTF8 "${INSTALL_SCRIPT_PATH}\Windows\Scoop.txt" | ForEach-Object { scoop install $_ }
+}
+
 # ---------------------------------------------------------
 # Configure Windows preference
 # ---------------------------------------------------------

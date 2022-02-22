@@ -38,5 +38,6 @@ lib/vendor/
 MyBrewfile
 my_apt_installs.txt
 MyWinget.json
+MyScoop.txt
 
 
