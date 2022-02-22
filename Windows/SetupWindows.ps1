@@ -26,7 +26,7 @@ New-Item -Type SymbolicLink ~\Documents\WindowsPowerShell\Microsoft.PowerShell_p
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
 
 # Install Nerd Fonts
-if (!(Test-PathTest -Path $Env:LOCALAPPDATA\Microsoft\Windows\Fonts)) {
+if (!(Test-Path -Path $Env:LOCALAPPDATA\Microsoft\Windows\Fonts)) {
   New-Item -ItemType Directory $Env:LOCALAPPDATA\Microsoft\Windows\Fonts
 }
 Set-Location $Env:LOCALAPPDATA\Microsoft\Windows\fonts
@@ -47,14 +47,14 @@ scoop install starship
 # Update the application to be installed according to the user's Winget.json if it exists.
 $baseApplications = (Get-Content -Path "${INSTALL_SCRIPT_PATH}\Windows\Winget.json" | ConvertFrom-Json).Sources[0].Packages | ForEach-Object { $_.PackageIdentifier };
 $installApplications = $baseApplications
-if (Test-PathTest-Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json") {
+if (Test-Path -Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json") {
   $userApplications = (Get-Content -Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json" | ConvertFrom-Json).Packages | ForEach-Object { $_.PackageIdentifier }
   $installApplications = ($baseApplications | Where-Object { $userApplications -notcontains $_ }) + ($userApplications | Where-Object { $baseApplications -notcontains $_ })
 }
 $installApplications | ForEach-Object { winget install --id $_ }
 
 # Update the application to be installed according to the user's Scoop.txt if it exists.
-if (Test-PathTest-Path "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt") {
+if (Test-Path -Path "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt") {
   ((Get-Content -Encoding UTF8 "${INSTALL_SCRIPT_PATH}\Windows\Scoop.txt", "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt" | Select-String -NotMatch '^#').Line | Select-String -NotMatch '^$').Line | Sort-Object | Get-Unique | ForEach-Object { scoop install $_ }
 } else {
   Get-Content -Encoding UTF8 "${INSTALL_SCRIPT_PATH}\Windows\Scoop.txt" | ForEach-Object { scoop install $_ }
