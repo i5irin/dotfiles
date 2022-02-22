@@ -20,6 +20,9 @@ wsl --install
 # ---------------------------------------------------------
 # Configure PowerShell
 # ---------------------------------------------------------
+if (!(Test-Path -Path ~\Documents\WindowsPowerShell)) {
+  New-Item -ItemType Directory ~\Documents\WindowsPowerShell
+}
 New-Item -Type SymbolicLink ~\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -Value "${INSTALL_SCRIPT_PATH}\Windows\Microsoft.PowerShell_profile.ps1"
 
 # Install Scoop
