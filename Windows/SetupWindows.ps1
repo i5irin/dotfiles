@@ -25,6 +25,14 @@ if (!(Test-Path -Path ~\Documents\WindowsPowerShell)) {
 }
 New-Item -Type SymbolicLink ~\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -Value "${INSTALL_SCRIPT_PATH}\Windows\Microsoft.PowerShell_profile.ps1"
 
+# Install winget
+Invoke-WebRequest -Uri 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx' -OutFile vclibs.appx -UseBasicParsing
+Add-AppxPackage -Path vclibs.appx
+rm vclibs.appx
+Invoke-WebRequest -Uri 'https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle' -OutFile winget.msixbundle -UseBasicParsing
+Add-AppxPackage -Path winget.msixbundle
+rm winget.msixbundle
+
 # Install Scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
 
