@@ -3,6 +3,12 @@
 readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})../"; pwd)
 
 # ---------------------------------------------------------
+#  Configure Environment
+# ---------------------------------------------------------
+
+mkdir -p ~/bin
+
+# ---------------------------------------------------------
 # Configure Bash
 # ---------------------------------------------------------
 
@@ -67,3 +73,8 @@ source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
 # Configure Git
 # ---------------------------------------------------------
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+
+# ---------------------------------------------------------
+# Install gibo
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
