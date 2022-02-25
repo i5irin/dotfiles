@@ -75,6 +75,14 @@ source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
 
 # ---------------------------------------------------------
+# Install Docker
+# ---------------------------------------------------------
+which docker 2> /dev/null
+if [ "$?" -ne 0 ]; then
+  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+fi
+
+# ---------------------------------------------------------
 # Install gibo
 # ---------------------------------------------------------
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
