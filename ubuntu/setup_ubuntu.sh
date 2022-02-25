@@ -86,3 +86,8 @@ fi
 # Install gibo
 # ---------------------------------------------------------
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+
+# ---------------------------------------------------------
+# Install Geekbench
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_geekbench_ubuntu.sh"
