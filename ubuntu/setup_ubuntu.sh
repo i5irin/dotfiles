@@ -88,6 +88,11 @@ fi
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
 
 # ---------------------------------------------------------
+# Install Google Chrome
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_chrome.sh"
+
+# ---------------------------------------------------------
 # Install Geekbench
 # ---------------------------------------------------------
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_geekbench_ubuntu.sh"
