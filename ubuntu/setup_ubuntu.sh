@@ -90,7 +90,12 @@ fi
 # ---------------------------------------------------------
 # Install Google Chrome
 # ---------------------------------------------------------
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_chrome.sh"
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_chrome_ubuntu.sh"
+
+# ---------------------------------------------------------
+# Install Zoom
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_zoom_ubuntu.sh"
 
 # ---------------------------------------------------------
 # Install Geekbench
