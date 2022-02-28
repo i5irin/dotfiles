@@ -2,6 +2,7 @@ bash-completion
 curl
 git
 git-lfs
+hugo
 jq
 openjdk-17-jdk
 source-highlight
