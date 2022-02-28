@@ -9,3 +9,4 @@ tmux
 tree
 firefox
 fonts-firacode
+steam
