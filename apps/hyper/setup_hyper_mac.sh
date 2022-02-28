@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+#  Configure Hyper Terminal.
+# =========================================================
 
 set -eu
 readonly HYPER_SCRIPT_PATH=$1

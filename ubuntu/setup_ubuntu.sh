@@ -83,6 +83,11 @@ if [ "$?" -ne 0 ]; then
 fi
 
 # ---------------------------------------------------------
+# Install Hyper
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper_ubuntu.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
+
+# ---------------------------------------------------------
 # Install gibo
 # ---------------------------------------------------------
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
