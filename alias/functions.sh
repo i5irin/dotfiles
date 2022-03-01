@@ -28,6 +28,22 @@ function git_commit_at() {
 }
 
 #######################################
+# Git-commit at the specified time with specified comments
+# Globals:
+#   None
+# Arguments:
+#   Extensions that count the number of lines
+#   Paths to exclude from line count
+# Returns:
+#   Std-Out: Number of lines and total for files with the specified extension
+#######################################
+function line_count() {
+  extension="$1"
+  exclude="$2"
+  find ./ -name "*.${extension}" ! -path "*${exclude}*" | xargs wc -l
+}
+
+#######################################
 # Attaches to or creates a tmux session with the specified name.
 # Globals:
 #   $TMUX: Path to tmux temporary files
