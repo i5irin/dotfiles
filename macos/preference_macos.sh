@@ -34,6 +34,13 @@ defaults write com.apple.AppleMultitouchTrackpad DragLock -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -bool true
 
 # ---------------------------------------------------------
+#  Configure Microphone
+# ---------------------------------------------------------
+
+# Disable mic dictation
+defaults write com.apple.HIToolbox AppleDictationAutoEnable -bool false
+
+# ---------------------------------------------------------
 #  Configure Finder
 # ---------------------------------------------------------
 
