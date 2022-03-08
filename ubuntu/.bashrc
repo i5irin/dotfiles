@@ -7,6 +7,11 @@ case $- in
   *) return;;
 esac
 
+# Load the library functions.
+. ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
+
+BASHRC_UBUNTU_PATH="$(dirname "$(readlinkf "$(cd $(dirname $BASH_SOURCE); pwd)/.bashrc")")"
+
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
 
