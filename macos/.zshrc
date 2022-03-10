@@ -45,8 +45,9 @@ if [ -x "$(brew --prefix)/bin/lesspipe.sh" ]; then
   eval "$(SHELL=/bin/sh lesspipe.sh)"
 fi
 
-# Load the functions definition.
+# Load the functions and alias definition.
 . "${ZSHRC_MACOS_PATH}/../alias/functions.sh"
+. "${ZSHRC_MACOS_PATH}/../alias/alias.sh"
 
 # Setup Starship
 eval "$(starship init zsh)"

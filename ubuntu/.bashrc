@@ -50,8 +50,9 @@ if [ -x /usr/bin/lesspipe ]; then
   eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
-# Load the functions definition.
+# Load the functions and alias definition.
 . "${BASHRC_UBUNTU_PATH}/../alias/functions.sh"
+. "${BASHRC_UBUNTU_PATH}/../alias/alias.sh"
 
 alias ls='ls -G'
 
