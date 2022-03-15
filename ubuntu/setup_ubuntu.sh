@@ -56,6 +56,9 @@ else
   xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt"
 fi
 
+# TODO: Support installations that require the classic option, such as slack and code.
+xargs snap install < "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt"
+
 # ---------------------------------------------------------
 # Register periodic tasks.
 # ---------------------------------------------------------
