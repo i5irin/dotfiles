@@ -13,3 +13,6 @@ if brew doctor; then
   echo 'mas upgrade ---------------------------------------------------'
   mas upgrade
 fi
+
+# Update the OS, Xcode Command Line Tools, and other system-related items.
+# softwareupdate --install --all
