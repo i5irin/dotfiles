@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})../"; pwd)
+readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})/../"; pwd)
 
 # ---------------------------------------------------------
 #  Configure Environment
