@@ -35,14 +35,14 @@ sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 # Install applications
 # ---------------------------------------------------------
 
-apt update
-apt upgrade -y
+apt-get update
+apt-get upgrade -y
 
 # Install gdebi to install deb package application with resolving dependencies.
-apt install -y gdebi
+apt-get install -y gdebi
 
 # Install Snap package management system.
-apt install -y snapd
+apt-get install -y snapd
 
 # ---------------------------------------------------------
 # Install applications
