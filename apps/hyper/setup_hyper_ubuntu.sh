@@ -4,7 +4,7 @@
 # =========================================================
 
 curl -LO https://github.com/vercel/hyper/releases/download/v3.2.0/hyper_3.2.0_amd64.deb
-apt-get install -y hyper_3.2.0_amd64.deb
+sudo apt-get install -y hyper_3.2.0_amd64.deb
 rm hyper_3.2.0_amd64.deb
 
 # Link .hyper.js
