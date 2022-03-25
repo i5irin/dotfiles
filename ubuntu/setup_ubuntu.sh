@@ -16,7 +16,7 @@ mkdir -p ~/bin
 ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bash_profile" ~/.bash_profile
 ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bashrc" ~/.bashrc
 # link readline config
-ln -s "${DOTFILES_PATH}/.inputrc" ~/.inputrc
+ln -is "${DOTFILES_PATH}/.inputrc" ~/.inputrc
 
 # Install Nerd Font
 mkdir -p ~/.fonts/
