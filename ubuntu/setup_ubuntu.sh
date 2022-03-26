@@ -35,14 +35,14 @@ sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 # Install applications
 # ---------------------------------------------------------
 
-sudo apt-get update
-sudo apt-get upgrade -y
+sudo apt-get -qq update
+sudo apt-get -qq upgrade -y
 
 # Install gdebi to install deb package application with resolving dependencies.
-sudo apt-get install -y gdebi
+sudo apt-get -qq install -y gdebi
 
 # Install Snap package management system.
-sudo apt-get install -y snapd
+sudo apt-get -qq install -y snapd
 
 # ---------------------------------------------------------
 # Install applications
@@ -51,9 +51,9 @@ sudo apt-get install -y snapd
 # Update the application to be installed according to the user's apt_installs.txt if it exists.
 if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" ]; then
   sort "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" \
-    | uniq -u | sed 's/^#.*//g' | sed '/^$/d' | sudo xargs apt-get install -y
+    | uniq -u | sed 's/^#.*//g' | sed '/^$/d' | sudo xargs apt-get -qq install -y
 else
-  sudo xargs apt-get install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt"
+  sudo xargs apt-get -qq install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt"
 fi
 
 # TODO: Support installations that require the classic option, such as slack and code.
