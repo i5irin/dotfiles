@@ -3,5 +3,6 @@
 #  Install Zoom.
 # =========================================================
 
-sudo apt-get -qq install -y ./zoom_amd64.deb
-rm zoom_amd64.deb
+curl -sSLO https://zoom.us/client/latest/zoom_amd64.deb
+sudo apt-get install -qq -y ./zoom_amd64.deb > /dev/null
+rm ./zoom_amd64.deb
