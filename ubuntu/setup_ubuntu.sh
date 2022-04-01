@@ -29,7 +29,7 @@ cd ~/.fonts/ && curl -LsS \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete.ttf'
 fc-cache -fv > /dev/null
 # Install Starship
-sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+curl -fsSL https://starship.rs/install.sh | sh /dev/stdin -y > /dev/null
 
 # ---------------------------------------------------------
 # Install applications
