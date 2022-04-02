@@ -36,13 +36,13 @@ curl -fsSL https://starship.rs/install.sh | sh /dev/stdin -y > /dev/null
 # ---------------------------------------------------------
 
 sudo apt-get -qq update
-sudo apt-get -qq upgrade -y
+sudo apt-get -qq upgrade -y > /dev/null
 
 # Install gdebi to install deb package application with resolving dependencies.
-sudo apt-get -qq install -y gdebi
+sudo apt-get -qq install -y gdebi > /dev/null
 
 # Install Snap package management system.
-sudo apt-get -qq install -y snapd
+sudo apt-get -qq install -y snapd > /dev/null
 
 # ---------------------------------------------------------
 # Install applications
