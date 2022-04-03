@@ -52,7 +52,7 @@ done
 # Configure Git
 # ---------------------------------------------------------
 
-readonly git config --global --add include.path "${GIT_SCRIPT_PATH}/.gitconfig"
+git config --global --add include.path "${GIT_SCRIPT_PATH}/.gitconfig"
 git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
 
