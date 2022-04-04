@@ -33,6 +33,19 @@ bulk_install_apt() {
   done
 }
 
+bulk_install_snap() {
+  while read app
+  do
+    setup_info $app
+    sudo snap install $app > /dev/null
+    if [ "$?" = 0 ]; then
+      complete_info $app
+    else
+      failed_info $app
+    fi
+  done
+}
+
 # ---------------------------------------------------------
 #  Configure Environment
 # ---------------------------------------------------------
