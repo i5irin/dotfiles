@@ -2,6 +2,11 @@
 
 readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})/../"; pwd)
 
+setup_info() {
+  app="$1"
+  echo "⬇  Start to install ${app}."
+}
+
 # ---------------------------------------------------------
 #  Configure Environment
 # ---------------------------------------------------------
