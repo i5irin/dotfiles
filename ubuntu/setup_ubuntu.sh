@@ -20,6 +20,19 @@ failed_info() {
   echo "${ESC}[31m💔${ESC}[m Something went wrong during the installation of ${app}."
 }
 
+bulk_install_apt() {
+  while read app
+  do
+    setup_info $app
+    sudo apt-get install -qq -y $app > /dev/null
+    if [ "$?" = 0 ]; then
+      complete_info $app
+    else
+      failed_info $app
+    fi
+  done
+}
+
 # ---------------------------------------------------------
 #  Configure Environment
 # ---------------------------------------------------------
