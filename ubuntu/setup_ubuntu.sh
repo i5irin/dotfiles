@@ -14,6 +14,12 @@ complete_info() {
   echo "${ESC}[32m✔ ${ESC}[m ${app} installation is complete."
 }
 
+failed_info() {
+  app="$1"
+  ESC=$(printf '\033')
+  echo "${ESC}[31m💔${ESC}[m Something went wrong during the installation of ${app}."
+}
+
 # ---------------------------------------------------------
 #  Configure Environment
 # ---------------------------------------------------------
