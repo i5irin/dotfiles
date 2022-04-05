@@ -95,13 +95,13 @@ sudo apt-get -qq install -y snapd > /dev/null
 # Update the application to be installed according to the user's apt_installs.txt if it exists.
 if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" ]; then
   sort "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" \
-    | uniq -u | sed 's/^#.*//g' | sed '/^$/d' | sudo xargs apt-get -qq install -y
+    | uniq -u | sed 's/^#.*//g' | sed '/^$/d' | bulk_install_apt
 else
-  sudo xargs apt-get -qq install -y < "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt"
+  cat "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" | bulk_install_apt
 fi
 
 # TODO: Support installations that require the classic option, such as slack and code.
-xargs snap install < "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt"
+cat "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | bulk_install_snap
 
 # ---------------------------------------------------------
 # Register periodic tasks.
