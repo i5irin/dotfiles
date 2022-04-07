@@ -124,32 +124,41 @@ source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
 # ---------------------------------------------------------
 # Install Docker
 # ---------------------------------------------------------
-which docker 2> /dev/null
-if [ "$?" -ne 0 ]; then
-  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
-fi
+setup_info 'Docker'
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_docker_ubuntu.sh"
+complete_info 'Docker'
 
 # ---------------------------------------------------------
 # Install Hyper
 # ---------------------------------------------------------
+setup_info 'Hyper'
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper_ubuntu.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
+complete_info 'Hyper'
 
 # ---------------------------------------------------------
 # Install gibo
 # ---------------------------------------------------------
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+setup_info 'gibo'
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh"
+complete_info 'gibo'
 
 # ---------------------------------------------------------
 # Install Google Chrome
 # ---------------------------------------------------------
+setup_info 'Google Chrome'
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_chrome_ubuntu.sh"
+complete_info 'Google Chrom'
 
 # ---------------------------------------------------------
 # Install Zoom
 # ---------------------------------------------------------
+setup_info 'Zoom'
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_zoom_ubuntu.sh"
+complete_info 'Zoom'
 
 # ---------------------------------------------------------
 # Install Geekbench
 # ---------------------------------------------------------
+setup_info 'Geekbench'
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_geekbench_ubuntu.sh"
+complete_info 'Geekbench'
