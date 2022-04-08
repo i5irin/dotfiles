@@ -75,6 +75,11 @@ fi
 # Configure Zsh
 # ---------------------------------------------------------
 
+# Create a symbolic link for the library to be used by dotfiles placed in symbolic links such as .bashrc and .bash_profile.
+if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ]; then
+  mkdir -p ~/dotfiles/lib/posix_dotfiles_utils && ln -is "${DOTFILES_PATH}/lib/posix_dotfiles_utils/utils.sh" ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
+fi
+
 # link .zprofile and .zshrc
 ln -is "${INSTALL_SCRIPT_PATH}/macos/.zprofile" ~/.zprofile
 ln -is "${INSTALL_SCRIPT_PATH}/macos/.zshrc" ~/.zshrc
@@ -155,14 +160,14 @@ mkdir -p ~/Library/LaunchAgents && cp "${INSTALL_SCRIPT_PATH}/macos/com.i5irin.d
 launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 
 # ---------------------------------------------------------
-# Set up settings that are common across platforms.
-# ---------------------------------------------------------
-source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
-
-# ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
 /bin/zsh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+
+# ---------------------------------------------------------
+# Configure Visual Studio Code
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/vscode/setup_vscode.sh" "${INSTALL_SCRIPT_PATH}/apps/vscode" "macos"
 
 # ---------------------------------------------------------
 #  Configure applications

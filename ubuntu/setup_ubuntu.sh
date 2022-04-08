@@ -52,6 +52,11 @@ bulk_install_snap() {
 
 mkdir -p ~/bin
 
+# Create a symbolic link for the library to be used by dotfiles placed in symbolic links such as .bashrc and .bash_profile.
+if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ]; then
+  mkdir -p ~/dotfiles/lib/posix_dotfiles_utils && ln -is "${INSTALL_SCRIPT_PATH}/lib/posix_dotfiles_utils/utils.sh" ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
+fi
+
 # ---------------------------------------------------------
 # Configure Bash
 # ---------------------------------------------------------
@@ -112,11 +117,6 @@ chmod u+x "${INSTALL_SCRIPT_PATH}/ubuntu/update_applications.sh"
 sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" "${INSTALL_SCRIPT_PATH}/ubuntu/crontab_ubuntu" | crontab -
 
 # ---------------------------------------------------------
-# Set up settings that are common across platforms.
-# ---------------------------------------------------------
-source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
-
-# ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
@@ -127,6 +127,11 @@ source "${INSTALL_SCRIPT_PATH}/setup_common.sh" "${INSTALL_SCRIPT_PATH}"
 setup_info 'Docker'
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_docker_ubuntu.sh"
 complete_info 'Docker'
+
+# ---------------------------------------------------------
+# Configure Visual Studio Code
+# ---------------------------------------------------------
+/bin/sh "${INSTALL_SCRIPT_PATH}/apps/vscode/setup_vscode.sh" "${INSTALL_SCRIPT_PATH}/apps/vscode" "ubuntu"
 
 # ---------------------------------------------------------
 # Install Hyper
