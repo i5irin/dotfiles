@@ -139,7 +139,11 @@ sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" "${INSTALL_SCR
 # ---------------------------------------------------------
 configure_info 'Git'
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+if [ "$?" = 0 ]; then
 complete_configure_info 'Git'
+else
+  failed_configure_info 'Git'
+fi
 
 # ---------------------------------------------------------
 # Install Docker
@@ -153,7 +157,11 @@ complete_setup_info 'Docker'
 # ---------------------------------------------------------
 configure_info 'Visual Studio Code'
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/vscode/setup_vscode.sh" "${INSTALL_SCRIPT_PATH}/apps/vscode" "ubuntu"
+if [ "$?" = 0 ]; then
 complete_configure_info 'Visual Studio Code'
+else
+  failed_configure_info 'Visual Studio Code'
+fi
 
 # ---------------------------------------------------------
 # Install Hyper
