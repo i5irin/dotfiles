@@ -32,6 +32,12 @@ failed_info() {
   echo "${ESC}[31m💔${ESC}[m Something went wrong during the installation of ${app}."
 }
 
+failed_configure_info() {
+  app="$1"
+  ESC=$(printf '\033')
+  echo "${ESC}[31m💔${ESC}[m Something went wrong during the configuration of ${app}."
+}
+
 bulk_install_apt() {
   while read app
   do
