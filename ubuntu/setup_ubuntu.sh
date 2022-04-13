@@ -26,6 +26,16 @@ complete_configure_info() {
   echo "${ESC}[32m✔ ${ESC}[m ${app} configuration is complete."
 }
 
+finish_configure_message() {
+  exit_code="$?"
+  app="$1"
+  if [ "$exit_code" = 0 ]; then
+    complete_configure_info $app
+  else
+    failed_configure_info $app
+  fi
+}
+
 failed_info() {
   app="$1"
   ESC=$(printf '\033')
