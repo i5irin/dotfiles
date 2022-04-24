@@ -95,19 +95,6 @@ ln -is "${INSTALL_SCRIPT_PATH}/ubuntu/.bashrc" ~/.bashrc
 # link readline config
 ln -is "${DOTFILES_PATH}/.inputrc" ~/.inputrc
 
-# Install Nerd Font
-mkdir -p ~/.fonts/
-cd ~/.fonts/ && curl -LsS \
-  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Bold/complete/Fira Code Bold Nerd Font Complete.ttf' \
-  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Light/complete/Fira Code Light Nerd Font Complete.ttf' \
-  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Medium/complete/Fira Code Medium Nerd Font Complete.ttf' \
-  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira Code Regular Nerd Font Complete.ttf' \
-  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Retina/complete/Fira Code Retina Nerd Font Complete.ttf' \
-  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete.ttf'
-fc-cache -fv > /dev/null
-# Install Starship
-curl -fsSL https://starship.rs/install.sh | sh /dev/stdin -y > /dev/null
-
 # ---------------------------------------------------------
 # Install applications
 # ---------------------------------------------------------
@@ -124,6 +111,19 @@ sudo apt-get -qq install -y snapd > /dev/null
 # ---------------------------------------------------------
 # Install applications
 # ---------------------------------------------------------
+
+# Install Nerd Font
+mkdir -p ~/.fonts/
+cd ~/.fonts/ && curl -LsS \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Bold/complete/Fira Code Bold Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Light/complete/Fira Code Light Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Medium/complete/Fira Code Medium Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira Code Regular Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Retina/complete/Fira Code Retina Nerd Font Complete.ttf' \
+  -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete.ttf'
+fc-cache -fv > /dev/null
+# Install Starship
+curl -fsSL https://starship.rs/install.sh | sh /dev/stdin -y > /dev/null
 
 # Update the application to be installed according to the user's apt_installs.txt if it exists.
 if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" ]; then
