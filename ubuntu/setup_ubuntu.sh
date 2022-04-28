@@ -113,6 +113,7 @@ sudo apt-get -qq install -y snapd > /dev/null
 # ---------------------------------------------------------
 
 # Install Nerd Font
+setup_info 'Nerd Font'
 mkdir -p ~/.fonts/
 cd ~/.fonts/ && curl -LsS \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Bold/complete/Fira Code Bold Nerd Font Complete.ttf' \
@@ -122,8 +123,11 @@ cd ~/.fonts/ && curl -LsS \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Retina/complete/Fira Code Retina Nerd Font Complete.ttf' \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete.ttf'
 fc-cache -fv > /dev/null
+complete_setup_info 'Nerd Font'
 # Install Starship
+setup_info 'Starship'
 curl -fsSL https://starship.rs/install.sh | sh /dev/stdin -y > /dev/null
+complete_setup_info 'Starship'
 
 # Update the application to be installed according to the user's apt_installs.txt if it exists.
 if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" ]; then
