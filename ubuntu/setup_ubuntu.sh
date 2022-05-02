@@ -74,6 +74,23 @@ bulk_install_snap() {
   done
 }
 
+########################################################################
+# Displays application installation status before and after script execution.
+# Arguments:
+#   Application name
+#   Installation script path
+#   Installation script arguments
+########################################################################
+install_app() {
+  app="$1"
+  shift
+  script="$1"
+  shift
+  setup_info "$app"
+  /bin/sh "$script" "$@"
+  complete_setup_info "$app"
+}
+
 # ---------------------------------------------------------
 #  Configure Environment
 # ---------------------------------------------------------
