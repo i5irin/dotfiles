@@ -175,9 +175,7 @@ finish_configure_message 'Git'
 # ---------------------------------------------------------
 # Install Docker
 # ---------------------------------------------------------
-setup_info 'Docker'
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_docker_ubuntu.sh"
-complete_setup_info 'Docker'
+install_app 'Docker' "${INSTALL_SCRIPT_PATH}/apps/setup_docker_ubuntu.sh"
 
 # ---------------------------------------------------------
 # Configure Visual Studio Code
@@ -189,34 +187,24 @@ finish_configure_message 'Visual Studio Code'
 # ---------------------------------------------------------
 # Install Hyper
 # ---------------------------------------------------------
-setup_info 'Hyper'
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper_ubuntu.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
-complete_setup_info 'Hyper'
+install_app 'Hyper' "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper_ubuntu.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
 
 # ---------------------------------------------------------
 # Install gibo
 # ---------------------------------------------------------
-setup_info 'gibo'
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh"
-complete_setup_info 'gibo'
+install_app 'gibo' "${INSTALL_SCRIPT_PATH}/apps/setup_gibo.sh"
 
 # ---------------------------------------------------------
 # Install Google Chrome
 # ---------------------------------------------------------
-setup_info 'Google Chrome'
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_chrome_ubuntu.sh"
-complete_setup_info 'Google Chrom'
+install_app 'Google Chrome' "${INSTALL_SCRIPT_PATH}/apps/setup_chrome_ubuntu.sh"
 
 # ---------------------------------------------------------
 # Install Zoom
 # ---------------------------------------------------------
-setup_info 'Zoom'
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_zoom_ubuntu.sh"
-complete_setup_info 'Zoom'
+install_app 'Zoom' "${INSTALL_SCRIPT_PATH}/apps/setup_zoom_ubuntu.sh"
 
 # ---------------------------------------------------------
 # Install Geekbench
 # ---------------------------------------------------------
-setup_info 'Geekbench'
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_geekbench_ubuntu.sh"
-complete_setup_info 'Geekbench'
+install_app 'Geekbench' "${INSTALL_SCRIPT_PATH}/apps/setup_geekbench_ubuntu.sh"
