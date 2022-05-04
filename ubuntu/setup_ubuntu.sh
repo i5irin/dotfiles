@@ -30,9 +30,9 @@ finish_configure_message() {
   exit_code="$?"
   app="$1"
   if [ "$exit_code" = 0 ]; then
-    complete_configure_info $app
+    complete_configure_info "$app"
   else
-    failed_configure_info $app
+    failed_configure_info "$app"
   fi
 }
 
