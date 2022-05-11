@@ -88,7 +88,11 @@ install_app() {
   shift
   setup_info "$app"
   /bin/sh "$script" "$@"
+  if [ "$?" = 0 ]; then
   complete_setup_info "$app"
+  else
+    failed_info "$app"
+  fi
 }
 
 # ---------------------------------------------------------
