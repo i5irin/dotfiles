@@ -150,6 +150,10 @@ setup_info 'Starship'
 curl -fsSL https://starship.rs/install.sh | sh /dev/stdin -y > /dev/null
 complete_setup_info 'Starship'
 
+# Reload shell config
+source ~/.bashrc
+source ~/.bash_profile
+
 # Update the application to be installed according to the user's apt_installs.txt if it exists.
 if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" ]; then
   sort "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" \
