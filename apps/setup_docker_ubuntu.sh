@@ -3,6 +3,7 @@
 #  Install Docker.
 #  TODO: Allow handling of Docker commands without sudo.
 # =========================================================
+set -eu
 
 sudo apt-get -qq update
 sudo apt-get install -qq apt-transport-https ca-certificates curl software-properties-common > /dev/null

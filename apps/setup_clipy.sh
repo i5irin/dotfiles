@@ -3,6 +3,7 @@
 #  Configure Clipy.
 #  WARNING: This script is intended to be run on macOS.
 # =========================================================
+set -eu
 
 if [ -d /Applications/Clipy.app ]; then
   killall Clipy &> /dev/null

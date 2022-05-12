@@ -3,6 +3,7 @@
 #  Configure AltTab.
 #  WARNING: This script is intended to be run on macOS.
 # =========================================================
+set -eu
 
 if [ -d /Applications/AltTab.app ]; then
   killall AltTab &> /dev/null

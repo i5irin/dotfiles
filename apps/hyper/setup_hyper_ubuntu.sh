@@ -2,6 +2,7 @@
 #
 #  Install and configure Hyper Terminal.
 # =========================================================
+set -eu
 
 curl -sSLO https://github.com/vercel/hyper/releases/download/v3.2.0/hyper_3.2.0_amd64.deb
 sudo apt-get install -qq  -y ./hyper_3.2.0_amd64.deb > /dev/null

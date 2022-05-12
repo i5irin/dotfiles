@@ -2,6 +2,7 @@
 #
 #  Install Geekbench.
 # =========================================================
+set -eu
 
 cd ~/bin
 curl -sSO https://cdn.geekbench.com/Geekbench-5.3.1-Linux.tar.gz
