@@ -74,6 +74,19 @@ bulk_install_snap() {
   done
 }
 
+bulk_install_snap_classic() {
+  while read app
+  do
+    setup_info $app
+    sudo snap install $app --classic > /dev/null
+    if [ "$?" = 0 ]; then
+      complete_setup_info $app
+    else
+      failed_info $app
+    fi
+  done
+}
+
 ########################################################################
 # Displays application installation status before and after script execution.
 # Arguments:
