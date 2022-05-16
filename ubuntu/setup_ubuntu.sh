@@ -175,8 +175,8 @@ else
   cat "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" | bulk_install_apt
 fi
 
-# TODO: Support installations that require the classic option, such as slack and code.
-cat "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | bulk_install_snap
+grep -v ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | bulk_install_snap
+grep ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | sed 's/ classic//g' | bulk_install_snap_classic
 
 # ---------------------------------------------------------
 # Register periodic tasks.
