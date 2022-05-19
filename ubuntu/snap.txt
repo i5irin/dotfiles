@@ -2,3 +2,4 @@ discord
 postman
 skype
 tradingview
+slack
