@@ -102,7 +102,7 @@ install_app() {
   setup_info "$app"
   /bin/sh "$script" "$@"
   if [ "$?" = 0 ]; then
-  complete_setup_info "$app"
+    complete_setup_info "$app"
   else
     failed_info "$app"
   fi
@@ -175,8 +175,10 @@ else
   cat "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" | bulk_install_apt
 fi
 
-grep -v ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | bulk_install_snap
-grep ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | sed 's/ classic//g' | bulk_install_snap_classic
+if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" ]; then
+  grep -v ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | bulk_install_snap
+  grep ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | sed 's/ classic//g' | bulk_install_snap_classic
+fi
 
 # ---------------------------------------------------------
 # Register periodic tasks.
