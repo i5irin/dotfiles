@@ -65,9 +65,14 @@ ln -is "${INSTALL_SCRIPT_PATH}/macos/.zprofile" ~/.zprofile
 ln -is "${INSTALL_SCRIPT_PATH}/macos/.zshrc" ~/.zshrc
 
 # Setup zsh-completions.
-git clone git://github.com/zsh-users/zsh-completions.git
-source ~/.zshrc
-rm -f ~/.zcompdump; compinit
+echo 'Install zsh-completions'
+if [ -d /usr/local/bin/zsh-completions ]; then
+  echo 'Skip installation because "/usr/local/bin/zsh-completions" already existed.'
+else
+  git clone git://github.com/zsh-users/zsh-completions.git /usr/local/bin/zsh-completions
+  source ~/.zshrc
+  rm -f ~/.zcompdump; compinit
+fi
 
 # Install Nerd Font
 cd ~/Library/Fonts && curl -L \
