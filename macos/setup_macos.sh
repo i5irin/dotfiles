@@ -74,8 +74,9 @@ else
   rm -f ~/.zcompdump; compinit
 fi
 
+echo 'Install Nerd Font'
 # Install Nerd Font
-cd ~/Library/Fonts && curl -L \
+cd ~/Library/Fonts && curl -LsS \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Bold/complete/Fira Code Bold Nerd Font Complete.ttf' \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Light/complete/Fira Code Light Nerd Font Complete.ttf' \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Medium/complete/Fira Code Medium Nerd Font Complete.ttf' \
