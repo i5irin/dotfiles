@@ -6,7 +6,7 @@
 set -eu
 
 if [ -d /Applications/Clipy.app ]; then
-  killall Clipy &> /dev/null
+  killall Clipy > /dev/null 2>&1
   alived=$?
   # Activate Clipy at login.
   defaults write com.clipy-app.Clipy loginItem -bool true

@@ -3,7 +3,7 @@
 set -eu
 readonly GIT_SCRIPT_PATH=$1
 
-git version &> /dev/null
+git version > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo 'Git cannot be found.' >&2
   exit 1

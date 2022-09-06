@@ -6,7 +6,7 @@
 set -eu
 
 if [ -d /Applications/AltTab.app ]; then
-  killall AltTab &> /dev/null
+  killall AltTab > /dev/null 2>&1
   alived=$?
   # Limit the target window to be displayed to the current desktop.
   defaults write com.lwouis.alt-tab-macos spacesToShow -bool true
