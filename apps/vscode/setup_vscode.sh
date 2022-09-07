@@ -6,7 +6,7 @@ readonly PLATFORM=$2
 
 # install extensions
 for extension in $(cat "${VSCODE_SCRIPT_PATH}/extensions"); do
-  code --install-extension $extension
+  code --install-extension $extension > /dev/null
 done
 
 # link setting.json
