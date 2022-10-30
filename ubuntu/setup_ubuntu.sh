@@ -19,33 +19,10 @@ complete_setup_info() {
   echo "${ESC}[32m✔ ${ESC}[m ${app} installation is complete."
 }
 
-complete_configure_info() {
-  app="$1"
-  # reference https://qiita.com/ko1nksm/items/095bdb8f0eca6d327233#1-echo-%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8F-printf-%E3%82%92%E4%BD%BF%E3%81%86
-  ESC=$(printf '\033')
-  echo "${ESC}[32m✔ ${ESC}[m ${app} configuration is complete."
-}
-
-finish_configure_message() {
-  exit_code="$?"
-  app="$1"
-  if [ "$exit_code" = 0 ]; then
-    complete_configure_info "$app"
-  else
-    failed_configure_info "$app"
-  fi
-}
-
 failed_info() {
   app="$1"
   ESC=$(printf '\033')
   echo "${ESC}[31m💔${ESC}[m Something went wrong during the installation of ${app}."
-}
-
-failed_configure_info() {
-  app="$1"
-  ESC=$(printf '\033')
-  echo "${ESC}[31m💔${ESC}[m Something went wrong during the configuration of ${app}."
 }
 
 bulk_install_apt() {
@@ -118,6 +95,7 @@ mkdir -p ~/bin
 if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ]; then
   mkdir -p ~/dotfiles/lib/posix_dotfiles_utils && ln -is "${INSTALL_SCRIPT_PATH}/lib/posix_dotfiles_utils/utils.sh" ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
 fi
+source ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
 
 # ---------------------------------------------------------
 # Configure Bash
