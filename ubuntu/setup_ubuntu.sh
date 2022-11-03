@@ -182,7 +182,7 @@ install_app 'Docker' "${INSTALL_SCRIPT_PATH}/apps/setup_docker_ubuntu.sh"
 # Configure Visual Studio Code
 # ---------------------------------------------------------
 configure_info 'Visual Studio Code'
-code version > /dev/null 2>&1
+code --version > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo 'Skip setup because Visual Studio Code is not installed.' >&2
 else
