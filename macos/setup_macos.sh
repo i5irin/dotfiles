@@ -153,7 +153,14 @@ launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 # ---------------------------------------------------------
 # Configure Visual Studio Code
 # ---------------------------------------------------------
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/vscode/setup_vscode.sh" "${INSTALL_SCRIPT_PATH}/apps/vscode" "macos"
+configure_info 'Visual Studio Code'
+code --version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo 'Skip setup because Visual Studio Code is not installed.' >&2
+else
+  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/vscode/setup_vscode.sh" "${INSTALL_SCRIPT_PATH}/apps/vscode" "macos"
+  finish_configure_message 'Visual Studio Code'
+fi
 
 # ---------------------------------------------------------
 #  Configure applications
