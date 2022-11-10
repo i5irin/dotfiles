@@ -170,8 +170,13 @@ sed "s:^# DOTFILES_PATH.*$:DOTFILES_PATH=${INSTALL_SCRIPT_PATH}:" "${INSTALL_SCR
 # Configure Git
 # ---------------------------------------------------------
 configure_info 'Git'
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
-finish_configure_message 'Git'
+git version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo 'Skip setup because Git is not installed.' >&2
+else
+  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+  finish_configure_message 'Git'
+fi
 
 # ---------------------------------------------------------
 # Install Docker
