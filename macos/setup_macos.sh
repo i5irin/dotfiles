@@ -149,7 +149,14 @@ launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 # ---------------------------------------------------------
 # Configure Git
 # ---------------------------------------------------------
-/bin/zsh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+configure_info 'Git'
+git version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo 'Skip setup because Git is not installed.' >&2
+Elements
+  /bin/zsh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
+  finish_configure_message 'Git'
+fi
 
 # ---------------------------------------------------------
 # Configure Visual Studio Code
