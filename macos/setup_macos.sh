@@ -177,7 +177,13 @@ fi
 # Configure Hyper.js
 /bin/sh "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
 # Configure AltTab
-/bin/sh "${DOTFILES_PATH}/apps/setup_alttab.sh"
+configure_info 'AltTab'
+if [ -d /Applications/AltTab.app ]; then
+  /bin/sh "${DOTFILES_PATH}/apps/setup_alttab.sh"
+  finish_configure_message 'AltTab'
+else
+  echo 'Skip setup because AltTab is not installed.' >&2
+fi
 # Configure Clipy
 configure_info 'Clipy'
 if [ -d /Applications/Clipy.app ]; then
