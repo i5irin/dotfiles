@@ -175,7 +175,14 @@ fi
 # ---------------------------------------------------------
 
 # Configure Hyper.js
-/bin/sh "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
+configure_info 'Hyper.js'
+git version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo 'Skip setup because Hyper.js is not installed.' >&2
+else
+  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/hyper/setup_hyper_mac.sh" "${INSTALL_SCRIPT_PATH}/apps/hyper"
+  finish_configure_message 'Hyper.js'
+fi
 # Configure AltTab
 configure_info 'AltTab'
 if [ -d /Applications/AltTab.app ]; then
