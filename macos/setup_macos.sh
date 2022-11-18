@@ -176,7 +176,7 @@ fi
 
 # Configure Hyper.js
 configure_info 'Hyper.js'
-git version > /dev/null 2>&1
+hyper version > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo 'Skip setup because Hyper.js is not installed.' >&2
 else
