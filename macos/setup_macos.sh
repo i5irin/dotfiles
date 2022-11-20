@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+set -eu
+
 readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${(%):-%N})/../"; pwd)
 
 # Load the library functions.
@@ -127,7 +129,7 @@ fi
 # Configure macOS preference
 # ---------------------------------------------------------
 
-source "${INSTALL_SCRIPT_PATH}/macos/macos-preferences.sh"
+/bin/sh "${INSTALL_SCRIPT_PATH}/macos/macos-preferences.sh"
 
 # ---------------------------------------------------------
 # Configure Karabiner-Elements
