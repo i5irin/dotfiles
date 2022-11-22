@@ -148,8 +148,10 @@ mkdir -p ~/Library/LaunchAgents && cp "${INSTALL_SCRIPT_PATH}/macos/com.i5irin.d
 launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 
 # ---------------------------------------------------------
-# Configure Git
+#  Configure applications
 # ---------------------------------------------------------
+
+# Configure Git
 configure_info 'Git'
 git version > /dev/null 2>&1
 if [ $? -ne 0 ]; then
@@ -158,10 +160,7 @@ Elements
   /bin/zsh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
   finish_configure_message 'Git'
 fi
-
-# ---------------------------------------------------------
 # Configure Visual Studio Code
-# ---------------------------------------------------------
 configure_info 'Visual Studio Code'
 code --version > /dev/null 2>&1
 if [ $? -ne 0 ]; then
@@ -170,11 +169,6 @@ else
   /bin/sh "${INSTALL_SCRIPT_PATH}/apps/vscode/setup_vscode.sh" "${INSTALL_SCRIPT_PATH}/apps/vscode" "macos"
   finish_configure_message 'Visual Studio Code'
 fi
-
-# ---------------------------------------------------------
-#  Configure applications
-# ---------------------------------------------------------
-
 # Configure Hyper.js
 configure_info 'Hyper.js'
 hyper version > /dev/null 2>&1
