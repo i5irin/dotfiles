@@ -174,11 +174,6 @@ else
 fi
 
 # ---------------------------------------------------------
-# Install Docker
-# ---------------------------------------------------------
-install_app 'Docker' "${INSTALL_SCRIPT_PATH}/apps/setup_docker_ubuntu.sh"
-
-# ---------------------------------------------------------
 # Configure Visual Studio Code
 # ---------------------------------------------------------
 configure_info 'Visual Studio Code'
@@ -189,6 +184,11 @@ else
   /bin/sh "${INSTALL_SCRIPT_PATH}/apps/vscode/setup_vscode.sh" "${INSTALL_SCRIPT_PATH}/apps/vscode" "ubuntu"
   finish_configure_message 'Visual Studio Code'
 fi
+
+# ---------------------------------------------------------
+# Install Docker
+# ---------------------------------------------------------
+install_app 'Docker' "${INSTALL_SCRIPT_PATH}/apps/setup_docker_ubuntu.sh"
 
 # ---------------------------------------------------------
 # Install Hyper
