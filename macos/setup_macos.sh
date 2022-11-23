@@ -132,12 +132,6 @@ fi
 /bin/sh "${INSTALL_SCRIPT_PATH}/macos/macos-preferences.sh"
 
 # ---------------------------------------------------------
-# Configure Karabiner-Elements
-# ---------------------------------------------------------
-
-mkdir -p ~/.config/karabiner && ln -s "${INSTALL_SCRIPT_PATH}/apps/karabiner" ~/.config/karabiner
-
-# ---------------------------------------------------------
 # Register periodic tasks.
 # ---------------------------------------------------------
 
@@ -151,6 +145,14 @@ launchctl load ~/Library/LaunchAgents/com.i5irin.dotfiles.updateapps.plist
 #  Configure applications
 # ---------------------------------------------------------
 
+# Configure Karabiner-Elements
+configure_info 'Karabiner-Elements'
+if [ -d /Applications/Karabiner-Elements.app ]; then
+  mkdir -p ~/.config/karabiner && ln -s "${INSTALL_SCRIPT_PATH}/apps/karabiner" ~/.config/karabiner
+  finish_configure_message 'Karabiner-Elements'
+else
+  echo 'Skip setup because Karabiner-Elements is not installed.' >&2
+fi
 # Configure Git
 configure_info 'Git'
 git version > /dev/null 2>&1
