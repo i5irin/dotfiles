@@ -135,6 +135,7 @@ fi
 # Register periodic tasks.
 # ---------------------------------------------------------
 
+echo 'Configure pediodic tasks'
 # Grant execution permissions to ShellScript executed from cron.
 chmod u+x "${INSTALL_SCRIPT_PATH}/macos/update_applications.sh"
 # In order to be used with launchd, it must be a real file, not a symbolic link.
