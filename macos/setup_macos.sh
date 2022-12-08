@@ -129,6 +129,7 @@ fi
 # Configure macOS preference
 # ---------------------------------------------------------
 
+echo 'Configure macOS preference'
 /bin/sh "${INSTALL_SCRIPT_PATH}/macos/macos-preferences.sh"
 
 # ---------------------------------------------------------
