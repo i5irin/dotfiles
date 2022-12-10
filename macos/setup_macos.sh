@@ -6,6 +6,7 @@ readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${(%):-%N})/../"; pwd)
 
 # Load the library functions.
 source "${INSTALL_SCRIPT_PATH}/lib/posix_dotfiles_utils/utils.sh"
+source "${INSTALL_SCRIPT_PATH}/lib/shell/message.sh"
 
 # ---------------------------------------------------------
 # Configure Mac hostnames

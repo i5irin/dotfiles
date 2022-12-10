@@ -2,6 +2,8 @@
 
 readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})/../"; pwd)
 
+source "${INSTALL_SCRIPT_PATH}/lib/shell/message.sh"
+
 setup_info() {
   app="$1"
   echo "⬇  Start to install ${app}."
@@ -90,7 +92,6 @@ mkdir -p ~/bin
 if [ ! -e '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ] && [ ! -h '~/dotfiles/lib/posix_dotfiles_utils/utils.sh' ]; then
   mkdir -p ~/dotfiles/lib/posix_dotfiles_utils && ln -is "${INSTALL_SCRIPT_PATH}/lib/posix_dotfiles_utils/utils.sh" ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
 fi
-source ~/dotfiles/lib/posix_dotfiles_utils/utils.sh
 
 # ---------------------------------------------------------
 # Configure Bash
