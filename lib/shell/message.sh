@@ -1,5 +1,13 @@
 #!/bin/bash
 
+color() {
+  text="$1"
+  color="$2"
+  # reference https://qiita.com/ko1nksm/items/095bdb8f0eca6d327233#1-echo-%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8F-printf-%E3%82%92%E4%BD%BF%E3%81%86
+  ESC=$(printf '\033')
+  echo "${ESC}${color}${text}${ESC}[m"
+}
+
 configure_info() {
   app="$1"
   echo "⚙️  Start to configure ${app}."
@@ -7,15 +15,12 @@ configure_info() {
 
 complete_configure_info() {
   app="$1"
-  # reference https://qiita.com/ko1nksm/items/095bdb8f0eca6d327233#1-echo-%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8F-printf-%E3%82%92%E4%BD%BF%E3%81%86
-  ESC=$(printf '\033')
-  echo "${ESC}[32m✔ ${ESC}[m ${app} configuration is complete."
+  echo "$(color '✔ ' '[32m') ${app} configuration is complete."
 }
 
 failed_configure_info() {
   app="$1"
-  ESC=$(printf '\033')
-  echo "${ESC}[31m💔${ESC}[m Something went wrong during the configuration of ${app}."
+  echo "$(color '💔 ' '[31m') Something went wrong during the configuration of ${app}"
 }
 
 finish_configure_message() {
