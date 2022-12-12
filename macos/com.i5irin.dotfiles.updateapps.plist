@@ -6,7 +6,7 @@
   <string>com.i5irin.dotfiles.updateapps</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/bin/bash</string>
+    <string>/bin/zsh</string>
     <string>/Users/i5irin/dotfiles/macos/update_applications.sh</string>
   </array>
   <key>StartCalendarInterval</key>
