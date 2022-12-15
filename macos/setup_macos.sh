@@ -77,8 +77,8 @@ else
   rm -f ~/.zcompdump; compinit
 fi
 
-echo 'Install Nerd Font'
 # Install Nerd Font
+setup_info 'Nerd Font'
 cd ~/Library/Fonts && curl -LsS \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Bold/complete/Fira Code Bold Nerd Font Complete.ttf' \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Light/complete/Fira Code Light Nerd Font Complete.ttf' \
@@ -86,6 +86,7 @@ cd ~/Library/Fonts && curl -LsS \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/complete/Fira Code Regular Nerd Font Complete.ttf' \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Retina/complete/Fira Code Retina Nerd Font Complete.ttf' \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete.ttf'
+complete_setup_info 'Nerd Font'
 # Install Starship
 sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
