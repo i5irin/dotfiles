@@ -87,8 +87,11 @@ cd ~/Library/Fonts && curl -LsS \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Retina/complete/Fira Code Retina Nerd Font Complete.ttf' \
   -O 'https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/SemiBold/complete/Fira Code SemiBold Nerd Font Complete.ttf'
 complete_setup_info 'Nerd Font'
+
 # Install Starship
+setup_info 'Starship'
 sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+complete_setup_info 'Starship'
 
 # ---------------------------------------------------------
 # Install Xcode CommandLineTool
