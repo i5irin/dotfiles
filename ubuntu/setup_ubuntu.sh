@@ -4,6 +4,9 @@ readonly INSTALL_SCRIPT_PATH=$(cd "$(dirname ${BASH_SOURCE})/../"; pwd)
 
 source "${INSTALL_SCRIPT_PATH}/lib/shell/message.sh"
 
+# Disable sleep
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+
 bulk_install_apt() {
   while read app
   do
@@ -197,3 +200,6 @@ install_app 'Zoom' "${INSTALL_SCRIPT_PATH}/apps/setup_zoom_ubuntu.sh"
 # Install Geekbench
 # ---------------------------------------------------------
 install_app 'Geekbench' "${INSTALL_SCRIPT_PATH}/apps/setup_geekbench_ubuntu.sh"
+
+# Enable sleep
+gsettings set org.gnome.desktop.screensaver lock-enabled true
