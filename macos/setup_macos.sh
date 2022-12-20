@@ -97,7 +97,13 @@ complete_setup_info 'Starship'
 # Install Xcode CommandLineTool
 # ---------------------------------------------------------
 
-xcode-select --install
+setup_info 'Xcode command line tools'
+if xcode-select -p 1> /dev/null; then
+  echo 'Skip installation because Xcode command line tools are already existed.'
+else
+  xcode-select --install
+  complete_setup_info 'Xcode command line tools'
+fi
 
 # ---------------------------------------------------------
 # X86 applications settings (Apple silicon Mac only)
