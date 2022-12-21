@@ -111,7 +111,9 @@ fi
 # ---------------------------------------------------------
 
 if [ "$(uname -m)" = "arm64" ]; then
+  setup_info 'Rosetta'
   softwareupdate --install-rosetta --agree-to-license
+  complete_setup_info 'Rosetta'
 fi
 
 # ---------------------------------------------------------
