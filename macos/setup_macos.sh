@@ -94,18 +94,6 @@ sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 complete_setup_info 'Starship'
 
 # ---------------------------------------------------------
-# Install Xcode CommandLineTool
-# ---------------------------------------------------------
-
-setup_info 'Xcode command line tools'
-if xcode-select -p 1> /dev/null; then
-  echo 'Skip installation because Xcode command line tools are already existed.'
-else
-  xcode-select --install
-  complete_setup_info 'Xcode command line tools'
-fi
-
-# ---------------------------------------------------------
 # X86 applications settings (Apple silicon Mac only)
 # TODO: Display current architecture (x86_64 or arm64e) on tmux status bar
 # ---------------------------------------------------------
