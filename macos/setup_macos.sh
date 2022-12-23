@@ -71,7 +71,7 @@ setup_info 'zsh-completions'
 if [ -d /usr/local/bin/zsh-completions ]; then
   echo 'Skip installation because "/usr/local/bin/zsh-completions" already existed.'
 else
-  git clone git://github.com/zsh-users/zsh-completions.git /usr/local/bin/zsh-completions
+  git clone https://github.com/zsh-users/zsh-completions.git /usr/local/bin/zsh-completions
   source ~/.zshrc
   rm -f ~/.zcompdump; compinit
   complete_setup_info 'zsh-completions command line tools'
