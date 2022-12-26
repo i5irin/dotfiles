@@ -71,7 +71,7 @@ setup_info 'zsh-completions'
 if [ -d /usr/local/bin/zsh-completions ]; then
   echo 'Skip installation because "/usr/local/bin/zsh-completions" already existed.'
 else
-  sudo -p mkdir /usr/local/bin
+  sudo mkdir -p /usr/local/bin
   sudo chown "$(whoami):admin" /usr/local/bin
   chmod 775 /usr/local/bin
   git clone https://github.com/zsh-users/zsh-completions.git /usr/local/bin/zsh-completions
