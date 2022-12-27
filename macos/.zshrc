@@ -14,9 +14,9 @@ setopt hist_ignore_all_dups
 setopt share_history
 
 # Make it possible to refer apps installed by Homebrew by name for each Mac architecture.
-if [ "$(uname -m)" = "arm64" ]; then
+if [ "$(uname -m)" = "arm64" ] && [ -e /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [ "$(uname -m)" = "x86_64" ]; then
+elif [ "$(uname -m)" = "x86_64" ] && [ -e /usr/local/bin/brew ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
 
@@ -41,7 +41,7 @@ fi
 
 # For lesspipe installed by brew.
 # Make less more friendly for non-text input files, see lesspipe(1)
-if [ -x "$(brew --prefix)/bin/lesspipe.sh" ]; then
+if type brew > /dev/null 2>&1 && [ -x "$(brew --prefix)/bin/lesspipe.sh" ]; then
   eval "$(SHELL=/bin/sh lesspipe.sh)"
 fi
 
@@ -50,4 +50,6 @@ fi
 . "${ZSHRC_MACOS_PATH}/../alias/alias.sh"
 
 # Setup Starship
-eval "$(starship init zsh)"
+if type starship > /dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
