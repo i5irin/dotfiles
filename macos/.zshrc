@@ -51,8 +51,5 @@ fi
 
 # Setup Starship
 if type starship > /dev/null 2>&1; then
-  # TODO: Turn on the e flag when the undefined variable error (widgets[zle-keymap-select]: parameter not set) is fixed in starship.zsh.
-  set +e
   eval "$(starship init zsh)"
-  set -e
 fi
