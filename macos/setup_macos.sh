@@ -75,7 +75,9 @@ else
   sudo chown "$(whoami):admin" /usr/local/bin
   chmod 775 /usr/local/bin
   git clone https://github.com/zsh-users/zsh-completions.git /usr/local/bin/zsh-completions
+  set +eu
   source ~/.zshrc
+  set -eu
   rm -f ~/.zcompdump; compinit
   complete_setup_info 'zsh-completions command line tools'
 fi
@@ -112,7 +114,9 @@ fi
 # ---------------------------------------------------------
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+set +eu
 source ~/.zshrc
+set -eu
 brew doctor
 brew update
 brew install mas
