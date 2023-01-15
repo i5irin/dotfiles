@@ -193,7 +193,7 @@ fi
 # Configure AltTab
 configure_info 'AltTab'
 if [ -d /Applications/AltTab.app ]; then
-  /bin/sh "${DOTFILES_PATH}/apps/setup_alttab.sh"
+  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_alttab.sh"
   finish_configure_message 'AltTab'
 else
   echo 'Skip setup because AltTab is not installed.' >&2
