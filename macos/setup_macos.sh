@@ -201,7 +201,7 @@ fi
 # Configure Clipy
 configure_info 'Clipy'
 if [ -d /Applications/Clipy.app ]; then
-  /bin/sh "${DOTFILES_PATH}/apps/setup_clipy.sh"
+  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/setup_clipy.sh"
   finish_configure_message 'Clipy'
 else
   echo 'Skip setup because Clipy is not installed.' >&2
