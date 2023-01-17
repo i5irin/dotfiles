@@ -156,6 +156,7 @@ defaults write com.apple.CrashReporter DialogType -string 'none'
 defaults write com.apple.appleseed.FeedbackAssistant Autogather -bool false
 
 # Restart applications to activate above preferences
+set +e
 killall Finder
 killall Dock
 killall SystemUIServer
@@ -163,3 +164,4 @@ killall TextEdit
 killall Photos
 killall Safari
 killall sharingd
+set -e
