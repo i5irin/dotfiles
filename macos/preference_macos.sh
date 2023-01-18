@@ -137,6 +137,8 @@ defaults write com.apple.Safari AutoFillCreditCardData -bool false
 defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
 # Prevent Safari from opening a downloaded file.
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+# Enable overlay status bar. (e.g. display of linked URLs)
+defaults write com.apple.Safari ShowOverlayStatusBar -bool true
 
 # ---------------------------------------------------------
 #  Configure AirDrop
