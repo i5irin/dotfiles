@@ -172,6 +172,15 @@ Elements
   /bin/zsh "${INSTALL_SCRIPT_PATH}/apps/git/setup_git_macos.sh" "${INSTALL_SCRIPT_PATH}/apps/git"
   finish_configure_message 'Git'
 fi
+# Configure tmux
+configure_info 'tmux'
+tmux -V > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo 'Skip setup because tmux is not installed.' >&2
+else
+  /bin/sh "${INSTALL_SCRIPT_PATH}/apps/tmux/setup_tmux.sh" "${INSTALL_SCRIPT_PATH}/apps/tmux"
+  finish_configure_message 'tmux'
+fi
 # Configure Visual Studio Code
 configure_info 'Visual Studio Code'
 code --version > /dev/null 2>&1
