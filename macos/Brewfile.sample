@@ -52,6 +52,7 @@ cask "tradingview"
 cask "visual-studio-code"
 cask "vmware-fusion"
 cask "zoom"
+1password
 mas "LINE", id: 539883307
 mas "SiteSucker", id: 442168834
 mas "Twitter", id: 1482454543

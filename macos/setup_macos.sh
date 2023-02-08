@@ -125,13 +125,7 @@ brew install mas
 # Install applications
 # ---------------------------------------------------------
 
-# Update the application to be installed according to the user's Brewfile if it exists.
-if [ -f "${INSTALL_SCRIPT_PATH}/macos/MyBrewfile" ]; then
-  sort "${INSTALL_SCRIPT_PATH}/macos/Brewfile" "${INSTALL_SCRIPT_PATH}/macos/MyBrewfile" \
-    | uniq -u | sort_brewfile | brew bundle --file -
-else
   brew bundle --file "${INSTALL_SCRIPT_PATH}/macos/Brewfile"
-fi
 
 # ---------------------------------------------------------
 # Configure macOS preference

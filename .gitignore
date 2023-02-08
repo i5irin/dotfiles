@@ -44,7 +44,7 @@ apps/karabiner/automatic_backups/
 lib/vendor/
 
 # Definition files for user-installed applications
-MyBrewfile
+Brewfile
 my_apt_installs.txt
 MyWinget.json
 MyScoop.txt

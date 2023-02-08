@@ -88,33 +88,6 @@ readlinkf() {
 }
 
 ########################################################################
-# Sort the Brewfile by the output format of the "brew bundle dump" command.
-# Arguments:
-#   The contents of the Brewfile to be sorted
-# Outputs:
-#   Sorted Brewfile contents
-# Returns:
-#   None
-# Note:
-#   This function is based on mattmc3's script. See this following link for more details.
-#   https://gist.github.com/mattmc3/e64c58073d6cd64692561d0843ea8ad3
-########################################################################
-sort_brewfile() {
-  brewfile=$1
-  # add custom sort column
-  awkcmd='
-    BEGIN{FS=OFS=" "}
-    /^tap/  {print 1 "\t" $0; next}
-    /^brew/ {print 2 "\t" $0; next}
-    /^cask/ {print 3 "\t" $0; next}
-    /^mas/  {print 4 "\t" $0; next}
-            {print 9 "\t" $0}
-  '
-  # output the sorted brewfile, adding then removing the sort column
-  awk "$awkcmd" "$brewfile" | sort | awk 'BEGIN{FS="\t";OFS=""}{$1=""; print $0}'
-}
-
-########################################################################
 # Validate hostname with RFC 952 format.
 # Arguments:
 #   host name
