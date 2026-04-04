@@ -1,0 +1,28 @@
+{
+  "editor.fontSize": 17,
+  "editor.fontFamily": "'Fira Code'",
+  "editor.fontLigatures": true,
+  "editor.fontWeight": "400",
+  "workbench.colorTheme": "Monokai Pro",
+  "editor.formatOnPaste": true,
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true
+  },
+  "git.autofetch": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDelete": false,
+  "editor.bracketPairColorization.enabled": true,
+  "terminal.integrated.fontFamily": "'Fira Code'",
+  "markdown-pdf.headerTemplate": "<div style=\"font-size: 9px; margin-left: 1cm;\"> <span class='title'></span></div>",
+  "explorer.confirmDragAndDrop": false,
+  "editor.unicodeHighlight.allowedCharacters": {
+    "﻿": true
+  },
+  "hediet.vscode-drawio.resizeImages": null,
+  "markdown-pdf.mermaidServer": "https://unpkg.com/mermaid@10.4.0/dist/mermaid.min.js",
+  "editor.accessibilitySupport": "off",
+  "terminal.integrated.env.linux": {},
+  "remote.autoForwardPortsSource": "hybrid",
+  "docker.extension.enableComposeLanguageServer": false
+}

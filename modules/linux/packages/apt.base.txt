@@ -1,0 +1,8 @@
+bash-completion
+curl
+git
+git-lfs
+jq
+source-highlight
+tmux
+tree

@@ -1,0 +1,9 @@
+coreutils
+curl
+gawk
+gcc
+gibo
+hugo
+jq
+sed
+starship

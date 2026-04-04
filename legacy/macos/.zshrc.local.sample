@@ -1,0 +1,12 @@
+# Machine-specific zsh overrides for Apple Silicon macOS.
+# Copy this file to:
+#   macos/.zshrc.local
+#
+# This file is intentionally untracked and should only contain
+# user-specific shell customizations.
+#
+# Examples:
+#
+# source "${HOME}/.docker/init-zsh.sh" 2>/dev/null || true
+# export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+# export PATH="$PATH:${HOME}/.lmstudio/bin"

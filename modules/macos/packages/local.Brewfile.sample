@@ -1,0 +1,12 @@
+# Local override packages for Apple Silicon macOS.
+# Copy this file to:
+#   modules/macos/packages/local.Brewfile
+#
+# You can add any extra Homebrew Bundle entries here.
+# Examples:
+#
+# brew "watch"
+# cask "arc"
+# mas "Tailscale", id: 1475387142
+#
+# This file is intentionally untracked.

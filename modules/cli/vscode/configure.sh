@@ -1,0 +1,48 @@
+#!/bin/sh
+
+set -eu
+
+SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
+readonly SCRIPT_DIR
+REPO_ROOT="${DOTFILES_REPO_ROOT:-$(CDPATH='' cd -- "${SCRIPT_DIR}/../../.." && pwd)}"
+readonly REPO_ROOT
+
+readonly VSCODE_SETTINGS_ASSET="${REPO_ROOT}/assets/cli/vscode/settings.json"
+readonly VSCODE_EXTENSIONS_FILE="${REPO_ROOT}/assets/cli/vscode/extensions"
+
+resolve_vscode_user_dir() {
+  if [ -n "${DOTFILES_VSCODE_USER_DIR:-}" ]; then
+    printf '%s\n' "${DOTFILES_VSCODE_USER_DIR}"
+    return 0
+  fi
+
+  if [ "$(uname -s)" = 'Darwin' ]; then
+    printf '%s\n' "${HOME}/Library/Application Support/Code/User"
+    return 0
+  fi
+
+  printf '%s\n' "${HOME}/.config/Code/User"
+}
+
+install_extensions() {
+  local extension
+
+  while IFS= read -r extension; do
+    if [ -z "${extension}" ]; then
+      continue
+    fi
+
+    code --install-extension "${extension}" > /dev/null
+  done < "${VSCODE_EXTENSIONS_FILE}"
+}
+
+main() {
+  VSCODE_USER_DIR="$(resolve_vscode_user_dir)"
+  readonly VSCODE_USER_DIR
+
+  mkdir -p "${VSCODE_USER_DIR}"
+  install_extensions
+  ln -sfn "${VSCODE_SETTINGS_ASSET}" "${VSCODE_USER_DIR}/settings.json"
+}
+
+main "$@"

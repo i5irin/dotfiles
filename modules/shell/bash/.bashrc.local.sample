@@ -1,0 +1,11 @@
+# Machine-specific bash overrides for Linux CLI.
+# Copy this file to:
+#   modules/shell/bash/.bashrc.local
+#
+# This file is intentionally untracked and should only contain
+# user-specific shell customizations.
+#
+# Examples:
+#
+# export PATH="${HOME}/.cargo/bin:${PATH}"
+# export GOPATH="${HOME}/go"

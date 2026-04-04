@@ -1,0 +1,5 @@
+# BEGIN DOTFILES AUTO UPDATE
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 4 * * * __DOTFILES_UPDATE_SCRIPT__
+# END DOTFILES AUTO UPDATE

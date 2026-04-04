@@ -1,0 +1,9 @@
+# Machine-specific apt package additions for Linux CLI.
+# Copy this file to:
+#   modules/linux/packages/local.apt.txt
+#
+# This file is intentionally untracked and should only contain
+# additional package names for your machine.
+#
+# Example:
+# ripgrep

@@ -1,0 +1,64 @@
+{
+  "Packages": [
+    {
+      "PackageIdentifier": "Discord.Discord"
+    },
+    {
+      "PackageIdentifier": "Docker.DockerDesktop"
+    },
+    {
+      "PackageIdentifier": "Dropbox.Dropbox"
+    },
+    {
+      "PackageIdentifier": "evernote.evernote"
+    },
+    {
+      "PackageIdentifier": "Mozilla.Firefox"
+    },
+    {
+      "PackageIdentifier": "PrimateLabs.Geekbench.5"
+    },
+    {
+      "PackageIdentifier": "Google.Chrome"
+    },
+    {
+      "PackageIdentifier": "Google.JapaneseIME"
+    },
+    {
+      "PackageIdentifier": "Zeit.Hyper"
+    },
+    {
+      "PackageIdentifier": "Microsoft.Office"
+    },
+    {
+      "PackageIdentifier": "Microsoft.Teams"
+    },
+    {
+      "PackageIdentifier": "Nvidia.GeForceNow"
+    },
+    {
+      "PackageIdentifier": "Postman.Postman"
+    },
+    {
+      "PackageIdentifier": "Microsoft.Skype"
+    },
+    {
+      "PackageIdentifier": "SlackTechnologies.Slack"
+    },
+    {
+      "PackageIdentifier": "Valve.Steam"
+    },
+    {
+      "PackageIdentifier": "TradingView.TradingViewDesktop"
+    },
+    {
+      "PackageIdentifier": "VMware.WorkstationPlayer"
+    },
+    {
+      "PackageIdentifier": "Zoom.Zoom"
+    },
+    {
+      "PackageIdentifier": "LINE.LINE"
+    }
+  ]
+}

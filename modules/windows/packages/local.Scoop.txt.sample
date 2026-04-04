@@ -1,0 +1,10 @@
+# Machine-specific Scoop packages for Windows.
+# Copy this file to:
+#   modules/windows/packages/local.Scoop.txt
+#
+# This file is intentionally untracked and additive-only.
+#
+# Examples:
+#
+# monolith
+# yt-dlp
