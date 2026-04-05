@@ -66,11 +66,11 @@ main() {
   fi
 
   echo 'Setting up ComputerName.'
-  scutil --set ComputerName "${machine_name}"
+  sudo scutil --set ComputerName "${machine_name}"
   echo 'Setting up LocalHostName.'
-  scutil --set LocalHostName "${machine_name}"
+  sudo scutil --set LocalHostName "${machine_name}"
   echo 'Setting up HostName.'
-  scutil --set HostName "${machine_name}"
+  sudo scutil --set HostName "${machine_name}"
   persist_machine_name "${machine_name}"
 }
 

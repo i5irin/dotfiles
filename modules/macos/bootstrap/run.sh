@@ -90,6 +90,7 @@ bootstrap_module=${SCRIPT_DIR}
 homebrew_prefix=${HOMEBREW_PREFIX}
 brewfile=${brewfile_path}
 bootstrap_config_source=${BOOTSTRAP_CONFIG_SOURCE}
+requires_admin=true
 local_override_source=$(resolve_local_override_source)
 dotfiles_data_home=${DOTFILES_DATA_HOME}
 zsh_completions_dir=${ZSH_COMPLETIONS_DIR}
@@ -98,6 +99,15 @@ brewfile_sources=
 EOF
   "${PACKAGE_COMPOSE_HELPER}" --print-sources
   rm -f "${brewfile_path}"
+}
+
+validate_macos_privileges() {
+  if ! is_macos_admin_user; then
+    echo 'The current macOS user is not an Administrator. Use an admin account in the VM before running bootstrap/macos.sh.' >&2
+    return 1
+  fi
+
+  prime_macos_sudo_session
 }
 
 run_modules() {
@@ -117,6 +127,7 @@ run_modules() {
   export DOTFILES_GIT_PROMPT_DIR="${GIT_PROMPT_DIR}"
   export DOTFILES_BREWFILE="${brewfile_path}"
 
+  run_step 'Validate macOS privileges' validate_macos_privileges
   run_step 'Configure macOS hostname' /bin/zsh "${HOSTNAME_MODULE}"
   run_step 'Install macOS packages' /bin/zsh "${PACKAGE_INSTALL_MODULE}"
   run_step 'Install zsh shell assets' /bin/zsh "${ZSH_INSTALL_MODULE}"

@@ -16,6 +16,19 @@ require_apple_silicon_macos() {
   fi
 }
 
+is_macos_admin_user() {
+  id -Gn | tr ' ' '\n' | grep -Fx 'admin' > /dev/null 2>&1
+}
+
+prime_macos_sudo_session() {
+  if sudo -n true > /dev/null 2>&1; then
+    return 0
+  fi
+
+  echo 'Administrator privileges are required for the macOS bootstrap.' >&2
+  sudo -v
+}
+
 ensure_homebrew_shellenv() {
   local prefix
 
