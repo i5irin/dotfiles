@@ -7,10 +7,16 @@
       "PackageIdentifier": "GitHub.GitLFS"
     },
     {
+      "PackageIdentifier": "Neovim.Neovim"
+    },
+    {
       "PackageIdentifier": "Microsoft.WindowsTerminal"
     },
     {
       "PackageIdentifier": "Microsoft.OpenJDK.17"
+    },
+    {
+      "PackageIdentifier": "Starship.Starship"
     },
     {
       "PackageIdentifier": "Microsoft.VisualStudioCode"

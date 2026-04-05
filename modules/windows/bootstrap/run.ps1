@@ -15,7 +15,6 @@ $configEnvPath = if ($env:DOTFILES_WINDOWS_CONFIG_PATH) { $env:DOTFILES_WINDOWS_
 $bootstrapConfigSource = if (Import-DotfilesEnvFile -Path $configEnvPath) { $configEnvPath } else { 'none' }
 
 $wingetComposer = Join-Path $repoRoot 'modules/windows/packages/Compose-WingetManifest.ps1'
-$scoopComposer = Join-Path $repoRoot 'modules/windows/packages/Compose-ScoopList.ps1'
 $packagesModule = Join-Path $repoRoot 'modules/windows/packages/Install-Packages.ps1'
 $fontsModule = Join-Path $repoRoot 'modules/windows/fonts/Install-Fonts.ps1'
 $powerShellModulesInstaller = Join-Path $repoRoot 'modules/shell/powershell/Install-Modules.ps1'
@@ -25,7 +24,6 @@ $updateModule = Join-Path $repoRoot 'modules/windows/update/Register-UpdateTask.
 $appsModule = Join-Path $repoRoot 'modules/windows/apps/Configure.ps1'
 
 $canonicalWingetOverride = Join-Path $repoRoot 'modules/windows/packages/local.Winget.json'
-$canonicalScoopOverride = Join-Path $repoRoot 'modules/windows/packages/local.Scoop.txt'
 
 function Write-ProgressInfo {
   param([Parameter(Mandatory = $true)][string]$Message)
@@ -73,7 +71,6 @@ Options:
 function Test-Layout {
   $requiredPaths = @(
     $wingetComposer,
-    $scoopComposer,
     $packagesModule,
     $fontsModule,
     $powerShellModulesInstaller,
@@ -92,24 +89,20 @@ function Test-Layout {
 
 function Resolve-LocalOverrideSource {
   $wingetOverride = Resolve-DotfilesFirstExistingPath -Candidates @($canonicalWingetOverride)
-  $scoopOverride = Resolve-DotfilesFirstExistingPath -Candidates @($canonicalScoopOverride)
 
   return [ordered]@{
     Winget = if ($wingetOverride) { $wingetOverride } else { 'none' }
-    Scoop  = if ($scoopOverride) { $scoopOverride } else { 'none' }
   }
 }
 
 function Write-DryRunConfiguration {
   $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("dotfiles-windows-{0}" -f [guid]::NewGuid().ToString('N'))
   $wingetManifestPath = Join-Path $tempDir 'Winget.manifest.json'
-  $scoopListPath = Join-Path $tempDir 'Scoop.list.txt'
   $overrideSource = Resolve-LocalOverrideSource
 
   New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
   try {
     & $wingetComposer -OutputPath $wingetManifestPath | Out-Null
-    & $scoopComposer -OutputPath $scoopListPath | Out-Null
 
     Write-Output "repo_root=$repoRoot"
     Write-Output "bootstrap_module=$PSScriptRoot"
@@ -118,14 +111,10 @@ function Write-DryRunConfiguration {
     Write-Output "is_admin=$(Test-DotfilesAdministrator)"
     Write-Output "enable_wsl=$($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1')"
     Write-Output "winget_manifest=$wingetManifestPath"
-    Write-Output "scoop_list=$scoopListPath"
     Write-Output "bootstrap_config_source=$bootstrapConfigSource"
     Write-Output "winget_local_override_source=$($overrideSource.Winget)"
-    Write-Output "scoop_local_override_source=$($overrideSource.Scoop)"
     Write-Output 'winget_sources='
     & $wingetComposer -PrintSources
-    Write-Output 'scoop_sources='
-    & $scoopComposer -PrintSources
   } finally {
     Remove-Item -LiteralPath $tempDir -Force -Recurse -ErrorAction SilentlyContinue
   }
@@ -134,19 +123,16 @@ function Write-DryRunConfiguration {
 function Invoke-BootstrapModules {
   $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("dotfiles-windows-{0}" -f [guid]::NewGuid().ToString('N'))
   $wingetManifestPath = Join-Path $tempDir 'Winget.manifest.json'
-  $scoopListPath = Join-Path $tempDir 'Scoop.list.txt'
 
   New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
   try {
     Invoke-BootstrapStep -Label 'Resolve Windows package manifests' -ScriptBlock {
       & $wingetComposer -OutputPath $wingetManifestPath | Out-Null
-      & $scoopComposer -OutputPath $scoopListPath | Out-Null
     }
 
     $env:DOTFILES_REPO_ROOT = $repoRoot
     $env:DOTFILES_BOOTSTRAP_CONFIG_PATH = $configEnvPath
     $env:DOTFILES_WINGET_MANIFEST_PATH = $wingetManifestPath
-    $env:DOTFILES_SCOOP_LIST_PATH = $scoopListPath
     $env:DOTFILES_WINDOWS_ENABLE_WSL = if ($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1') { '1' } else { '0' }
 
     Invoke-BootstrapStep -Label 'Install Windows packages' -ScriptBlock { & $packagesModule }
