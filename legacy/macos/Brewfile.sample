@@ -45,13 +45,11 @@ cask "microsoft-office"
 cask "microsoft-teams"
 cask "nvidia-geforce-now"
 cask "postman"
-cask "skype"
 cask "slack"
 cask "steam"
 cask "tableplus"
 cask "tradingview"
 cask "visual-studio-code"
-cask "vmware-fusion"
 cask "zoom"
 mas "LINE", id: 539883307
 mas "SiteSucker", id: 442168834
