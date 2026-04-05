@@ -31,9 +31,33 @@ configure_tmux() {
   finish_configure_message 'tmux'
 }
 
+configure_starship() {
+  configure_info 'Starship'
+  if ! command -v starship > /dev/null 2>&1; then
+    echo 'Skip setup because Starship is not installed.' >&2
+    return 0
+  fi
+
+  "${REPO_ROOT}/modules/cli/starship/configure.sh"
+  finish_configure_message 'Starship'
+}
+
+configure_neovim() {
+  configure_info 'Neovim'
+  if ! command -v nvim > /dev/null 2>&1; then
+    echo 'Skip setup because Neovim is not installed.' >&2
+    return 0
+  fi
+
+  "${REPO_ROOT}/modules/cli/neovim/configure.sh"
+  finish_configure_message 'Neovim'
+}
+
 main() {
   configure_git
   configure_tmux
+  configure_starship
+  configure_neovim
 }
 
 main "$@"

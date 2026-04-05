@@ -3,6 +3,7 @@ curl
 git
 git-lfs
 jq
+neovim
 source-highlight
 tmux
 tree

@@ -7,6 +7,9 @@
       "PackageIdentifier": "GitHub.GitLFS"
     },
     {
+      "PackageIdentifier": "Microsoft.WindowsTerminal"
+    },
+    {
       "PackageIdentifier": "Microsoft.OpenJDK.17"
     },
     {

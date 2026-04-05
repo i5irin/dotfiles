@@ -1,19 +1,23 @@
 {
-  "editor.fontSize": 17,
-  "editor.fontFamily": "'Fira Code'",
+  "editor.fontSize": 15,
+  "editor.fontFamily": "'Fira Code', monospace",
   "editor.fontLigatures": true,
   "editor.fontWeight": "400",
-  "workbench.colorTheme": "Monokai Pro",
+  "workbench.colorTheme": "Catppuccin Frappé",
+  "workbench.iconTheme": "Catppuccin Frappé Icons",
   "editor.formatOnPaste": true,
   "gitlens.advanced.messages": {
     "suppressShowKeyBindingsNotice": true
   },
   "git.autofetch": true,
   "liveServer.settings.donotShowInfoMsg": true,
-  "workbench.iconTheme": "material-icon-theme",
   "explorer.confirmDelete": false,
   "editor.bracketPairColorization.enabled": true,
-  "terminal.integrated.fontFamily": "'Fira Code'",
+  "terminal.integrated.fontFamily": "'FiraCode Nerd Font', 'Fira Code', monospace",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.defaultProfile.linux": "bash",
   "markdown-pdf.headerTemplate": "<div style=\"font-size: 9px; margin-left: 1cm;\"> <span class='title'></span></div>",
   "explorer.confirmDragAndDrop": false,
   "editor.unicodeHighlight.allowedCharacters": {
@@ -24,5 +28,8 @@
   "editor.accessibilitySupport": "off",
   "terminal.integrated.env.linux": {},
   "remote.autoForwardPortsSource": "hybrid",
-  "docker.extension.enableComposeLanguageServer": false
+  "docker.extension.enableComposeLanguageServer": false,
+  "window.commandCenter": true,
+  "window.titleBarStyle": "custom",
+  "editor.minimap.enabled": false
 }

@@ -44,6 +44,28 @@ configure_tmux() {
   finish_configure_message 'tmux'
 }
 
+configure_starship() {
+  configure_info 'Starship'
+  if ! command -v starship > /dev/null 2>&1; then
+    echo 'Skip setup because Starship is not installed.' >&2
+    return 0
+  fi
+
+  "${REPO_ROOT}/modules/cli/starship/configure.sh"
+  finish_configure_message 'Starship'
+}
+
+configure_neovim() {
+  configure_info 'Neovim'
+  if ! command -v nvim > /dev/null 2>&1; then
+    echo 'Skip setup because Neovim is not installed.' >&2
+    return 0
+  fi
+
+  "${REPO_ROOT}/modules/cli/neovim/configure.sh"
+  finish_configure_message 'Neovim'
+}
+
 configure_vscode() {
   configure_info 'Visual Studio Code'
   if ! command -v code > /dev/null 2>&1; then
@@ -55,15 +77,15 @@ configure_vscode() {
   finish_configure_message 'Visual Studio Code'
 }
 
-configure_hyper() {
-  configure_info 'Hyper'
-  if ! command -v hyper > /dev/null 2>&1; then
-    echo 'Skip setup because Hyper is not installed.' >&2
+configure_ghostty() {
+  configure_info 'Ghostty'
+  if [ ! -d /Applications/Ghostty.app ] && ! command -v ghostty > /dev/null 2>&1; then
+    echo 'Skip setup because Ghostty is not installed.' >&2
     return 0
   fi
 
-  /bin/zsh "${REPO_ROOT}/modules/cli/hyper/configure-macos.sh"
-  finish_configure_message 'Hyper'
+  "${REPO_ROOT}/modules/cli/ghostty/configure.sh"
+  finish_configure_message 'Ghostty'
 }
 
 configure_alttab() {
@@ -116,8 +138,10 @@ main() {
   configure_karabiner
   configure_git
   configure_tmux
+  configure_starship
+  configure_neovim
   configure_vscode
-  configure_hyper
+  configure_ghostty
   configure_alttab
   configure_clipy
 }

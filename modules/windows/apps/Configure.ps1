@@ -28,10 +28,14 @@ Invoke-OptionalCommand -CommandName 'git' -SkipMessage 'Skip Git configuration b
   & (Join-Path $repoRoot 'modules/cli/git/configure-windows.ps1')
 }
 
-Invoke-OptionalCommand -CommandName 'code' -SkipMessage 'Skip Visual Studio Code configuration because code is not installed.' -ScriptBlock {
-  & (Join-Path $repoRoot 'modules/cli/vscode/configure-windows.ps1')
+Invoke-OptionalCommand -CommandName 'starship' -SkipMessage 'Skip Starship configuration because starship is not installed.' -ScriptBlock {
+  & (Join-Path $repoRoot 'modules/cli/starship/configure-windows.ps1')
 }
 
-Invoke-OptionalCommand -CommandName 'hyper' -SkipMessage 'Skip Hyper configuration because hyper is not installed.' -ScriptBlock {
-  & (Join-Path $repoRoot 'modules/cli/hyper/configure-windows.ps1')
+Invoke-OptionalCommand -CommandName 'nvim' -SkipMessage 'Skip Neovim configuration because Neovim is not installed.' -ScriptBlock {
+  & (Join-Path $repoRoot 'modules/cli/neovim/configure-windows.ps1')
+}
+
+Invoke-OptionalCommand -CommandName 'code' -SkipMessage 'Skip Visual Studio Code configuration because code is not installed.' -ScriptBlock {
+  & (Join-Path $repoRoot 'modules/cli/vscode/configure-windows.ps1')
 }
