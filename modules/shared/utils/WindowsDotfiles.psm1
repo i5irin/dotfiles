@@ -96,7 +96,7 @@ function Import-DotfilesEnvFile {
     }
 
     if ($trimmed -notmatch '^([A-Za-z_][A-Za-z0-9_]*)=(.*)$') {
-      throw "Unsupported env line in $Path: $trimmed"
+      throw "Unsupported env line in ${Path}: $trimmed"
     }
 
     $name = $matches[1]
