@@ -6,7 +6,7 @@
     "defaults": {
       "colorScheme": "Catppuccin Frappe",
       "font": {
-        "face": "FiraCode Nerd Font",
+        "face": "FiraCode Nerd Font Mono",
         "size": 12,
         "features": {
           "calt": 1,
