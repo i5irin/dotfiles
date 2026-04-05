@@ -5,6 +5,21 @@ set -eu
 # Full Disk Access (System Settings > Privacy & Security > Full Disk Access)
 # must be granted to the terminal where this script is run.
 
+write_optional_default() {
+  local output_file
+
+  output_file="$(mktemp "${TMPDIR:-/tmp}/dotfiles-defaults.XXXXXX")"
+  if "$@" > /dev/null 2>"${output_file}"; then
+    rm -f "${output_file}"
+    return 0
+  fi
+
+  echo "Warning: skipped optional macOS preference: $*" >&2
+  cat "${output_file}" >&2
+  rm -f "${output_file}"
+  return 0
+}
+
 # Configure Keyboard
 defaults write -g com.apple.keyboard.fnState -bool true
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
@@ -65,14 +80,14 @@ defaults write com.apple.TextEdit RichText -int 0
 defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
 # Configure Safari
-defaults write com.apple.Safari SuppressSearchSuggestions -bool true
-defaults write com.apple.Safari UniversalSearchEnabled -bool false
-defaults write com.apple.Safari AutoFillFromAddressBook -bool false
-defaults write com.apple.Safari AutoFillPasswords -bool false
-defaults write com.apple.Safari AutoFillCreditCardData -bool false
-defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
-defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
-defaults write com.apple.Safari ShowOverlayStatusBar -bool true
+write_optional_default defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+write_optional_default defaults write com.apple.Safari UniversalSearchEnabled -bool false
+write_optional_default defaults write com.apple.Safari AutoFillFromAddressBook -bool false
+write_optional_default defaults write com.apple.Safari AutoFillPasswords -bool false
+write_optional_default defaults write com.apple.Safari AutoFillCreditCardData -bool false
+write_optional_default defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
+write_optional_default defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+write_optional_default defaults write com.apple.Safari ShowOverlayStatusBar -bool true
 
 # Configure AirDrop
 defaults write com.apple.sharingd DiscoverableMode -string 'Everyone'

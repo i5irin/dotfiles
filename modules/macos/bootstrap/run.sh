@@ -24,6 +24,7 @@ readonly PACKAGE_COMPOSE_HELPER="${REPO_ROOT}/modules/macos/packages/compose_bre
 readonly PACKAGE_INSTALL_MODULE="${REPO_ROOT}/modules/macos/packages/install.sh"
 readonly HOSTNAME_MODULE="${REPO_ROOT}/modules/macos/system/configure_hostnames.sh"
 readonly ZSH_INSTALL_MODULE="${REPO_ROOT}/modules/shell/zsh/install.sh"
+readonly PREFERENCES_PREFLIGHT_MODULE="${REPO_ROOT}/modules/macos/preferences/validate_full_disk_access.sh"
 readonly PREFERENCES_MODULE="${REPO_ROOT}/modules/macos/preferences/apply.sh"
 readonly UPDATE_MODULE="${REPO_ROOT}/modules/macos/update/register_launch_agent.sh"
 readonly APP_CONFIGURE_MODULE="${REPO_ROOT}/modules/macos/apps/configure.sh"
@@ -69,6 +70,7 @@ validate_layout() {
     "${PACKAGE_INSTALL_MODULE}" \
     "${HOSTNAME_MODULE}" \
     "${ZSH_INSTALL_MODULE}" \
+    "${PREFERENCES_PREFLIGHT_MODULE}" \
     "${PREFERENCES_MODULE}" \
     "${UPDATE_MODULE}" \
     "${APP_CONFIGURE_MODULE}"
@@ -132,6 +134,7 @@ run_modules() {
   export DOTFILES_BREWFILE="${brewfile_path}"
 
   run_step 'Validate macOS privileges' validate_macos_privileges
+  run_step 'Validate macOS Full Disk Access' /bin/zsh "${PREFERENCES_PREFLIGHT_MODULE}"
   run_step 'Configure macOS hostname' /bin/zsh "${HOSTNAME_MODULE}"
   run_step 'Install macOS packages' /bin/zsh "${PACKAGE_INSTALL_MODULE}"
   run_step 'Install zsh shell assets' /bin/zsh "${ZSH_INSTALL_MODULE}"
