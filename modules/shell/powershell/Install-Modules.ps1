@@ -1,5 +1,6 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
 
 function Ensure-TrustedPowerShellGallery {
   $gallery = Get-PSRepository -Name 'PSGallery' -ErrorAction SilentlyContinue
@@ -23,7 +24,7 @@ function Ensure-NuGetProvider {
     return
   }
 
-  Install-PackageProvider -Name NuGet -MinimumVersion '2.8.5.201' -Scope CurrentUser -Force -ForceBootstrap | Out-Null
+  Install-PackageProvider -Name NuGet -MinimumVersion '2.8.5.201' -Scope CurrentUser -Force -ForceBootstrap -Confirm:$false | Out-Null
 }
 
 function Ensure-ModuleInstalled {
@@ -42,9 +43,9 @@ function Ensure-ModuleInstalled {
     return
   }
 
-  Ensure-TrustedPowerShellGallery
   Ensure-NuGetProvider
-  Install-Module -Name $ModuleName -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
+  Ensure-TrustedPowerShellGallery
+  Install-Module -Name $ModuleName -Scope CurrentUser -Repository PSGallery -Force -AllowClobber -Confirm:$false
 }
 
 Ensure-ModuleInstalled -ModuleName 'posh-git'

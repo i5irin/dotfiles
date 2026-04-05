@@ -67,7 +67,7 @@ function Test-PendingReboot {
 function Install-WingetPackages {
   $manifest = Get-Content -LiteralPath $wingetManifestPath -Raw | ConvertFrom-Json
   foreach ($package in $manifest.Sources[0].Packages) {
-    winget install --id $package.PackageIdentifier --exact --accept-source-agreements --accept-package-agreements --disable-interactivity
+    winget install --id $package.PackageIdentifier --exact --accept-source-agreements --accept-package-agreements --disable-interactivity --silent
   }
 }
 
