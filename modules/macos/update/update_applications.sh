@@ -4,9 +4,14 @@ set -eu
 
 readonly HOMEBREW_PREFIX="${DOTFILES_HOMEBREW_PREFIX:-/opt/homebrew}"
 
-if [ -x "${HOMEBREW_PREFIX}/bin/brew" ]; then
-  eval "$("${HOMEBREW_PREFIX}/bin/brew" shellenv)"
-fi
+SCRIPT_DIR="${0:A:h}"
+readonly SCRIPT_DIR
+REPO_ROOT="${DOTFILES_REPO_ROOT:-${SCRIPT_DIR:h:h:h}}"
+readonly REPO_ROOT
+
+source "${REPO_ROOT}/modules/shared/utils/dotfiles.sh"
+
+ensure_homebrew_shellenv "${HOMEBREW_PREFIX}"
 
 echo '==============================================================='
 echo '    Update applications'
