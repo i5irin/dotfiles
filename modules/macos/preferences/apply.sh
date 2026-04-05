@@ -20,6 +20,12 @@ write_optional_default() {
   return 0
 }
 
+restart_app_if_running() {
+  if pgrep -x "$1" > /dev/null 2>&1; then
+    killall "$1" > /dev/null 2>&1 || true
+  fi
+}
+
 # Configure Keyboard
 defaults write -g com.apple.keyboard.fnState -bool true
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
@@ -35,8 +41,6 @@ defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write com.apple.AppleMultitouchTrackpad Dragging -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true
-defaults write com.apple.AppleMultitouchTrackpad DragLock -bool true
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -bool true
 
 # Configure Microphone
 defaults write com.apple.HIToolbox AppleDictationAutoEnable -bool false
@@ -61,7 +65,6 @@ defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock mru-spaces -bool false
 
 # Configure Menubar
-defaults write com.apple.menuextra.clock DateFormat -string "M\u6708d\u65e5(EEE)  H:mm"
 defaults write com.apple.controlcenter BatteryShowPercentage -bool true
 
 # Configure Screen Capture
@@ -89,19 +92,9 @@ write_optional_default defaults write com.apple.Safari AutoFillMiscellaneousForm
 write_optional_default defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 write_optional_default defaults write com.apple.Safari ShowOverlayStatusBar -bool true
 
-# Configure AirDrop
-defaults write com.apple.sharingd DiscoverableMode -string 'Everyone'
-
-# Configure Privacy
-defaults write com.apple.CrashReporter DialogType -string 'none'
-defaults write com.apple.appleseed.FeedbackAssistant Autogather -bool false
-
-set +e
-killall Finder
-killall Dock
-killall SystemUIServer
-killall TextEdit
-killall Photos
-killall Safari
-killall sharingd
-set -e
+restart_app_if_running Finder
+restart_app_if_running Dock
+restart_app_if_running SystemUIServer
+restart_app_if_running TextEdit
+restart_app_if_running Photos
+restart_app_if_running Safari

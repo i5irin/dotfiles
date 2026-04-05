@@ -3,7 +3,7 @@ ZPROFILE_MODULE_PATH="${${(%):-%N}:A:h}"
 DOTFILES_REPO_ROOT="${ZPROFILE_MODULE_PATH:h:h:h}"
 
 # Load the library functions.
-. "${DOTFILES_REPO_ROOT}/lib/posix_dotfiles_utils/utils.sh"
+. "${DOTFILES_REPO_ROOT}/modules/shared/utils/posix.sh"
 
 # Configure PATH
 add_path "${HOME}/bin" 2> /dev/null
