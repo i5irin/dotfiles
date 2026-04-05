@@ -9,8 +9,6 @@ if (-not $repoRoot) {
 Import-Module (Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1') -Force
 
 $settingsAsset = Join-Path $repoRoot 'assets/windows/terminal/settings.json'
-
-$powerShell7ProfileGuid = '{61c54bbd-c2c6-5271-96e7-009a87ff44bf}'
 $windowsPowerShellProfileGuid = '{574e775e-4f2a-5b96-ac1e-a2962a402336}'
 
 function Resolve-WindowsTerminalSettingsPaths {
@@ -39,57 +37,11 @@ function Resolve-WindowsTerminalSettingsPaths {
   return $resolved
 }
 
-function Test-FontFileExists {
-  param(
-    [Parameter(Mandatory = $true)]
-    [string]$Pattern
-  )
-
-  $candidates = @(
-    (Join-Path $env:WINDIR 'Fonts'),
-    (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts')
-  )
-
-  foreach ($candidate in $candidates) {
-    if (Test-Path -LiteralPath $candidate) {
-      if (@(Get-ChildItem -LiteralPath $candidate -Filter $Pattern -ErrorAction SilentlyContinue).Count -gt 0) {
-        return $true
-      }
-    }
-  }
-
-  return $false
-}
-
-function Resolve-TerminalFontFace {
-  if (Test-FontFileExists -Pattern 'FiraCodeNerdFontMono-*.ttf') {
-    return 'FiraCode Nerd Font Mono'
-  }
-
-  if (Test-FontFileExists -Pattern 'FiraCodeNerdFont-*.ttf') {
-    return 'FiraCode Nerd Font'
-  }
-
-  return 'Fira Code'
-}
-
 function Build-WindowsTerminalSettings {
   $settings = Get-Content -LiteralPath $settingsAsset -Raw | ConvertFrom-Json
-  $settings.profiles.defaults.fontFace = Resolve-TerminalFontFace
+  $settings.profiles.defaults.fontFace = 'Fira Code'
 
   $profileList = @()
-  if (Get-Command pwsh.exe -ErrorAction SilentlyContinue) {
-    $profileList += [pscustomobject]@{
-      guid = $powerShell7ProfileGuid
-      name = 'PowerShell'
-      commandline = 'pwsh.exe'
-      hidden = $false
-    }
-    $settings | Add-Member -NotePropertyName defaultProfile -NotePropertyValue $powerShell7ProfileGuid -Force
-  } else {
-    $settings | Add-Member -NotePropertyName defaultProfile -NotePropertyValue $windowsPowerShellProfileGuid -Force
-  }
-
   $profileList += [pscustomobject]@{
     guid = $windowsPowerShellProfileGuid
     name = 'Windows PowerShell'
@@ -97,6 +49,7 @@ function Build-WindowsTerminalSettings {
     hidden = $false
   }
 
+  $settings | Add-Member -NotePropertyName defaultProfile -NotePropertyValue $windowsPowerShellProfileGuid -Force
   $settings.profiles | Add-Member -NotePropertyName list -NotePropertyValue $profileList -Force
   return $settings | ConvertTo-Json -Depth 8
 }
