@@ -19,6 +19,9 @@ using System;
 using System.Runtime.InteropServices;
 
 public static class DotfilesFontBroadcast {
+  [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+  public static extern int AddFontResourceEx(string lpszFilename, uint fl, IntPtr pdv);
+
   [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
   public static extern IntPtr SendMessageTimeout(
     IntPtr hWnd,
@@ -89,6 +92,15 @@ function Broadcast-FontChange {
   [void][DotfilesFontBroadcast]::SendMessageTimeout([IntPtr]0xffff, 0x001D, [UIntPtr]::Zero, $null, 0x0002, 1000, [ref]$result)
 }
 
+function Import-FontResource {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path
+  )
+
+  [void][DotfilesFontBroadcast]::AddFontResourceEx($Path, 0x10, [IntPtr]::Zero)
+}
+
 function Install-FontArchive {
   param(
     [Parameter(Mandatory = $true)]
@@ -117,6 +129,7 @@ function Install-FontArchive {
   Get-ChildItem -Path $extractDir -Recurse -Include *.ttf, *.otf | ForEach-Object {
     $targetPath = Join-Path $fontTargetDir $_.Name
     Copy-Item -LiteralPath $_.FullName -Destination $targetPath -Force
+    Import-FontResource -Path $targetPath
     Register-FontFile -FontFile (Get-Item -LiteralPath $targetPath)
   }
 

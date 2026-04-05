@@ -51,7 +51,10 @@ Get-Content -LiteralPath $extensionsFile | ForEach-Object {
   }
 
   if ($installedExtensions -notcontains $extension) {
-    & $codeCommand --install-extension $extension | Out-Null
+    & $codeCommand --install-extension $extension --force | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Failed to install VS Code extension: $extension"
+    }
   }
 }
 

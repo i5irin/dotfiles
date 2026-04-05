@@ -66,7 +66,7 @@ install_extensions() {
       continue
     fi
 
-    "${code_command}" --install-extension "${extension}" > /dev/null
+    "${code_command}" --install-extension "${extension}" --force > /dev/null
   done < "${VSCODE_EXTENSIONS_FILE}"
 }
 
