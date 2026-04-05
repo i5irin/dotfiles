@@ -38,6 +38,12 @@ function Write-ProgressSuccess {
   Write-Host "[OK] $Message"
 }
 
+function Write-ProgressFailure {
+  param([Parameter(Mandatory = $true)][string]$Message)
+
+  Write-Host "[FAIL] $Message"
+}
+
 function Invoke-BootstrapStep {
   param(
     [Parameter(Mandatory = $true)]
@@ -51,7 +57,10 @@ function Invoke-BootstrapStep {
     & $ScriptBlock
     Write-ProgressSuccess $Label
   } catch {
-    Write-Error "FAILED: $Label"
+    Write-ProgressFailure $Label
+    if ($_.Exception -and $_.Exception.Message) {
+      Write-Host $_.Exception.Message
+    }
     throw
   }
 }
