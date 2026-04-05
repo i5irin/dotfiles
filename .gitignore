@@ -51,6 +51,9 @@ modules/linux/packages/local.apt.txt
 modules/shell/powershell/Microsoft.PowerShell_profile.local.ps1
 modules/windows/packages/local.Winget.json
 modules/windows/packages/local.Scoop.txt
+config/macos.env
+config/windows.env
+config/linux.env
 testenv/parallels/config.env
 legacy/archived-configs/windows/MyWinget.json
 legacy/archived-configs/windows/MyScoop.txt

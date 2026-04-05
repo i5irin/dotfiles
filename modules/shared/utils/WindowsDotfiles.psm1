@@ -79,4 +79,39 @@ function Enable-DotfilesRegistryKey {
   }
 }
 
-Export-ModuleMember -Function Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey
+function Import-DotfilesEnvFile {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path
+  )
+
+  if (-not (Test-Path -LiteralPath $Path)) {
+    return $false
+  }
+
+  foreach ($line in Get-Content -LiteralPath $Path) {
+    $trimmed = $line.Trim()
+    if (-not $trimmed -or $trimmed.StartsWith('#')) {
+      continue
+    }
+
+    if ($trimmed -notmatch '^([A-Za-z_][A-Za-z0-9_]*)=(.*)$') {
+      throw "Unsupported env line in $Path: $trimmed"
+    }
+
+    $name = $matches[1]
+    $value = $matches[2].Trim()
+
+    if ($value.Length -ge 2) {
+      if (($value.StartsWith("'") -and $value.EndsWith("'")) -or ($value.StartsWith('"') -and $value.EndsWith('"'))) {
+        $value = $value.Substring(1, $value.Length - 2)
+      }
+    }
+
+    [Environment]::SetEnvironmentVariable($name, $value, 'Process')
+  }
+
+  return $true
+}
+
+Export-ModuleMember -Function Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey, Import-DotfilesEnvFile

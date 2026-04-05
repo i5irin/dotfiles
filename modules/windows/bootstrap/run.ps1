@@ -11,6 +11,9 @@ $repoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScript
 $sharedModulePath = Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1'
 Import-Module $sharedModulePath -Force
 
+$configEnvPath = if ($env:DOTFILES_WINDOWS_CONFIG_PATH) { $env:DOTFILES_WINDOWS_CONFIG_PATH } else { Join-Path $repoRoot 'config/windows.env' }
+$bootstrapConfigSource = if (Import-DotfilesEnvFile -Path $configEnvPath) { $configEnvPath } else { 'none' }
+
 $wingetComposer = Join-Path $repoRoot 'modules/windows/packages/Compose-WingetManifest.ps1'
 $scoopComposer = Join-Path $repoRoot 'modules/windows/packages/Compose-ScoopList.ps1'
 $packagesModule = Join-Path $repoRoot 'modules/windows/packages/Install-Packages.ps1'
@@ -112,6 +115,7 @@ function Write-DryRunConfiguration {
     Write-Output "enable_wsl=$($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1')"
     Write-Output "winget_manifest=$wingetManifestPath"
     Write-Output "scoop_list=$scoopListPath"
+    Write-Output "bootstrap_config_source=$bootstrapConfigSource"
     Write-Output "winget_local_override_source=$($overrideSource.Winget)"
     Write-Output "scoop_local_override_source=$($overrideSource.Scoop)"
     Write-Output 'winget_sources='
@@ -136,6 +140,7 @@ function Invoke-BootstrapModules {
     }
 
     $env:DOTFILES_REPO_ROOT = $repoRoot
+    $env:DOTFILES_BOOTSTRAP_CONFIG_PATH = $configEnvPath
     $env:DOTFILES_WINGET_MANIFEST_PATH = $wingetManifestPath
     $env:DOTFILES_SCOOP_LIST_PATH = $scoopListPath
     $env:DOTFILES_WINDOWS_ENABLE_WSL = if ($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1') { '1' } else { '0' }

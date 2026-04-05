@@ -159,15 +159,15 @@ Next commands to run inside each guest:
 
 macOS:
   cd "${macos_repo_path:-/Users/<vm-user>/dotfiles}"
+  cp config/macos.env.sample config/macos.env
   ./testenv/validation/run-static-checks.sh
   ./bootstrap/macos.sh --dry-run
-  DOTFILES_MAC_MACHINE_NAME=<vm-name> DOTFILES_GIT_USER_NAME=<name> DOTFILES_GIT_USER_EMAIL=<email> ./bootstrap/macos.sh
+  ./bootstrap/macos.sh
 
 Windows (run in elevated PowerShell):
   Set-Location "${windows_repo_path:-C:\Users\<vm-user>\dotfiles}"
+  Copy-Item config/windows.env.sample config/windows.env
   .\bootstrap\windows.ps1 -DryRun
-  \$env:DOTFILES_GIT_USER_NAME = "<name>"
-  \$env:DOTFILES_GIT_USER_EMAIL = "<email>"
   .\bootstrap\windows.ps1
 
 Clone behavior:

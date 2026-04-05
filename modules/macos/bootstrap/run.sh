@@ -6,6 +6,14 @@ SCRIPT_DIR="${0:A:h}"
 readonly SCRIPT_DIR
 REPO_ROOT="${DOTFILES_REPO_ROOT:-${SCRIPT_DIR:h:h:h}}"
 readonly REPO_ROOT
+readonly CONFIG_ENV_PATH="${DOTFILES_MACOS_CONFIG_PATH:-${REPO_ROOT}/config/macos.env}"
+
+source "${REPO_ROOT}/modules/shared/utils/load_env.sh"
+if load_dotfiles_env_file "${CONFIG_ENV_PATH}"; then
+  readonly BOOTSTRAP_CONFIG_SOURCE="${CONFIG_ENV_PATH}"
+else
+  readonly BOOTSTRAP_CONFIG_SOURCE='none'
+fi
 
 readonly HOMEBREW_PREFIX="${DOTFILES_HOMEBREW_PREFIX:-/opt/homebrew}"
 readonly DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/dotfiles}"
@@ -81,6 +89,7 @@ repo_root=${REPO_ROOT}
 bootstrap_module=${SCRIPT_DIR}
 homebrew_prefix=${HOMEBREW_PREFIX}
 brewfile=${brewfile_path}
+bootstrap_config_source=${BOOTSTRAP_CONFIG_SOURCE}
 local_override_source=$(resolve_local_override_source)
 dotfiles_data_home=${DOTFILES_DATA_HOME}
 zsh_completions_dir=${ZSH_COMPLETIONS_DIR}
@@ -101,6 +110,7 @@ run_modules() {
   trap 'rm -f "${DOTFILES_ACTIVE_BREWFILE_PATH:-}"' EXIT
 
   export DOTFILES_REPO_ROOT="${REPO_ROOT}"
+  export DOTFILES_BOOTSTRAP_CONFIG_PATH="${CONFIG_ENV_PATH}"
   export DOTFILES_HOMEBREW_PREFIX="${HOMEBREW_PREFIX}"
   export DOTFILES_DATA_HOME
   export DOTFILES_ZSH_COMPLETIONS_DIR="${ZSH_COMPLETIONS_DIR}"

@@ -6,6 +6,14 @@ SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
 readonly SCRIPT_DIR
 REPO_ROOT="${DOTFILES_REPO_ROOT:-$(CDPATH='' cd -- "${SCRIPT_DIR}/../../.." && pwd)}"
 readonly REPO_ROOT
+readonly CONFIG_ENV_PATH="${DOTFILES_LINUX_CONFIG_PATH:-${REPO_ROOT}/config/linux.env}"
+
+. "${REPO_ROOT}/modules/shared/utils/load_env.sh"
+if load_dotfiles_env_file "${CONFIG_ENV_PATH}"; then
+  readonly BOOTSTRAP_CONFIG_SOURCE="${CONFIG_ENV_PATH}"
+else
+  readonly BOOTSTRAP_CONFIG_SOURCE='none'
+fi
 
 readonly DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/dotfiles}"
 readonly GIT_PROMPT_DIR="${DOTFILES_GIT_PROMPT_DIR:-${DOTFILES_DATA_HOME}/git-prompt}"
@@ -85,6 +93,7 @@ print_config() {
 repo_root=${REPO_ROOT}
 bootstrap_module=${SCRIPT_DIR}
 package_list=${apt_list_path}
+bootstrap_config_source=${BOOTSTRAP_CONFIG_SOURCE}
 local_override_source=$(resolve_local_override_source)
 dotfiles_data_home=${DOTFILES_DATA_HOME}
 git_prompt_dir=${GIT_PROMPT_DIR}
@@ -105,6 +114,7 @@ run_modules() {
   trap 'rm -f "${DOTFILES_ACTIVE_APT_LIST_PATH:-}"' EXIT
 
   export DOTFILES_REPO_ROOT="${REPO_ROOT}"
+  export DOTFILES_BOOTSTRAP_CONFIG_PATH="${CONFIG_ENV_PATH}"
   export DOTFILES_DATA_HOME
   export DOTFILES_GIT_PROMPT_DIR="${GIT_PROMPT_DIR}"
   export DOTFILES_APT_PACKAGE_LIST_PATH="${apt_list_path}"

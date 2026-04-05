@@ -51,27 +51,8 @@ function Get-GitIdentity {
     }
   }
 
-  while ($true) {
-    $gitUserName = Read-Host 'Enter your name for use in git > '
-    $gitUserEmail = Read-Host 'Enter your email address for use in git > '
-    if (-not (Test-GitHubUserName -Name $gitUserName)) {
-      Write-Output 'The git user name must not be empty.'
-      continue
-    }
-
-    if (-not (Test-GitUserEmail -Email $gitUserEmail)) {
-      Write-Output 'The git user email must include "@".'
-      continue
-    }
-
-    $answer = Read-Host "Make sure name($gitUserName) and email($gitUserEmail) you input, is this ok? [Y/n] > "
-    if ($answer -eq '' -or $answer -match '^[Yy]$') {
-      return [ordered]@{
-        Name  = $gitUserName
-        Email = $gitUserEmail
-      }
-    }
-  }
+  $configPath = if ($env:DOTFILES_BOOTSTRAP_CONFIG_PATH) { $env:DOTFILES_BOOTSTRAP_CONFIG_PATH } else { 'config/windows.env' }
+  throw "Git identity is not configured. Set DOTFILES_GIT_USER_NAME and DOTFILES_GIT_USER_EMAIL in $configPath or in the environment."
 }
 
 $identity = Get-GitIdentity

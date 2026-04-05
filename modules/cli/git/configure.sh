@@ -31,47 +31,6 @@ validate_git_user_email() {
   return 1
 }
 
-prompt_for_git_identity() {
-  git_user_name=''
-  git_user_email=''
-  answer=''
-
-  while true; do
-    printf 'Enter your name for use in git > '
-    IFS= read -r git_user_name
-    printf 'Enter your email address for use in git > '
-    IFS= read -r git_user_email
-
-    if ! validate_git_user_name "${git_user_name}"; then
-      continue
-    fi
-
-    if ! validate_git_user_email "${git_user_email}"; then
-      continue
-    fi
-
-    while true; do
-      printf 'Make sure name(%s) and email(%s) you input, is this ok? [Y/n] > ' "${git_user_name}" "${git_user_email}"
-      read -r answer
-      case "${answer}" in
-        [Yy]|[Nn]|"")
-          break
-          ;;
-        *)
-          echo '[Y/n]'
-          ;;
-      esac
-    done
-
-    case "${answer}" in
-      [Yy]|"")
-        printf '%s\n%s\n' "${git_user_name}" "${git_user_email}"
-        return 0
-        ;;
-    esac
-  done
-}
-
 load_identity_from_git_config() {
   current_git_user_name="$(git config --global --get user.name 2> /dev/null || true)"
   current_git_user_email="$(git config --global --get user.email 2> /dev/null || true)"
@@ -136,9 +95,8 @@ main() {
     git_user_name="$(printf '%s\n' "${identity_lines}" | sed -n '1p')"
     git_user_email="$(printf '%s\n' "${identity_lines}" | sed -n '2p')"
   else
-    identity_lines="$(prompt_for_git_identity)"
-    git_user_name="$(printf '%s\n' "${identity_lines}" | sed -n '1p')"
-    git_user_email="$(printf '%s\n' "${identity_lines}" | sed -n '2p')"
+    echo "Git identity is not configured. Set DOTFILES_GIT_USER_NAME and DOTFILES_GIT_USER_EMAIL in ${DOTFILES_BOOTSTRAP_CONFIG_PATH:-config/<platform>.env} or in the environment." >&2
+    return 1
   fi
 
   validate_git_user_name "${git_user_name}"

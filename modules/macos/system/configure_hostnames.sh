@@ -12,42 +12,6 @@ readonly MACHINE_NAME_STATE_FILE="${DOTFILES_STATE_DIR}/macos-machine-name"
 
 source "${REPO_ROOT}/modules/shared/utils/posix.sh"
 
-prompt_for_machine_name() {
-  local machine_name
-  local answer
-
-  while true; do
-    echo 'Name your machine. (LocalHostName and ComputerName)'
-    echo 'This is used by Bonjour and AppleTalk.'
-    printf '> '
-    read machine_name
-
-    if ! validate_rfc952_hostname "${machine_name}"; then
-      continue
-    fi
-
-    while true; do
-      printf 'Make sure machine name(%s) you input, is this ok? [Y/n] > ' "${machine_name}"
-      read answer
-      case "${answer}" in
-        [Yy]|[Nn]|"")
-          break
-          ;;
-        *)
-          echo '[Y/n]'
-          ;;
-      esac
-    done
-
-    case "${answer}" in
-      [Yy]|"")
-        printf '%s\n' "${machine_name}"
-        return 0
-        ;;
-    esac
-  done
-}
-
 load_machine_name_from_state() {
   if [ ! -f "${MACHINE_NAME_STATE_FILE}" ]; then
     return 1
@@ -91,7 +55,8 @@ main() {
   elif machine_name="$(load_machine_name_from_state)"; then
     validate_rfc952_hostname "${machine_name}"
   else
-    machine_name="$(prompt_for_machine_name)"
+    echo "macOS machine name is not configured. Set DOTFILES_MAC_MACHINE_NAME in ${DOTFILES_BOOTSTRAP_CONFIG_PATH:-config/macos.env} or in the environment." >&2
+    return 1
   fi
 
   if current_machine_name_matches "${machine_name}"; then
