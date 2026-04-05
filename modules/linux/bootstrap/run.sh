@@ -15,6 +15,8 @@ else
   readonly BOOTSTRAP_CONFIG_SOURCE='none'
 fi
 
+. "${REPO_ROOT}/modules/shared/utils/sudo.sh"
+
 readonly DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/dotfiles}"
 readonly GIT_PROMPT_DIR="${DOTFILES_GIT_PROMPT_DIR:-${DOTFILES_DATA_HOME}/git-prompt}"
 readonly PACKAGE_COMPOSE_HELPER="${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh"
@@ -98,10 +100,16 @@ local_override_source=$(resolve_local_override_source)
 dotfiles_data_home=${DOTFILES_DATA_HOME}
 git_prompt_dir=${GIT_PROMPT_DIR}
 linux_auto_update=${DOTFILES_LINUX_ENABLE_AUTO_UPDATE:-0}
+requires_sudo=true
 apt_sources=
 EOF
   "${PACKAGE_COMPOSE_HELPER}" --print-sources
   rm -f "${apt_list_path}"
+}
+
+validate_linux_privileges() {
+  prime_sudo_session 'sudo privileges are required for the Linux bootstrap.'
+  start_sudo_keepalive
 }
 
 run_modules() {
@@ -111,7 +119,7 @@ run_modules() {
   apt_list_path="$(resolve_apt_list)"
   progress_success 'Resolved Linux package list.'
   export DOTFILES_ACTIVE_APT_LIST_PATH="${apt_list_path}"
-  trap 'rm -f "${DOTFILES_ACTIVE_APT_LIST_PATH:-}"' EXIT
+  trap 'stop_sudo_keepalive; rm -f "${DOTFILES_ACTIVE_APT_LIST_PATH:-}"' EXIT
 
   export DOTFILES_REPO_ROOT="${REPO_ROOT}"
   export DOTFILES_BOOTSTRAP_CONFIG_PATH="${CONFIG_ENV_PATH}"
@@ -119,6 +127,7 @@ run_modules() {
   export DOTFILES_GIT_PROMPT_DIR="${GIT_PROMPT_DIR}"
   export DOTFILES_APT_PACKAGE_LIST_PATH="${apt_list_path}"
 
+  run_step 'Validate Linux privileges' validate_linux_privileges
   run_step 'Install Linux packages' /bin/bash "${PACKAGE_INSTALL_MODULE}"
   run_step 'Install Bash shell assets' /bin/bash "${BASH_INSTALL_MODULE}"
   run_step 'Register Linux update job' /bin/bash "${UPDATE_MODULE}"

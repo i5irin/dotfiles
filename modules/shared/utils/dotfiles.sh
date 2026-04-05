@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+source "${${(%):-%N}:A:h}/sudo.sh"
+
 default_homebrew_prefix() {
   printf '%s\n' '/opt/homebrew'
 }
@@ -21,12 +23,7 @@ is_macos_admin_user() {
 }
 
 prime_macos_sudo_session() {
-  if sudo -n true > /dev/null 2>&1; then
-    return 0
-  fi
-
-  echo 'Administrator privileges are required for the macOS bootstrap.' >&2
-  sudo -v
+  prime_sudo_session 'Administrator privileges are required for the macOS bootstrap.'
 }
 
 ensure_homebrew_shellenv() {

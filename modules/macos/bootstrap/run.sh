@@ -110,6 +110,7 @@ validate_macos_privileges() {
   fi
 
   prime_macos_sudo_session
+  start_sudo_keepalive
 }
 
 run_modules() {
@@ -119,7 +120,7 @@ run_modules() {
   brewfile_path="$(resolve_brewfile)"
   progress_success 'Resolved macOS package catalog.'
   export DOTFILES_ACTIVE_BREWFILE_PATH="${brewfile_path}"
-  trap 'rm -f "${DOTFILES_ACTIVE_BREWFILE_PATH:-}"' EXIT
+  trap 'stop_sudo_keepalive; rm -f "${DOTFILES_ACTIVE_BREWFILE_PATH:-}"' EXIT
 
   export DOTFILES_REPO_ROOT="${REPO_ROOT}"
   export DOTFILES_BOOTSTRAP_CONFIG_PATH="${CONFIG_ENV_PATH}"
