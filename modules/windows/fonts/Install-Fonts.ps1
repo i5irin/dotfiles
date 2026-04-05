@@ -79,15 +79,43 @@ function Register-FontFile {
     [System.IO.FileInfo]$FontFile
   )
 
-  $glyphTypeface = [Windows.Media.GlyphTypeface]::new($FontFile.FullName)
-  $familyName = $glyphTypeface.Win32FamilyNames['en-us']
-  if (-not $familyName) {
-    $familyName = @($glyphTypeface.Win32FamilyNames.Values | Select-Object -First 1)[0]
-  }
+  $familyName = $null
+  $faceName = $null
 
-  $faceName = $glyphTypeface.Win32FaceNames['en-us']
-  if (-not $faceName) {
-    $faceName = @($glyphTypeface.Win32FaceNames.Values | Select-Object -First 1)[0]
+  try {
+    $glyphTypeface = [Windows.Media.GlyphTypeface]::new($FontFile.FullName)
+    $familyName = $glyphTypeface.Win32FamilyNames['en-us']
+    if (-not $familyName) {
+      $familyName = @($glyphTypeface.Win32FamilyNames.Values | Select-Object -First 1)[0]
+    }
+
+    $faceName = $glyphTypeface.Win32FaceNames['en-us']
+    if (-not $faceName) {
+      $faceName = @($glyphTypeface.Win32FaceNames.Values | Select-Object -First 1)[0]
+    }
+  } catch {
+    $baseName = $FontFile.BaseName
+    $styleName = $null
+
+    if ($baseName -match '^(FiraCodeNerdFontMono)(?:-(.+))?$') {
+      $familyName = 'FiraCode Nerd Font Mono'
+      $styleName = $matches[2]
+    } elseif ($baseName -match '^(FiraCodeNerdFontPropo)(?:-(.+))?$') {
+      $familyName = 'FiraCode Nerd Font Propo'
+      $styleName = $matches[2]
+    } elseif ($baseName -match '^(FiraCodeNerdFont)(?:-(.+))?$') {
+      $familyName = 'FiraCode Nerd Font'
+      $styleName = $matches[2]
+    } elseif ($baseName -match '^(FiraCode)(?:-(.+))?$') {
+      $familyName = 'Fira Code'
+      $styleName = $matches[2]
+    } else {
+      $familyName = $baseName
+    }
+
+    if ($styleName) {
+      $faceName = ($styleName -replace '([a-z])([A-Z])', '$1 $2')
+    }
   }
 
   $typeLabel = if ($FontFile.Extension -ieq '.otf') { 'OpenType' } else { 'TrueType' }
