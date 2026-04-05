@@ -9,10 +9,15 @@ if (Get-Module -ListAvailable -Name PSReadLine) {
   Import-Module PSReadLine -ErrorAction SilentlyContinue | Out-Null
   Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 
-  if ((Get-Command Set-PSReadLineOption -ErrorAction SilentlyContinue)) {
+  $setPSReadLineOption = Get-Command Set-PSReadLineOption -ErrorAction SilentlyContinue
+  if ($setPSReadLineOption) {
     Set-PSReadLineOption -BellStyle None -ErrorAction SilentlyContinue
-    Set-PSReadLineOption -PredictionSource History -ErrorAction SilentlyContinue
-    Set-PSReadLineOption -PredictionViewStyle ListView -ErrorAction SilentlyContinue
+    if ($setPSReadLineOption.Parameters.ContainsKey('PredictionSource')) {
+      Set-PSReadLineOption -PredictionSource History -ErrorAction SilentlyContinue
+    }
+    if ($setPSReadLineOption.Parameters.ContainsKey('PredictionViewStyle')) {
+      Set-PSReadLineOption -PredictionViewStyle ListView -ErrorAction SilentlyContinue
+    }
   }
 }
 

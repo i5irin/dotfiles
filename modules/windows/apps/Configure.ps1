@@ -38,6 +38,4 @@ Invoke-OptionalCommand -CommandName 'nvim' -SkipMessage 'Skip Neovim configurati
   & (Join-Path $repoRoot 'modules/cli/neovim/configure-windows.ps1')
 }
 
-Invoke-OptionalCommand -CommandName 'code' -SkipMessage 'Skip Visual Studio Code configuration because code is not installed.' -ScriptBlock {
-  & (Join-Path $repoRoot 'modules/cli/vscode/configure-windows.ps1')
-}
+& (Join-Path $repoRoot 'modules/cli/vscode/configure-windows.ps1')

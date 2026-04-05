@@ -13,7 +13,7 @@
   "liveServer.settings.donotShowInfoMsg": true,
   "explorer.confirmDelete": false,
   "editor.bracketPairColorization.enabled": true,
-  "terminal.integrated.fontFamily": "'FiraCode Nerd Font', 'Fira Code', monospace",
+  "terminal.integrated.fontFamily": "'FiraCode Nerd Font Mono', 'Fira Code', monospace",
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.defaultProfile.windows": "PowerShell",

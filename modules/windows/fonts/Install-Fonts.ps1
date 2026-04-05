@@ -13,6 +13,25 @@ $fontTargetDir = if ($env:DOTFILES_WINDOWS_FONT_TARGET_DIR) {
 
 $fontRegistryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
 
+Add-Type -AssemblyName PresentationCore
+Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+
+public static class DotfilesFontBroadcast {
+  [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+  public static extern IntPtr SendMessageTimeout(
+    IntPtr hWnd,
+    uint Msg,
+    UIntPtr wParam,
+    string lParam,
+    uint fuFlags,
+    uint uTimeout,
+    out UIntPtr lpdwResult
+  );
+}
+'@
+
 function Test-FontInstalled {
   param(
     [Parameter(Mandatory = $true)]
@@ -28,11 +47,31 @@ function Register-FontFile {
     [System.IO.FileInfo]$FontFile
   )
 
-  $displayName = [System.IO.Path]::GetFileNameWithoutExtension($FontFile.Name).Replace('-', ' ')
+  $glyphTypeface = [Windows.Media.GlyphTypeface]::new($FontFile.FullName)
+  $familyName = $glyphTypeface.Win32FamilyNames['en-us']
+  if (-not $familyName) {
+    $familyName = @($glyphTypeface.Win32FamilyNames.Values | Select-Object -First 1)[0]
+  }
+
+  $faceName = $glyphTypeface.Win32FaceNames['en-us']
+  if (-not $faceName) {
+    $faceName = @($glyphTypeface.Win32FaceNames.Values | Select-Object -First 1)[0]
+  }
+
   $typeLabel = if ($FontFile.Extension -ieq '.otf') { 'OpenType' } else { 'TrueType' }
+  $displayName = if ($faceName -and $faceName -ne 'Regular') {
+    "$familyName $faceName"
+  } else {
+    $familyName
+  }
 
   New-Item -Path $fontRegistryPath -Force | Out-Null
   New-ItemProperty -Path $fontRegistryPath -Name "$displayName ($typeLabel)" -Value $FontFile.Name -PropertyType String -Force | Out-Null
+}
+
+function Broadcast-FontChange {
+  $result = [UIntPtr]::Zero
+  [void][DotfilesFontBroadcast]::SendMessageTimeout([IntPtr]0xffff, 0x001D, [UIntPtr]::Zero, $null, 0x0002, 1000, [ref]$result)
 }
 
 function Install-FontArchive {
@@ -73,3 +112,4 @@ New-Item -ItemType Directory -Path $fontTargetDir -Force | Out-Null
 
 Install-FontArchive -Label 'Fira Code' -Url $firaCodeUrl -Pattern 'FiraCode-*.ttf' -ArchiveName 'FiraCode.zip'
 Install-FontArchive -Label 'FiraCode Nerd Font' -Url $firaCodeNerdFontUrl -Pattern 'FiraCodeNerdFont-*.ttf' -ArchiveName 'FiraCodeNerd.zip'
+Broadcast-FontChange

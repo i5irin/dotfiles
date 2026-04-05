@@ -12,12 +12,46 @@ $settingsAsset = Join-Path $repoRoot 'assets/cli/vscode/settings.json'
 $extensionsFile = Join-Path $repoRoot 'assets/cli/vscode/extensions'
 $userDir = Join-Path $env:APPDATA 'Code\User'
 $settingsPath = Join-Path $userDir 'settings.json'
-$installedExtensions = @(code --list-extensions 2>$null)
+
+function Resolve-CodeCommand {
+  $command = Get-Command code -ErrorAction SilentlyContinue
+  if ($command) {
+    return $command.Source
+  }
+
+  $candidates = @(
+    (Join-Path $env:LOCALAPPDATA 'Programs\Microsoft VS Code\bin\code.cmd'),
+    (Join-Path ${env:ProgramFiles} 'Microsoft VS Code\bin\code.cmd'),
+    (Join-Path ${env:ProgramFiles(x86)} 'Microsoft VS Code\bin\code.cmd')
+  )
+
+  foreach ($candidate in $candidates) {
+    if ($candidate -and (Test-Path -LiteralPath $candidate)) {
+      return $candidate
+    }
+  }
+
+  return $null
+}
+
+$codeCommand = Resolve-CodeCommand
+$installedExtensions = @()
+if ($codeCommand) {
+  $installedExtensions = @(& $codeCommand --list-extensions 2>$null)
+}
 
 Get-Content -LiteralPath $extensionsFile | ForEach-Object {
   $extension = $_.Trim()
-  if ($extension -and $installedExtensions -notcontains $extension) {
-    code --install-extension $extension | Out-Null
+  if (-not $extension) {
+    return
+  }
+
+  if (-not $codeCommand) {
+    return
+  }
+
+  if ($installedExtensions -notcontains $extension) {
+    & $codeCommand --install-extension $extension | Out-Null
   }
 }
 
