@@ -13,6 +13,7 @@ Import-Module $sharedModulePath -Force
 
 $configEnvPath = if ($env:DOTFILES_WINDOWS_CONFIG_PATH) { $env:DOTFILES_WINDOWS_CONFIG_PATH } else { Join-Path $repoRoot 'config/windows.env' }
 $bootstrapConfigSource = if (Import-DotfilesEnvFile -Path $configEnvPath) { $configEnvPath } else { 'none' }
+$includeOptionalPackages = $env:DOTFILES_INCLUDE_WINDOWS_OPTIONAL_PACKAGES -eq '1'
 
 $wingetComposer = Join-Path $repoRoot 'modules/windows/packages/Compose-WingetManifest.ps1'
 $packagesModule = Join-Path $repoRoot 'modules/windows/packages/Install-Packages.ps1'
@@ -110,6 +111,7 @@ function Write-DryRunConfiguration {
     Write-Output "is_windows_host=$(Test-DotfilesWindowsPlatform)"
     Write-Output "is_admin=$(Test-DotfilesAdministrator)"
     Write-Output "enable_wsl=$($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1')"
+    Write-Output "include_optional_packages=$includeOptionalPackages"
     Write-Output "winget_manifest=$wingetManifestPath"
     Write-Output "bootstrap_config_source=$bootstrapConfigSource"
     Write-Output "winget_local_override_source=$($overrideSource.Winget)"
@@ -134,6 +136,7 @@ function Invoke-BootstrapModules {
     $env:DOTFILES_BOOTSTRAP_CONFIG_PATH = $configEnvPath
     $env:DOTFILES_WINGET_MANIFEST_PATH = $wingetManifestPath
     $env:DOTFILES_WINDOWS_ENABLE_WSL = if ($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1') { '1' } else { '0' }
+    $env:DOTFILES_INCLUDE_WINDOWS_OPTIONAL_PACKAGES = if ($includeOptionalPackages) { '1' } else { '0' }
 
     Invoke-BootstrapStep -Label 'Install Windows packages' -ScriptBlock { & $packagesModule }
     Invoke-BootstrapStep -Label 'Install terminal/editor fonts' -ScriptBlock { & $fontsModule }

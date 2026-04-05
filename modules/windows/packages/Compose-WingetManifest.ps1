@@ -10,6 +10,7 @@ Set-StrictMode -Version Latest
 $baseManifestPath = Join-Path $PSScriptRoot 'Winget.base.json'
 $optionalManifestPath = Join-Path $PSScriptRoot 'Winget.optional.json'
 $localOverridePath = Join-Path $PSScriptRoot 'local.Winget.json'
+$includeOptionalPackages = $env:DOTFILES_INCLUDE_WINDOWS_OPTIONAL_PACKAGES -eq '1'
 
 function Show-Usage {
   @'
@@ -38,7 +39,10 @@ function Get-WingetPackageIdentifiers {
 }
 
 function Resolve-Sources {
-  $sources = @($baseManifestPath, $optionalManifestPath)
+  $sources = @($baseManifestPath)
+  if ($includeOptionalPackages) {
+    $sources += $optionalManifestPath
+  }
   if (Test-Path -LiteralPath $localOverridePath) {
     $sources += $localOverridePath
   }

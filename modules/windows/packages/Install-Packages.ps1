@@ -19,16 +19,37 @@ function Ensure-WingetAvailable {
   }
 }
 
+function Test-PendingReboot {
+  $pendingKeys = @(
+    'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending',
+    'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired'
+  )
+
+  foreach ($pendingKey in $pendingKeys) {
+    if (Test-Path -LiteralPath $pendingKey) {
+      return $true
+    }
+  }
+
+  return $false
+}
+
 function Install-WingetPackages {
   $manifest = Get-Content -LiteralPath $wingetManifestPath -Raw | ConvertFrom-Json
   foreach ($package in $manifest.Sources[0].Packages) {
-    winget install --id $package.PackageIdentifier --exact --accept-source-agreements --accept-package-agreements
+    winget install --id $package.PackageIdentifier --exact --accept-source-agreements --accept-package-agreements --disable-interactivity
   }
 }
 
 if ($enableWSL) {
   wsl --install
+  if (Test-PendingReboot) {
+    throw 'WSL installation requested a reboot. Restart Windows and rerun bootstrap/windows.ps1 before installing additional packages.'
+  }
 }
 
 Ensure-WingetAvailable
+if (Test-PendingReboot) {
+  throw 'Windows has a pending reboot. Restart Windows and rerun bootstrap/windows.ps1 before continuing.'
+}
 Install-WingetPackages
