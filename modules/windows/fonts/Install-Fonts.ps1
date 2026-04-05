@@ -25,7 +25,11 @@ $fontRegistryPath = if ($fontTargetDir -like "$(Join-Path $env:WINDIR 'Fonts')*"
   'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
 }
 
-Add-Type -AssemblyName PresentationCore
+$fontRegistryCleanupPaths = @(
+  'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts',
+  'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
+)
+
 if (-not ('DotfilesFontBroadcast' -as [type])) {
   Add-Type @'
 using System;
@@ -79,42 +83,26 @@ function Register-FontFile {
     [System.IO.FileInfo]$FontFile
   )
 
-  $familyName = $null
+  $baseName = $FontFile.BaseName
+  $familyName = $baseName
   $faceName = $null
 
-  try {
-    $glyphTypeface = [Windows.Media.GlyphTypeface]::new($FontFile.FullName)
-    $familyName = $glyphTypeface.Win32FamilyNames['en-us']
-    if (-not $familyName) {
-      $familyName = @($glyphTypeface.Win32FamilyNames.Values | Select-Object -First 1)[0]
+  if ($baseName -match '^(FiraCodeNerdFontMono|FiraCodeNerdFontPropo|FiraCodeNerdFont|FiraCode)(?:-(Bold|Light|Medium|Regular|Retina|SemiBold|VF))?$') {
+    switch ($matches[1]) {
+      'FiraCodeNerdFontMono' { $familyName = 'FiraCode Nerd Font Mono' }
+      'FiraCodeNerdFontPropo' { $familyName = 'FiraCode Nerd Font Propo' }
+      'FiraCodeNerdFont' { $familyName = 'FiraCode Nerd Font' }
+      'FiraCode' { $familyName = 'Fira Code' }
     }
 
-    $faceName = $glyphTypeface.Win32FaceNames['en-us']
-    if (-not $faceName) {
-      $faceName = @($glyphTypeface.Win32FaceNames.Values | Select-Object -First 1)[0]
-    }
-  } catch {
-    $baseName = $FontFile.BaseName
-    $styleName = $null
-
-    if ($baseName -match '^(FiraCodeNerdFontMono)(?:-(.+))?$') {
-      $familyName = 'FiraCode Nerd Font Mono'
-      $styleName = $matches[2]
-    } elseif ($baseName -match '^(FiraCodeNerdFontPropo)(?:-(.+))?$') {
-      $familyName = 'FiraCode Nerd Font Propo'
-      $styleName = $matches[2]
-    } elseif ($baseName -match '^(FiraCodeNerdFont)(?:-(.+))?$') {
-      $familyName = 'FiraCode Nerd Font'
-      $styleName = $matches[2]
-    } elseif ($baseName -match '^(FiraCode)(?:-(.+))?$') {
-      $familyName = 'Fira Code'
-      $styleName = $matches[2]
-    } else {
-      $familyName = $baseName
-    }
-
-    if ($styleName) {
-      $faceName = ($styleName -replace '([a-z])([A-Z])', '$1 $2')
+    switch ($matches[2]) {
+      'Bold' { $faceName = 'Bold' }
+      'Light' { $faceName = 'Light' }
+      'Medium' { $faceName = 'Medium' }
+      'Regular' { $faceName = 'Regular' }
+      'Retina' { $faceName = 'Retina' }
+      'SemiBold' { $faceName = 'SemiBold' }
+      'VF' { $faceName = 'Variable' }
     }
   }
 
@@ -127,6 +115,25 @@ function Register-FontFile {
 
   New-Item -Path $fontRegistryPath -Force | Out-Null
   New-ItemProperty -Path $fontRegistryPath -Name "$displayName ($typeLabel)" -Value $FontFile.Name -PropertyType String -Force | Out-Null
+}
+
+function Remove-ExistingFontRegistrations {
+  foreach ($registryPath in $fontRegistryCleanupPaths) {
+    if (-not (Test-Path -LiteralPath $registryPath)) {
+      continue
+    }
+
+    $properties = Get-ItemProperty -LiteralPath $registryPath
+    foreach ($property in $properties.PSObject.Properties) {
+      if ($property.MemberType -ne 'NoteProperty') {
+        continue
+      }
+
+      if ($property.Name -like 'Fira*' -or ($property.Value -is [string] -and $property.Value -like 'Fira*')) {
+        Remove-ItemProperty -LiteralPath $registryPath -Name $property.Name -ErrorAction SilentlyContinue
+      }
+    }
+  }
 }
 
 function Broadcast-FontChange {
@@ -179,6 +186,7 @@ function Install-FontArchive {
 }
 
 New-Item -ItemType Directory -Path $fontTargetDir -Force | Out-Null
+Remove-ExistingFontRegistrations
 
 Install-FontArchive -Label 'Fira Code' -Url $firaCodeUrl -Pattern 'FiraCode-*.ttf' -ArchiveName 'FiraCode.zip'
 if (Test-AllFontsInstalled -Patterns @('FiraCodeNerdFont-*.ttf', 'FiraCodeNerdFontMono-*.ttf')) {
@@ -186,4 +194,10 @@ if (Test-AllFontsInstalled -Patterns @('FiraCodeNerdFont-*.ttf', 'FiraCodeNerdFo
 } else {
   Install-FontArchive -Label 'FiraCode Nerd Font' -Url $firaCodeNerdFontUrl -Pattern 'FiraCodeNerdFont*.ttf' -ArchiveName 'FiraCodeNerd.zip'
 }
+
+Get-ChildItem -LiteralPath $fontTargetDir -Filter 'FiraCode*.ttf' -ErrorAction SilentlyContinue | ForEach-Object {
+  Import-FontResource -Path $_.FullName
+  Register-FontFile -FontFile $_
+}
+
 Broadcast-FontChange
