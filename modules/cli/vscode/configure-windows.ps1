@@ -55,4 +55,4 @@ Get-Content -LiteralPath $extensionsFile | ForEach-Object {
   }
 }
 
-Set-DotfilesSymbolicLink -LinkPath $settingsPath -TargetPath $settingsAsset
+Set-DotfilesManagedFile -Path $settingsPath -SourcePath $settingsAsset

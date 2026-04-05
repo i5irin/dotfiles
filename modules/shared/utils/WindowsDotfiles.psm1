@@ -53,6 +53,35 @@ function Set-DotfilesSymbolicLink {
   New-Item -ItemType SymbolicLink -Path $LinkPath -Target $TargetPath -Force | Out-Null
 }
 
+function Set-DotfilesManagedFile {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path,
+    [Parameter(Mandatory = $true)]
+    [string]$SourcePath
+  )
+
+  $parentPath = Split-Path -Parent $Path
+  if ($parentPath -and -not (Test-Path -LiteralPath $parentPath)) {
+    New-Item -ItemType Directory -Path $parentPath -Force | Out-Null
+  }
+
+  if (Test-Path -LiteralPath $Path) {
+    $existingItem = Get-Item -LiteralPath $Path -Force
+    if ($existingItem.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+      Remove-Item -LiteralPath $Path -Force -Recurse
+    } else {
+      $sourceHash = (Get-FileHash -LiteralPath $SourcePath -Algorithm SHA256).Hash
+      $targetHash = (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash
+      if ($sourceHash -eq $targetHash) {
+        return
+      }
+    }
+  }
+
+  Copy-Item -LiteralPath $SourcePath -Destination $Path -Force
+}
+
 function Resolve-DotfilesFirstExistingPath {
   param(
     [Parameter(Mandatory = $true)]
@@ -114,4 +143,4 @@ function Import-DotfilesEnvFile {
   return $true
 }
 
-Export-ModuleMember -Function Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey, Import-DotfilesEnvFile
+Export-ModuleMember -Function Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Set-DotfilesManagedFile, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey, Import-DotfilesEnvFile

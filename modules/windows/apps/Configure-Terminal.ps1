@@ -39,4 +39,4 @@ if (-not $settingsPath) {
   exit 0
 }
 
-Set-DotfilesSymbolicLink -LinkPath $settingsPath -TargetPath $settingsAsset
+Set-DotfilesManagedFile -Path $settingsPath -SourcePath $settingsAsset

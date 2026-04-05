@@ -5,15 +5,8 @@
   "profiles": {
     "defaults": {
       "colorScheme": "Catppuccin Frappe",
-      "font": {
-        "face": "FiraCode Nerd Font",
-        "size": 12,
-        "features": {
-          "calt": 1,
-          "liga": 1,
-          "dlig": 1
-        }
-      },
+      "fontFace": "FiraCode Nerd Font",
+      "fontSize": 12,
       "historySize": 50000,
       "padding": "10, 10, 10, 10",
       "scrollbarState": "visible",
