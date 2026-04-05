@@ -33,6 +33,19 @@ have_font_files() {
   find "${target_dir}" -maxdepth 1 -type f \( -name "${pattern}" -o -name "${pattern%.ttf}.otf" \) | grep -q .
 }
 
+have_all_font_patterns() {
+  target_dir="$1"
+  shift
+
+  for pattern in "$@"; do
+    if ! have_font_files "${target_dir}" "${pattern}"; then
+      return 1
+    fi
+  done
+
+  return 0
+}
+
 install_font_archive() {
   label="$1"
   url="$2"
@@ -76,7 +89,13 @@ main() {
   mkdir -p "${target_dir}"
 
   install_font_archive 'Fira Code' "${FIRA_CODE_URL}" "${target_dir}" 'FiraCode-*.ttf' 'FiraCode.zip'
-  install_font_archive 'FiraCode Nerd Font' "${FIRA_CODE_NERD_FONT_URL}" "${target_dir}" 'FiraCodeNerdFont-*.ttf' 'FiraCodeNerd.zip'
+
+  if have_all_font_patterns "${target_dir}" 'FiraCodeNerdFont-*.ttf' 'FiraCodeNerdFontMono-*.ttf'; then
+    printf 'Skip %s font installation because matching files already exist in %s.\n' 'FiraCode Nerd Font' "${target_dir}"
+  else
+    install_font_archive 'FiraCode Nerd Font' "${FIRA_CODE_NERD_FONT_URL}" "${target_dir}" 'FiraCodeNerdFont*.ttf' 'FiraCodeNerd.zip'
+  fi
+
   refresh_font_cache "${target_dir}"
 }
 

@@ -10,6 +10,29 @@ readonly REPO_ROOT
 readonly VSCODE_SETTINGS_ASSET="${REPO_ROOT}/assets/cli/vscode/settings.json"
 readonly VSCODE_EXTENSIONS_FILE="${REPO_ROOT}/assets/cli/vscode/extensions"
 
+resolve_code_command() {
+  if command -v code > /dev/null 2>&1; then
+    command -v code
+    return 0
+  fi
+
+  case "$(uname -s)" in
+    Darwin)
+      if [ -x '/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code' ]; then
+        printf '%s\n' '/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code'
+        return 0
+      fi
+
+      if [ -x "${HOME}/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]; then
+        printf '%s\n' "${HOME}/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+        return 0
+      fi
+      ;;
+  esac
+
+  return 1
+}
+
 resolve_vscode_user_dir() {
   if [ -n "${DOTFILES_VSCODE_USER_DIR:-}" ]; then
     printf '%s\n' "${DOTFILES_VSCODE_USER_DIR}"
@@ -27,8 +50,13 @@ resolve_vscode_user_dir() {
 install_extensions() {
   local extension
   local installed_extensions
+  local code_command
 
-  installed_extensions="$(code --list-extensions 2> /dev/null || true)"
+  if ! code_command="$(resolve_code_command)"; then
+    return 0
+  fi
+
+  installed_extensions="$("${code_command}" --list-extensions 2> /dev/null || true)"
   while IFS= read -r extension; do
     if [ -z "${extension}" ]; then
       continue
@@ -38,7 +66,7 @@ install_extensions() {
       continue
     fi
 
-    code --install-extension "${extension}" > /dev/null
+    "${code_command}" --install-extension "${extension}" > /dev/null
   done < "${VSCODE_EXTENSIONS_FILE}"
 }
 

@@ -41,6 +41,21 @@ function Test-FontInstalled {
   return @(Get-ChildItem -LiteralPath $fontTargetDir -Filter $Pattern -ErrorAction SilentlyContinue).Count -gt 0
 }
 
+function Test-AllFontsInstalled {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$Patterns
+  )
+
+  foreach ($pattern in $Patterns) {
+    if (-not (Test-FontInstalled -Pattern $pattern)) {
+      return $false
+    }
+  }
+
+  return $true
+}
+
 function Register-FontFile {
   param(
     [Parameter(Mandatory = $true)]
@@ -111,5 +126,9 @@ function Install-FontArchive {
 New-Item -ItemType Directory -Path $fontTargetDir -Force | Out-Null
 
 Install-FontArchive -Label 'Fira Code' -Url $firaCodeUrl -Pattern 'FiraCode-*.ttf' -ArchiveName 'FiraCode.zip'
-Install-FontArchive -Label 'FiraCode Nerd Font' -Url $firaCodeNerdFontUrl -Pattern 'FiraCodeNerdFont-*.ttf' -ArchiveName 'FiraCodeNerd.zip'
+if (Test-AllFontsInstalled -Patterns @('FiraCodeNerdFont-*.ttf', 'FiraCodeNerdFontMono-*.ttf')) {
+  Write-Output 'Skip FiraCode Nerd Font because matching Regular and Mono fonts already exist.'
+} else {
+  Install-FontArchive -Label 'FiraCode Nerd Font' -Url $firaCodeNerdFontUrl -Pattern 'FiraCodeNerdFont*.ttf' -ArchiveName 'FiraCodeNerd.zip'
+}
 Broadcast-FontChange

@@ -6,11 +6,12 @@
     "defaults": {
       "colorScheme": "Catppuccin Frappe",
       "font": {
-        "face": "FiraCode Nerd Font Mono",
+        "face": "FiraCode Nerd Font",
         "size": 12,
         "features": {
           "calt": 1,
-          "liga": 1
+          "liga": 1,
+          "dlig": 1
         }
       },
       "historySize": 50000,
