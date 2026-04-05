@@ -4,6 +4,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = $env:DOTFILES_REPO_ROOT
 $wingetManifestPath = $env:DOTFILES_WINGET_MANIFEST_PATH
 $enableWSL = $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1'
+$wslDistroName = if ($env:DOTFILES_WINDOWS_WSL_DISTRO) { $env:DOTFILES_WINDOWS_WSL_DISTRO } else { 'Ubuntu' }
 
 if (-not $repoRoot) {
   throw 'DOTFILES_REPO_ROOT is required.'
@@ -17,6 +18,30 @@ function Ensure-WingetAvailable {
   if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     throw 'winget was not found. Install App Installer or use a Windows image that already includes winget.'
   }
+}
+
+function Get-InstalledWslDistros {
+  $output = & wsl --list --quiet 2>$null
+  if (-not $output) {
+    return @()
+  }
+
+  return @($output | ForEach-Object { "$_".Trim() } | Where-Object { $_ })
+}
+
+function Ensure-WslInstalled {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$DistroName
+  )
+
+  $installedDistros = Get-InstalledWslDistros
+  if ($installedDistros -contains $DistroName) {
+    Write-Output "Skip WSL distro installation because $DistroName is already installed."
+    return
+  }
+
+  & wsl --install --distribution $DistroName --no-launch
 }
 
 function Test-PendingReboot {
@@ -42,9 +67,9 @@ function Install-WingetPackages {
 }
 
 if ($enableWSL) {
-  wsl --install
+  Ensure-WslInstalled -DistroName $wslDistroName
   if (Test-PendingReboot) {
-    throw 'WSL installation requested a reboot. Restart Windows and rerun bootstrap/windows.ps1 before installing additional packages.'
+    throw "WSL installation requested a reboot. Restart Windows and rerun bootstrap/windows.ps1 before installing additional packages. Initialize the $wslDistroName distro manually after reboot."
   }
 }
 

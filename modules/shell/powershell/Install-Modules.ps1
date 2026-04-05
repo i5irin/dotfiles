@@ -12,6 +12,20 @@ function Ensure-TrustedPowerShellGallery {
   }
 }
 
+function Ensure-NuGetProvider {
+  $provider = Get-PackageProvider -Name NuGet -ListAvailable -ErrorAction SilentlyContinue
+  if ($provider) {
+    return
+  }
+
+  if (-not (Get-Command Install-PackageProvider -ErrorAction SilentlyContinue)) {
+    Write-Warning 'Install-PackageProvider is unavailable. Skip NuGet bootstrap.'
+    return
+  }
+
+  Install-PackageProvider -Name NuGet -MinimumVersion '2.8.5.201' -Scope CurrentUser -Force -ForceBootstrap | Out-Null
+}
+
 function Ensure-ModuleInstalled {
   param(
     [Parameter(Mandatory = $true)]
@@ -29,6 +43,7 @@ function Ensure-ModuleInstalled {
   }
 
   Ensure-TrustedPowerShellGallery
+  Ensure-NuGetProvider
   Install-Module -Name $ModuleName -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
 }
 
