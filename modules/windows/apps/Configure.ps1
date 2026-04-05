@@ -28,6 +28,8 @@ Invoke-OptionalCommand -CommandName 'git' -SkipMessage 'Skip Git configuration b
   & (Join-Path $repoRoot 'modules/cli/git/configure-windows.ps1')
 }
 
+& (Join-Path $repoRoot 'modules/windows/apps/Configure-Terminal.ps1')
+
 Invoke-OptionalCommand -CommandName 'starship' -SkipMessage 'Skip Starship configuration because starship is not installed.' -ScriptBlock {
   & (Join-Path $repoRoot 'modules/cli/starship/configure-windows.ps1')
 }

@@ -88,3 +88,8 @@ fi
 if [ -f "${DOTFILES_REPO_ROOT}/modules/shell/bash/.bashrc.local" ]; then
   . "${DOTFILES_REPO_ROOT}/modules/shell/bash/.bashrc.local"
 fi
+
+if command -v nvim > /dev/null 2>&1; then
+  export EDITOR='nvim'
+  export VISUAL='nvim'
+fi

@@ -21,6 +21,7 @@ readonly DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME:-${XDG_DATA_HOME:-${HOME}/.loc
 readonly GIT_PROMPT_DIR="${DOTFILES_GIT_PROMPT_DIR:-${DOTFILES_DATA_HOME}/git-prompt}"
 readonly PACKAGE_COMPOSE_HELPER="${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh"
 readonly PACKAGE_INSTALL_MODULE="${REPO_ROOT}/modules/linux/packages/install.sh"
+readonly FONT_INSTALL_MODULE="${REPO_ROOT}/modules/shared/fonts/install-posix.sh"
 readonly BASH_INSTALL_MODULE="${REPO_ROOT}/modules/shell/bash/install.sh"
 readonly UPDATE_MODULE="${REPO_ROOT}/modules/linux/update/register_cron.sh"
 readonly APP_CONFIGURE_MODULE="${REPO_ROOT}/modules/linux/apps/configure.sh"
@@ -58,6 +59,7 @@ validate_layout() {
   for required_path in \
     "${PACKAGE_COMPOSE_HELPER}" \
     "${PACKAGE_INSTALL_MODULE}" \
+    "${FONT_INSTALL_MODULE}" \
     "${BASH_INSTALL_MODULE}" \
     "${UPDATE_MODULE}" \
     "${APP_CONFIGURE_MODULE}"
@@ -129,6 +131,7 @@ run_modules() {
 
   run_step 'Validate Linux privileges' validate_linux_privileges
   run_step 'Install Linux packages' /bin/bash "${PACKAGE_INSTALL_MODULE}"
+  run_step 'Install terminal/editor fonts' /bin/sh "${FONT_INSTALL_MODULE}"
   run_step 'Install Bash shell assets' /bin/bash "${BASH_INSTALL_MODULE}"
   run_step 'Register Linux update job' /bin/bash "${UPDATE_MODULE}"
   run_step 'Configure Linux applications' /bin/bash "${APP_CONFIGURE_MODULE}"

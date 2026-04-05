@@ -1,0 +1,47 @@
+{
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "copyFormatting": "none",
+  "copyOnSelect": false,
+  "profiles": {
+    "defaults": {
+      "colorScheme": "Catppuccin Frappe",
+      "font": {
+        "face": "FiraCode Nerd Font",
+        "size": 12,
+        "features": {
+          "calt": 1,
+          "liga": 1
+        }
+      },
+      "historySize": 50000,
+      "padding": "10, 10, 10, 10",
+      "scrollbarState": "visible",
+      "snapOnInput": true
+    }
+  },
+  "schemes": [
+    {
+      "name": "Catppuccin Frappe",
+      "background": "#303446",
+      "black": "#51576d",
+      "blue": "#8caaee",
+      "brightBlack": "#626880",
+      "brightBlue": "#8caaee",
+      "brightCyan": "#81c8be",
+      "brightGreen": "#a6d189",
+      "brightPurple": "#ca9ee6",
+      "brightRed": "#e78284",
+      "brightWhite": "#f2d5cf",
+      "brightYellow": "#e5c890",
+      "cursorColor": "#f2d5cf",
+      "cyan": "#81c8be",
+      "foreground": "#c6d0f5",
+      "green": "#a6d189",
+      "purple": "#ca9ee6",
+      "red": "#e78284",
+      "selectionBackground": "#414559",
+      "white": "#b5bfe2",
+      "yellow": "#e5c890"
+    }
+  ]
+}

@@ -17,6 +17,8 @@ $bootstrapConfigSource = if (Import-DotfilesEnvFile -Path $configEnvPath) { $con
 $wingetComposer = Join-Path $repoRoot 'modules/windows/packages/Compose-WingetManifest.ps1'
 $scoopComposer = Join-Path $repoRoot 'modules/windows/packages/Compose-ScoopList.ps1'
 $packagesModule = Join-Path $repoRoot 'modules/windows/packages/Install-Packages.ps1'
+$fontsModule = Join-Path $repoRoot 'modules/windows/fonts/Install-Fonts.ps1'
+$powerShellModulesInstaller = Join-Path $repoRoot 'modules/shell/powershell/Install-Modules.ps1'
 $profileModule = Join-Path $repoRoot 'modules/shell/powershell/Install-Profile.ps1'
 $preferencesModule = Join-Path $repoRoot 'modules/windows/preferences/Apply.ps1'
 $updateModule = Join-Path $repoRoot 'modules/windows/update/Register-UpdateTask.ps1'
@@ -73,6 +75,8 @@ function Test-Layout {
     $wingetComposer,
     $scoopComposer,
     $packagesModule,
+    $fontsModule,
+    $powerShellModulesInstaller,
     $profileModule,
     $preferencesModule,
     $updateModule,
@@ -146,6 +150,8 @@ function Invoke-BootstrapModules {
     $env:DOTFILES_WINDOWS_ENABLE_WSL = if ($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1') { '1' } else { '0' }
 
     Invoke-BootstrapStep -Label 'Install Windows packages' -ScriptBlock { & $packagesModule }
+    Invoke-BootstrapStep -Label 'Install terminal/editor fonts' -ScriptBlock { & $fontsModule }
+    Invoke-BootstrapStep -Label 'Install PowerShell completion modules' -ScriptBlock { & $powerShellModulesInstaller }
     Invoke-BootstrapStep -Label 'Install PowerShell profile' -ScriptBlock { & $profileModule }
     Invoke-BootstrapStep -Label 'Apply Windows preferences' -ScriptBlock { & $preferencesModule }
     Invoke-BootstrapStep -Label 'Register Windows update task' -ScriptBlock { & $updateModule }

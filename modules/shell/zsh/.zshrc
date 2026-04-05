@@ -5,12 +5,19 @@ DOTFILES_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/dotfiles"
 ZSH_COMPLETIONS_DIR="${DOTFILES_ZSH_COMPLETIONS_DIR:-${DOTFILES_DATA_HOME}/zsh-completions}"
 GIT_PROMPT_DIR="${DOTFILES_GIT_PROMPT_DIR:-${DOTFILES_DATA_HOME}/git-prompt}"
 HOMEBREW_PREFIX="${DOTFILES_HOMEBREW_PREFIX:-/opt/homebrew}"
+ZSH_COMPLETION_CACHE_DIR="${DOTFILES_DATA_HOME}/zsh-completion-cache"
+ZSH_COMPDUMP_PATH="${DOTFILES_DATA_HOME}/zcompdump"
 
 # Load shared shell utilities.
 . "${DOTFILES_REPO_ROOT}/modules/shared/utils/posix.sh"
 
 # Ignore case when no candidate is found.
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
+zstyle ':completion:*' menu select
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${ZSH_COMPLETION_CACHE_DIR}"
+zstyle ':completion:*' completer _extensions _complete _approximate
+zmodload zsh/complist
 
 # Do not save meaningless command history.
 setopt hist_reduce_blanks
@@ -36,8 +43,10 @@ fi
 
 # Configure Zsh completion.
 if [ -d "${ZSH_COMPLETIONS_DIR}" ]; then
+  mkdir -p "${ZSH_COMPLETION_CACHE_DIR}"
   fpath=("${ZSH_COMPLETIONS_DIR}/src" $fpath)
-  autoload -U compinit && compinit
+  autoload -Uz compinit
+  compinit -d "${ZSH_COMPDUMP_PATH}"
 fi
 
 # Display Git information in the prompt when git-prompt is available.
@@ -70,4 +79,9 @@ fi
 # Load machine-specific shell overrides when present.
 if [ -f "${DOTFILES_REPO_ROOT}/modules/shell/zsh/.zshrc.local" ]; then
   source "${DOTFILES_REPO_ROOT}/modules/shell/zsh/.zshrc.local"
+fi
+
+if command -v nvim > /dev/null 2>&1; then
+  export EDITOR='nvim'
+  export VISUAL='nvim'
 fi

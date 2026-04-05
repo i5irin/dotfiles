@@ -1,5 +1,6 @@
 bash-completion
 curl
+fontconfig
 git
 git-lfs
 jq
@@ -7,3 +8,4 @@ neovim
 source-highlight
 tmux
 tree
+unzip

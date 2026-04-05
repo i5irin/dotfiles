@@ -22,6 +22,7 @@ readonly ZSH_COMPLETIONS_DIR="${DOTFILES_ZSH_COMPLETIONS_DIR:-${DOTFILES_DATA_HO
 readonly GIT_PROMPT_DIR="${DOTFILES_GIT_PROMPT_DIR:-${DOTFILES_DATA_HOME}/git-prompt}"
 readonly PACKAGE_COMPOSE_HELPER="${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh"
 readonly PACKAGE_INSTALL_MODULE="${REPO_ROOT}/modules/macos/packages/install.sh"
+readonly FONT_INSTALL_MODULE="${REPO_ROOT}/modules/shared/fonts/install-posix.sh"
 readonly HOSTNAME_MODULE="${REPO_ROOT}/modules/macos/system/configure_hostnames.sh"
 readonly ZSH_INSTALL_MODULE="${REPO_ROOT}/modules/shell/zsh/install.sh"
 readonly PREFERENCES_PREFLIGHT_MODULE="${REPO_ROOT}/modules/macos/preferences/validate_full_disk_access.sh"
@@ -68,6 +69,7 @@ validate_layout() {
   for required_path in \
     "${PACKAGE_COMPOSE_HELPER}" \
     "${PACKAGE_INSTALL_MODULE}" \
+    "${FONT_INSTALL_MODULE}" \
     "${HOSTNAME_MODULE}" \
     "${ZSH_INSTALL_MODULE}" \
     "${PREFERENCES_PREFLIGHT_MODULE}" \
@@ -137,6 +139,7 @@ run_modules() {
   run_step 'Validate macOS Full Disk Access' /bin/zsh "${PREFERENCES_PREFLIGHT_MODULE}"
   run_step 'Configure macOS hostname' /bin/zsh "${HOSTNAME_MODULE}"
   run_step 'Install macOS packages' /bin/zsh "${PACKAGE_INSTALL_MODULE}"
+  run_step 'Install terminal/editor fonts' /bin/sh "${FONT_INSTALL_MODULE}"
   run_step 'Install zsh shell assets' /bin/zsh "${ZSH_INSTALL_MODULE}"
   run_step 'Apply macOS preferences' /bin/zsh "${PREFERENCES_MODULE}"
   run_step 'Register macOS update job' /bin/zsh "${UPDATE_MODULE}"
