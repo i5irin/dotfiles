@@ -21,7 +21,12 @@ function Ensure-WingetAvailable {
 }
 
 function Get-InstalledWslDistros {
-  $output = & wsl --list --quiet 2>$null
+  try {
+    $output = & wsl --list --quiet 2>$null
+  } catch {
+    return @()
+  }
+
   if (-not $output) {
     return @()
   }
