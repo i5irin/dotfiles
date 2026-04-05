@@ -2,31 +2,16 @@
   "$schema": "https://aka.ms/terminal-profiles-schema",
   "copyFormatting": "none",
   "copyOnSelect": false,
-  "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
   "profiles": {
     "defaults": {
       "colorScheme": "Catppuccin Frappe",
-      "fontFace": "FiraCode Nerd Font",
+      "fontFace": "Fira Code",
       "fontSize": 12,
       "historySize": 50000,
       "padding": "10, 10, 10, 10",
       "scrollbarState": "visible",
       "snapOnInput": true
-    },
-    "list": [
-      {
-        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-        "name": "PowerShell",
-        "commandline": "pwsh.exe",
-        "hidden": false
-      },
-      {
-        "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-        "name": "Windows PowerShell",
-        "commandline": "powershell.exe",
-        "hidden": false
-      }
-    ]
+    }
   },
   "schemes": [
     {

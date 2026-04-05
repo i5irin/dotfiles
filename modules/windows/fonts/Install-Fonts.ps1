@@ -5,13 +5,25 @@ $firaCodeVersion = if ($env:DOTFILES_FIRA_CODE_VERSION) { $env:DOTFILES_FIRA_COD
 $firaCodeUrl = if ($env:DOTFILES_FIRA_CODE_URL) { $env:DOTFILES_FIRA_CODE_URL } else { "https://github.com/tonsky/FiraCode/releases/download/$firaCodeVersion/Fira_Code_v$firaCodeVersion.zip" }
 $firaCodeNerdFontUrl = if ($env:DOTFILES_FIRA_CODE_NERD_FONT_URL) { $env:DOTFILES_FIRA_CODE_NERD_FONT_URL } else { 'https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip' }
 
+function Test-DotfilesAdministratorSession {
+  $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+  $principal = [Security.Principal.WindowsPrincipal]::new($identity)
+  return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
 $fontTargetDir = if ($env:DOTFILES_WINDOWS_FONT_TARGET_DIR) {
   $env:DOTFILES_WINDOWS_FONT_TARGET_DIR
+} elseif (Test-DotfilesAdministratorSession) {
+  Join-Path $env:WINDIR 'Fonts'
 } else {
   Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
 }
 
-$fontRegistryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
+$fontRegistryPath = if ($fontTargetDir -like "$(Join-Path $env:WINDIR 'Fonts')*") {
+  'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
+} else {
+  'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
+}
 
 Add-Type -AssemblyName PresentationCore
 if (-not ('DotfilesFontBroadcast' -as [type])) {

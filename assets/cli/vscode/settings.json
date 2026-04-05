@@ -4,7 +4,8 @@
   "editor.fontLigatures": true,
   "editor.fontWeight": "400",
   "workbench.colorTheme": "Catppuccin Frappé",
-  "workbench.iconTheme": "Catppuccin Frappé Icons",
+  "workbench.iconTheme": "catppuccin-frappe",
+  "catppuccin-icons.hidesExplorerArrows": true,
   "editor.formatOnPaste": true,
   "gitlens.advanced.messages": {
     "suppressShowKeyBindingsNotice": true
