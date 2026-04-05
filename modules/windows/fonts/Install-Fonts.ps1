@@ -14,7 +14,8 @@ $fontTargetDir = if ($env:DOTFILES_WINDOWS_FONT_TARGET_DIR) {
 $fontRegistryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
 
 Add-Type -AssemblyName PresentationCore
-Add-Type @'
+if (-not ('DotfilesFontBroadcast' -as [type])) {
+  Add-Type @'
 using System;
 using System.Runtime.InteropServices;
 
@@ -34,6 +35,7 @@ public static class DotfilesFontBroadcast {
   );
 }
 '@
+}
 
 function Test-FontInstalled {
   param(
