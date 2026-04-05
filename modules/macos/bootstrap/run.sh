@@ -21,6 +21,7 @@ readonly APP_CONFIGURE_MODULE="${REPO_ROOT}/modules/macos/apps/configure.sh"
 readonly LOCAL_OVERRIDE_BREWFILE="${REPO_ROOT}/modules/macos/packages/local.Brewfile"
 
 source "${REPO_ROOT}/modules/shared/utils/dotfiles.sh"
+source "${REPO_ROOT}/modules/shared/utils/message.sh"
 
 usage() {
   cat <<'EOF'
@@ -93,23 +94,39 @@ EOF
 run_modules() {
   local brewfile_path
 
+  progress_info 'Resolving macOS package catalog.'
   brewfile_path="$(resolve_brewfile)"
+  progress_success 'Resolved macOS package catalog.'
   export DOTFILES_ACTIVE_BREWFILE_PATH="${brewfile_path}"
   trap 'rm -f "${DOTFILES_ACTIVE_BREWFILE_PATH:-}"' EXIT
 
   export DOTFILES_REPO_ROOT="${REPO_ROOT}"
   export DOTFILES_HOMEBREW_PREFIX="${HOMEBREW_PREFIX}"
-  export DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME}"
+  export DOTFILES_DATA_HOME
   export DOTFILES_ZSH_COMPLETIONS_DIR="${ZSH_COMPLETIONS_DIR}"
   export DOTFILES_GIT_PROMPT_DIR="${GIT_PROMPT_DIR}"
   export DOTFILES_BREWFILE="${brewfile_path}"
 
-  /bin/zsh "${HOSTNAME_MODULE}"
-  /bin/zsh "${PACKAGE_INSTALL_MODULE}"
-  /bin/zsh "${ZSH_INSTALL_MODULE}"
-  /bin/zsh "${PREFERENCES_MODULE}"
-  /bin/zsh "${UPDATE_MODULE}"
-  /bin/zsh "${APP_CONFIGURE_MODULE}"
+  run_step 'Configure macOS hostname' /bin/zsh "${HOSTNAME_MODULE}"
+  run_step 'Install macOS packages' /bin/zsh "${PACKAGE_INSTALL_MODULE}"
+  run_step 'Install zsh shell assets' /bin/zsh "${ZSH_INSTALL_MODULE}"
+  run_step 'Apply macOS preferences' /bin/zsh "${PREFERENCES_MODULE}"
+  run_step 'Register macOS update job' /bin/zsh "${UPDATE_MODULE}"
+  run_step 'Configure macOS applications' /bin/zsh "${APP_CONFIGURE_MODULE}"
+}
+
+run_step() {
+  local label="$1"
+  shift
+
+  progress_info "${label}"
+  if "$@"; then
+    progress_success "${label}"
+    return 0
+  fi
+
+  progress_failure "${label}"
+  return 1
 }
 
 main() {
@@ -135,7 +152,9 @@ main() {
 
   require_apple_silicon_macos
   validate_layout
+  progress_info 'Starting macOS bootstrap.'
   run_modules
+  progress_success 'macOS bootstrap completed.'
 }
 
 main "$@"

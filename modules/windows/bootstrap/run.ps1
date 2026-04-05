@@ -22,6 +22,36 @@ $appsModule = Join-Path $repoRoot 'modules/windows/apps/Configure.ps1'
 $canonicalWingetOverride = Join-Path $repoRoot 'modules/windows/packages/local.Winget.json'
 $canonicalScoopOverride = Join-Path $repoRoot 'modules/windows/packages/local.Scoop.txt'
 
+function Write-ProgressInfo {
+  param([Parameter(Mandatory = $true)][string]$Message)
+
+  Write-Host "==> $Message"
+}
+
+function Write-ProgressSuccess {
+  param([Parameter(Mandatory = $true)][string]$Message)
+
+  Write-Host "[OK] $Message"
+}
+
+function Invoke-BootstrapStep {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Label,
+    [Parameter(Mandatory = $true)]
+    [scriptblock]$ScriptBlock
+  )
+
+  Write-ProgressInfo $Label
+  try {
+    & $ScriptBlock
+    Write-ProgressSuccess $Label
+  } catch {
+    Write-Error "FAILED: $Label"
+    throw
+  }
+}
+
 function Show-Usage {
   @'
 Usage: bootstrap/windows.ps1 [-DryRun] [-EnableWSL] [-Help]
@@ -100,19 +130,21 @@ function Invoke-BootstrapModules {
 
   New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
   try {
-    & $wingetComposer -OutputPath $wingetManifestPath | Out-Null
-    & $scoopComposer -OutputPath $scoopListPath | Out-Null
+    Invoke-BootstrapStep -Label 'Resolve Windows package manifests' -ScriptBlock {
+      & $wingetComposer -OutputPath $wingetManifestPath | Out-Null
+      & $scoopComposer -OutputPath $scoopListPath | Out-Null
+    }
 
     $env:DOTFILES_REPO_ROOT = $repoRoot
     $env:DOTFILES_WINGET_MANIFEST_PATH = $wingetManifestPath
     $env:DOTFILES_SCOOP_LIST_PATH = $scoopListPath
     $env:DOTFILES_WINDOWS_ENABLE_WSL = if ($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1') { '1' } else { '0' }
 
-    & $packagesModule
-    & $profileModule
-    & $preferencesModule
-    & $updateModule
-    & $appsModule
+    Invoke-BootstrapStep -Label 'Install Windows packages' -ScriptBlock { & $packagesModule }
+    Invoke-BootstrapStep -Label 'Install PowerShell profile' -ScriptBlock { & $profileModule }
+    Invoke-BootstrapStep -Label 'Apply Windows preferences' -ScriptBlock { & $preferencesModule }
+    Invoke-BootstrapStep -Label 'Register Windows update task' -ScriptBlock { & $updateModule }
+    Invoke-BootstrapStep -Label 'Configure Windows applications' -ScriptBlock { & $appsModule }
   } finally {
     Remove-Item -LiteralPath $tempDir -Force -Recurse -ErrorAction SilentlyContinue
   }
@@ -138,4 +170,6 @@ if (-not (Test-DotfilesAdministrator)) {
   throw 'This bootstrap entry must be run with administrative privileges.'
 }
 
+Write-ProgressInfo 'Starting Windows bootstrap.'
 Invoke-BootstrapModules
+Write-ProgressSuccess 'Windows bootstrap completed.'

@@ -14,13 +14,26 @@ function Test-GitHubUserName {
     [string]$Name
   )
 
-  return $Name -match '^[a-zA-Z0-9]([a-zA-Z0-9]?|[\-]?([a-zA-Z0-9])){0,38}$'
+  return -not [string]::IsNullOrWhiteSpace($Name)
+}
+
+function Test-GitUserEmail {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Email
+  )
+
+  return $Email -match '.+@.+'
 }
 
 function Get-GitIdentity {
   if ($env:DOTFILES_GIT_USER_NAME -and $env:DOTFILES_GIT_USER_EMAIL) {
     if (-not (Test-GitHubUserName -Name $env:DOTFILES_GIT_USER_NAME)) {
-      throw 'DOTFILES_GIT_USER_NAME is invalid for GitHub.'
+      throw 'DOTFILES_GIT_USER_NAME must not be empty.'
+    }
+
+    if (-not (Test-GitUserEmail -Email $env:DOTFILES_GIT_USER_EMAIL)) {
+      throw 'DOTFILES_GIT_USER_EMAIL must include "@".'
     }
 
     return [ordered]@{
@@ -29,11 +42,25 @@ function Get-GitIdentity {
     }
   }
 
+  $existingName = git config --global --get user.name 2>$null
+  $existingEmail = git config --global --get user.email 2>$null
+  if ($existingName -and $existingEmail) {
+    return [ordered]@{
+      Name  = $existingName
+      Email = $existingEmail
+    }
+  }
+
   while ($true) {
     $gitUserName = Read-Host 'Enter your name for use in git > '
     $gitUserEmail = Read-Host 'Enter your email address for use in git > '
     if (-not (Test-GitHubUserName -Name $gitUserName)) {
-      Write-Output 'The username you entered is invalid for GitHub.'
+      Write-Output 'The git user name must not be empty.'
+      continue
+    }
+
+    if (-not (Test-GitUserEmail -Email $gitUserEmail)) {
+      Write-Output 'The git user email must include "@".'
       continue
     }
 

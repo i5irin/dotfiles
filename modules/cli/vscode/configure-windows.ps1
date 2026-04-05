@@ -12,10 +12,11 @@ $settingsAsset = Join-Path $repoRoot 'assets/cli/vscode/settings.json'
 $extensionsFile = Join-Path $repoRoot 'assets/cli/vscode/extensions'
 $userDir = Join-Path $env:APPDATA 'Code\User'
 $settingsPath = Join-Path $userDir 'settings.json'
+$installedExtensions = @(code --list-extensions 2>$null)
 
 Get-Content -LiteralPath $extensionsFile | ForEach-Object {
   $extension = $_.Trim()
-  if ($extension) {
+  if ($extension -and $installedExtensions -notcontains $extension) {
     code --install-extension $extension | Out-Null
   }
 }

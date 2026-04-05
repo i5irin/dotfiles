@@ -26,9 +26,15 @@ resolve_vscode_user_dir() {
 
 install_extensions() {
   local extension
+  local installed_extensions
 
+  installed_extensions="$(code --list-extensions 2> /dev/null || true)"
   while IFS= read -r extension; do
     if [ -z "${extension}" ]; then
+      continue
+    fi
+
+    if printf '%s\n' "${installed_extensions}" | grep -Fx "${extension}" > /dev/null 2>&1; then
       continue
     fi
 

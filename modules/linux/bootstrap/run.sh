@@ -16,6 +16,8 @@ readonly UPDATE_MODULE="${REPO_ROOT}/modules/linux/update/register_cron.sh"
 readonly APP_CONFIGURE_MODULE="${REPO_ROOT}/modules/linux/apps/configure.sh"
 readonly CANONICAL_LOCAL_OVERRIDE_APT_LIST="${REPO_ROOT}/modules/linux/packages/local.apt.txt"
 
+. "${REPO_ROOT}/modules/shared/utils/message.sh"
+
 usage() {
   cat <<'EOF'
 Usage: bootstrap/linux.sh [--dry-run] [--help]
@@ -96,19 +98,35 @@ EOF
 run_modules() {
   local apt_list_path
 
+  progress_info 'Resolving Linux package list.'
   apt_list_path="$(resolve_apt_list)"
+  progress_success 'Resolved Linux package list.'
   export DOTFILES_ACTIVE_APT_LIST_PATH="${apt_list_path}"
   trap 'rm -f "${DOTFILES_ACTIVE_APT_LIST_PATH:-}"' EXIT
 
   export DOTFILES_REPO_ROOT="${REPO_ROOT}"
-  export DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME}"
+  export DOTFILES_DATA_HOME
   export DOTFILES_GIT_PROMPT_DIR="${GIT_PROMPT_DIR}"
   export DOTFILES_APT_PACKAGE_LIST_PATH="${apt_list_path}"
 
-  /bin/bash "${PACKAGE_INSTALL_MODULE}"
-  /bin/bash "${BASH_INSTALL_MODULE}"
-  /bin/bash "${UPDATE_MODULE}"
-  /bin/bash "${APP_CONFIGURE_MODULE}"
+  run_step 'Install Linux packages' /bin/bash "${PACKAGE_INSTALL_MODULE}"
+  run_step 'Install Bash shell assets' /bin/bash "${BASH_INSTALL_MODULE}"
+  run_step 'Register Linux update job' /bin/bash "${UPDATE_MODULE}"
+  run_step 'Configure Linux applications' /bin/bash "${APP_CONFIGURE_MODULE}"
+}
+
+run_step() {
+  local label="$1"
+  shift
+
+  progress_info "${label}"
+  if "$@"; then
+    progress_success "${label}"
+    return 0
+  fi
+
+  progress_failure "${label}"
+  return 1
 }
 
 main() {
@@ -133,7 +151,9 @@ main() {
 
   require_linux_apt
   validate_layout
+  progress_info 'Starting Linux bootstrap.'
   run_modules
+  progress_success 'Linux bootstrap completed.'
 }
 
 main "$@"

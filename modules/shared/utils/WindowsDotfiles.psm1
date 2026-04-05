@@ -28,6 +28,25 @@ function Set-DotfilesSymbolicLink {
   }
 
   if (Test-Path -LiteralPath $LinkPath) {
+    $existingItem = Get-Item -LiteralPath $LinkPath -Force
+    $resolvedTarget = (Resolve-Path -LiteralPath $TargetPath).ProviderPath
+    if ($existingItem.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+      $existingTarget = $existingItem.Target
+      if ($existingTarget -is [array]) {
+        $existingTarget = $existingTarget[0]
+      }
+
+      if ($existingTarget) {
+        try {
+          $resolvedExistingTarget = (Resolve-Path -LiteralPath $existingTarget).ProviderPath
+          if ($resolvedExistingTarget -eq $resolvedTarget) {
+            return
+          }
+        } catch {
+        }
+      }
+    }
+
     Remove-Item -LiteralPath $LinkPath -Force -Recurse
   }
 

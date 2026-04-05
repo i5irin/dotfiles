@@ -1,5 +1,17 @@
 #!/bin/bash
 
+progress_info() {
+  echo "==> $1"
+}
+
+progress_success() {
+  echo "$(color '✔ ' '[32m') $1"
+}
+
+progress_failure() {
+  echo "$(color '✖ ' '[31m') $1" >&2
+}
+
 color() {
   text="$1"
   color="$2"
