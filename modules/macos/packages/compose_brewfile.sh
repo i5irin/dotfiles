@@ -16,12 +16,29 @@ usage() {
 Usage: modules/macos/packages/compose_brewfile.sh [--output PATH] [--print-sources] [--help]
 
 Compose the active macOS Brewfile from base, optional, and local override files.
+
+Environment:
+  DOTFILES_INCLUDE_MACOS_OPTIONAL_PACKAGES=1  Include Brewfile.optional.
 EOF
+}
+
+should_include_optional_packages() {
+  case "${DOTFILES_INCLUDE_MACOS_OPTIONAL_PACKAGES:-0}" in
+    1|true|TRUE|yes|YES)
+      return 0
+      ;;
+  esac
+
+  return 1
 }
 
 resolve_sources() {
   typeset -ga COMPOSE_BREWFILE_SOURCES
-  COMPOSE_BREWFILE_SOURCES=("${BASE_BREWFILE}" "${OPTIONAL_BREWFILE}")
+  COMPOSE_BREWFILE_SOURCES=("${BASE_BREWFILE}")
+
+  if should_include_optional_packages; then
+    COMPOSE_BREWFILE_SOURCES+=("${OPTIONAL_BREWFILE}")
+  fi
 
   if [ -f "${LOCAL_OVERRIDE_BREWFILE}" ]; then
     COMPOSE_BREWFILE_SOURCES+=("${LOCAL_OVERRIDE_BREWFILE}")

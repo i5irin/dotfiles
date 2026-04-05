@@ -16,6 +16,7 @@ else
 fi
 
 readonly HOMEBREW_PREFIX="${DOTFILES_HOMEBREW_PREFIX:-/opt/homebrew}"
+readonly INCLUDE_OPTIONAL_PACKAGES="${DOTFILES_INCLUDE_MACOS_OPTIONAL_PACKAGES:-0}"
 readonly DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME:-${XDG_DATA_HOME:-${HOME}/.local/share}/dotfiles}"
 readonly ZSH_COMPLETIONS_DIR="${DOTFILES_ZSH_COMPLETIONS_DIR:-${DOTFILES_DATA_HOME}/zsh-completions}"
 readonly GIT_PROMPT_DIR="${DOTFILES_GIT_PROMPT_DIR:-${DOTFILES_DATA_HOME}/git-prompt}"
@@ -88,6 +89,7 @@ print_config() {
 repo_root=${REPO_ROOT}
 bootstrap_module=${SCRIPT_DIR}
 homebrew_prefix=${HOMEBREW_PREFIX}
+include_optional_packages=${INCLUDE_OPTIONAL_PACKAGES}
 brewfile=${brewfile_path}
 bootstrap_config_source=${BOOTSTRAP_CONFIG_SOURCE}
 requires_admin=true
@@ -122,6 +124,7 @@ run_modules() {
   export DOTFILES_REPO_ROOT="${REPO_ROOT}"
   export DOTFILES_BOOTSTRAP_CONFIG_PATH="${CONFIG_ENV_PATH}"
   export DOTFILES_HOMEBREW_PREFIX="${HOMEBREW_PREFIX}"
+  export DOTFILES_INCLUDE_MACOS_OPTIONAL_PACKAGES="${INCLUDE_OPTIONAL_PACKAGES}"
   export DOTFILES_DATA_HOME
   export DOTFILES_ZSH_COMPLETIONS_DIR="${ZSH_COMPLETIONS_DIR}"
   export DOTFILES_GIT_PROMPT_DIR="${GIT_PROMPT_DIR}"
