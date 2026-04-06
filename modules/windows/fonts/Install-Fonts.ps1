@@ -7,30 +7,13 @@ $nerdFontsVersion = if ($env:DOTFILES_NERD_FONTS_VERSION) { $env:DOTFILES_NERD_F
 $firaCodeNerdFontUrl = if ($env:DOTFILES_FIRA_CODE_NERD_FONT_URL) { $env:DOTFILES_FIRA_CODE_NERD_FONT_URL } else { "https://github.com/ryanoasis/nerd-fonts/releases/download/v$nerdFontsVersion/FiraCode.zip" }
 $fontStatePath = Join-Path $env:LOCALAPPDATA 'dotfiles\state\windows-fonts.json'
 
-function Test-DotfilesAdministratorSession {
-  $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-  $principal = [Security.Principal.WindowsPrincipal]::new($identity)
-  return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
 $fontTargetDir = if ($env:DOTFILES_WINDOWS_FONT_TARGET_DIR) {
   $env:DOTFILES_WINDOWS_FONT_TARGET_DIR
-} elseif (Test-DotfilesAdministratorSession) {
-  Join-Path $env:WINDIR 'Fonts'
 } else {
   Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
 }
 
-$fontRegistryPath = if ($fontTargetDir -like "$(Join-Path $env:WINDIR 'Fonts')*") {
-  'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
-} else {
-  'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
-}
-
-$fontRegistryCleanupPaths = @(
-  'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts',
-  'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
-)
+$fontRegistryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
 
 if (-not ('DotfilesFontBroadcast' -as [type])) {
   Add-Type @'
@@ -95,20 +78,18 @@ function Resolve-FontRegistrationInfo {
 }
 
 function Remove-ExistingFontRegistrations {
-  foreach ($registryPath in $fontRegistryCleanupPaths) {
-    if (-not (Test-Path -LiteralPath $registryPath)) {
+  if (-not (Test-Path -LiteralPath $fontRegistryPath)) {
+    return
+  }
+
+  $properties = Get-ItemProperty -LiteralPath $fontRegistryPath
+  foreach ($property in $properties.PSObject.Properties) {
+    if ($property.MemberType -ne 'NoteProperty') {
       continue
     }
 
-    $properties = Get-ItemProperty -LiteralPath $registryPath
-    foreach ($property in $properties.PSObject.Properties) {
-      if ($property.MemberType -ne 'NoteProperty') {
-        continue
-      }
-
-      if ($property.Name -like 'Fira Code*' -or $property.Name -like 'FiraCode Nerd Font*' -or ($property.Value -is [string] -and $property.Value -like 'FiraCode*')) {
-        Remove-ItemProperty -LiteralPath $registryPath -Name $property.Name -ErrorAction SilentlyContinue
-      }
+    if ($property.Name -like 'Fira Code*' -or $property.Name -like 'FiraCode Nerd Font*' -or ($property.Value -is [string] -and $property.Value -like 'FiraCode*')) {
+      Remove-ItemProperty -LiteralPath $fontRegistryPath -Name $property.Name -ErrorAction SilentlyContinue
     }
   }
 }
@@ -149,7 +130,7 @@ function Test-FontFilesPresent {
   )
 
   foreach ($pattern in $Patterns) {
-    if (-not (Get-ChildItem -LiteralPath $fontTargetDir -Filter $pattern -ErrorAction SilentlyContinue)) {
+    if (-not (Get-ChildItem -LiteralPath $fontTargetDir -Filter $pattern -ErrorAction SilentlyContinue | Select-Object -First 1)) {
       return $false
     }
   }
@@ -182,7 +163,9 @@ function Install-FontArchive {
   Invoke-WebRequest -Uri $Url -OutFile $archivePath
   Expand-Archive -LiteralPath $archivePath -DestinationPath $extractDir -Force
 
-  Get-ChildItem -Path $extractDir -Recurse -Include *.ttf, *.otf | ForEach-Object {
+  Get-ChildItem -Path $extractDir -Recurse -Include *.ttf, *.otf | Where-Object {
+    $_.Name -in $Patterns
+  } | ForEach-Object {
     $targetPath = Join-Path $fontTargetDir $_.Name
     Copy-Item -LiteralPath $_.FullName -Destination $targetPath -Force
   }

@@ -10,6 +10,8 @@ Import-Module (Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1') 
 
 $settingsAsset = Join-Path $repoRoot 'assets/windows/terminal/settings.json'
 $fontStatePath = Join-Path $env:LOCALAPPDATA 'dotfiles\state\windows-fonts.json'
+$windowsPowerShellProfileGuid = '{574e775e-4f2a-5b96-ac1e-a2962a402336}'
+$powerShellSevenProfileGuid = '{61c54bbd-c2c6-5271-96e7-009a87ff44bf}'
 
 function Resolve-WindowsTerminalSettingsPaths {
   $candidates = @(
@@ -39,8 +41,10 @@ function Resolve-WindowsTerminalSettingsPaths {
 
 function Build-WindowsTerminalSettings {
   $settings = Get-Content -LiteralPath $settingsAsset -Raw | ConvertFrom-Json
+  $profile = Resolve-DefaultProfile
   $settings.profiles.defaults.fontFace = Resolve-PreferredTerminalFontFace
-  $settings | Add-Member -NotePropertyName defaultProfile -NotePropertyValue (Resolve-DefaultProfileName) -Force
+  $settings.profiles | Add-Member -NotePropertyName list -NotePropertyValue @($profile) -Force
+  $settings | Add-Member -NotePropertyName defaultProfile -NotePropertyValue $profile.guid -Force
   return $settings | ConvertTo-Json -Depth 8
 }
 
@@ -58,23 +62,38 @@ function Resolve-PreferredTerminalFontFace {
   return 'Consolas'
 }
 
-function Resolve-DefaultProfileName {
+function Resolve-DefaultProfile {
   $pwshCandidates = @(
     (Join-Path $env:ProgramFiles 'PowerShell\7\pwsh.exe'),
     (Join-Path ${env:ProgramFiles(x86)} 'PowerShell\7\pwsh.exe')
   ) | Where-Object { $_ }
 
   if (Get-Command pwsh.exe -ErrorAction SilentlyContinue) {
-    return 'PowerShell'
+    return [pscustomobject]@{
+      guid = $powerShellSevenProfileGuid
+      name = 'PowerShell'
+      commandline = 'pwsh.exe'
+      hidden = $false
+    }
   }
 
   foreach ($candidate in $pwshCandidates) {
     if (Test-Path -LiteralPath $candidate) {
-      return 'PowerShell'
+      return [pscustomobject]@{
+        guid = $powerShellSevenProfileGuid
+        name = 'PowerShell'
+        commandline = $candidate
+        hidden = $false
+      }
     }
   }
 
-  return 'Windows PowerShell'
+  return [pscustomobject]@{
+    guid = $windowsPowerShellProfileGuid
+    name = 'Windows PowerShell'
+    commandline = 'powershell.exe'
+    hidden = $false
+  }
 }
 
 $settingsPaths = @(Resolve-WindowsTerminalSettingsPaths)
