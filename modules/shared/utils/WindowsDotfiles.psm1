@@ -143,4 +143,57 @@ function Import-DotfilesEnvFile {
   return $true
 }
 
-Export-ModuleMember -Function Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Set-DotfilesManagedFile, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey, Import-DotfilesEnvFile
+function Update-DotfilesProcessPath {
+  $pathEntries = New-Object System.Collections.Generic.List[string]
+
+  foreach ($scope in @('Machine', 'User', 'Process')) {
+    $value = [Environment]::GetEnvironmentVariable('Path', $scope)
+    if (-not $value) {
+      continue
+    }
+
+    foreach ($entry in ($value -split ';')) {
+      $trimmed = $entry.Trim()
+      if (-not $trimmed) {
+        continue
+      }
+
+      if (-not $pathEntries.Contains($trimmed)) {
+        $pathEntries.Add($trimmed)
+      }
+    }
+  }
+
+  $merged = ($pathEntries.ToArray() -join ';')
+  [Environment]::SetEnvironmentVariable('Path', $merged, 'Process')
+  $env:Path = $merged
+}
+
+function Resolve-DotfilesCommandPath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$CommandName,
+    [string[]]$CandidatePaths = @()
+  )
+
+  Update-DotfilesProcessPath
+
+  $command = Get-Command $CommandName -ErrorAction SilentlyContinue
+  if ($command) {
+    return $command.Source
+  }
+
+  foreach ($candidatePath in $CandidatePaths) {
+    if (-not $candidatePath) {
+      continue
+    }
+
+    if (Test-Path -LiteralPath $candidatePath) {
+      return $candidatePath
+    }
+  }
+
+  return $null
+}
+
+Export-ModuleMember -Function Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Set-DotfilesManagedFile, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey, Import-DotfilesEnvFile, Update-DotfilesProcessPath, Resolve-DotfilesCommandPath
