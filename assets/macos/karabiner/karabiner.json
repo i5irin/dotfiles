@@ -89,8 +89,7 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.microsoft\\.rdc.mac$",
-                                            "^com\\.parallels\\.desktop\\.console$",
-                                            "^com\\.vmware\\.fusion$"
+                                            "^com\\.parallels\\.desktop\\.console$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -123,8 +122,7 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.microsoft\\.rdc.mac$",
-                                            "^com\\.parallels\\.desktop\\.console$",
-                                            "^com\\.vmware\\.fusion$"
+                                            "^com\\.parallels\\.desktop\\.console$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
