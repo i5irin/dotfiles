@@ -67,6 +67,12 @@ install_extensions() {
     fi
 
     "${code_command}" --install-extension "${extension}" --force > /dev/null
+
+    installed_extensions="$("${code_command}" --list-extensions 2> /dev/null || true)"
+    if ! printf '%s\n' "${installed_extensions}" | grep -Fx "${extension}" > /dev/null 2>&1; then
+      echo "Failed to install VS Code extension: ${extension}" >&2
+      return 1
+    fi
   done < "${VSCODE_EXTENSIONS_FILE}"
 }
 

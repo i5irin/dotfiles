@@ -4,7 +4,8 @@ set -eu
 
 readonly FIRA_CODE_VERSION="${DOTFILES_FIRA_CODE_VERSION:-6.2}"
 readonly FIRA_CODE_URL="${DOTFILES_FIRA_CODE_URL:-https://github.com/tonsky/FiraCode/releases/download/${FIRA_CODE_VERSION}/Fira_Code_v${FIRA_CODE_VERSION}.zip}"
-readonly FIRA_CODE_NERD_FONT_URL="${DOTFILES_FIRA_CODE_NERD_FONT_URL:-https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip}"
+readonly NERD_FONTS_VERSION="${DOTFILES_NERD_FONTS_VERSION:-3.4.0}"
+readonly FIRA_CODE_NERD_FONT_URL="${DOTFILES_FIRA_CODE_NERD_FONT_URL:-https://github.com/ryanoasis/nerd-fonts/releases/download/v${NERD_FONTS_VERSION}/FiraCode.zip}"
 
 resolve_font_target_dir() {
   if [ -n "${DOTFILES_FONT_TARGET_DIR:-}" ]; then
@@ -31,19 +32,6 @@ have_font_files() {
   pattern="$2"
 
   find "${target_dir}" -maxdepth 1 -type f \( -name "${pattern}" -o -name "${pattern%.ttf}.otf" \) | grep -q .
-}
-
-have_all_font_patterns() {
-  target_dir="$1"
-  shift
-
-  for pattern in "$@"; do
-    if ! have_font_files "${target_dir}" "${pattern}"; then
-      return 1
-    fi
-  done
-
-  return 0
 }
 
 install_font_archive() {
@@ -89,13 +77,7 @@ main() {
   mkdir -p "${target_dir}"
 
   install_font_archive 'Fira Code' "${FIRA_CODE_URL}" "${target_dir}" 'FiraCode-*.ttf' 'FiraCode.zip'
-
-  if have_all_font_patterns "${target_dir}" 'FiraCodeNerdFont-*.ttf' 'FiraCodeNerdFontMono-*.ttf'; then
-    printf 'Skip %s font installation because matching files already exist in %s.\n' 'FiraCode Nerd Font' "${target_dir}"
-  else
-    install_font_archive 'FiraCode Nerd Font' "${FIRA_CODE_NERD_FONT_URL}" "${target_dir}" 'FiraCodeNerdFont*.ttf' 'FiraCodeNerd.zip'
-  fi
-
+  install_font_archive 'FiraCode Nerd Font' "${FIRA_CODE_NERD_FONT_URL}" "${target_dir}" 'FiraCodeNerdFont-*.ttf' 'FiraCodeNerdFont.zip'
   refresh_font_cache "${target_dir}"
 }
 

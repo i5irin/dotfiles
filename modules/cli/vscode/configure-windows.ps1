@@ -56,6 +56,13 @@ Get-Content -LiteralPath $extensionsFile | ForEach-Object {
       throw "Failed to install VS Code extension: $extension"
     }
   }
+
+  if ($codeCommand) {
+    $installedExtensions = @(& $codeCommand --list-extensions 2>$null)
+    if ($installedExtensions -notcontains $extension) {
+      throw "VS Code extension is still missing after install: $extension"
+    }
+  }
 }
 
 Set-DotfilesManagedFile -Path $settingsPath -SourcePath $settingsAsset

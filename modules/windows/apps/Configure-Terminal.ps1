@@ -9,7 +9,7 @@ if (-not $repoRoot) {
 Import-Module (Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1') -Force
 
 $settingsAsset = Join-Path $repoRoot 'assets/windows/terminal/settings.json'
-$windowsPowerShellProfileGuid = '{574e775e-4f2a-5b96-ac1e-a2962a402336}'
+$fontStatePath = Join-Path $env:LOCALAPPDATA 'dotfiles\state\windows-fonts.json'
 
 function Resolve-WindowsTerminalSettingsPaths {
   $candidates = @(
@@ -39,19 +39,42 @@ function Resolve-WindowsTerminalSettingsPaths {
 
 function Build-WindowsTerminalSettings {
   $settings = Get-Content -LiteralPath $settingsAsset -Raw | ConvertFrom-Json
-  $settings.profiles.defaults.fontFace = 'Fira Code'
+  $settings.profiles.defaults.fontFace = Resolve-PreferredTerminalFontFace
+  $settings | Add-Member -NotePropertyName defaultProfile -NotePropertyValue (Resolve-DefaultProfileName) -Force
+  return $settings | ConvertTo-Json -Depth 8
+}
 
-  $profileList = @()
-  $profileList += [pscustomobject]@{
-    guid = $windowsPowerShellProfileGuid
-    name = 'Windows PowerShell'
-    commandline = 'powershell.exe'
-    hidden = $false
+function Resolve-PreferredTerminalFontFace {
+  if (Test-Path -LiteralPath $fontStatePath) {
+    try {
+      $fontState = Get-Content -LiteralPath $fontStatePath -Raw | ConvertFrom-Json
+      if ($fontState.preferredTerminalFontFace) {
+        return "$($fontState.preferredTerminalFontFace)"
+      }
+    } catch {
+    }
   }
 
-  $settings | Add-Member -NotePropertyName defaultProfile -NotePropertyValue $windowsPowerShellProfileGuid -Force
-  $settings.profiles | Add-Member -NotePropertyName list -NotePropertyValue $profileList -Force
-  return $settings | ConvertTo-Json -Depth 8
+  return 'Consolas'
+}
+
+function Resolve-DefaultProfileName {
+  $pwshCandidates = @(
+    (Join-Path $env:ProgramFiles 'PowerShell\7\pwsh.exe'),
+    (Join-Path ${env:ProgramFiles(x86)} 'PowerShell\7\pwsh.exe')
+  ) | Where-Object { $_ }
+
+  if (Get-Command pwsh.exe -ErrorAction SilentlyContinue) {
+    return 'PowerShell'
+  }
+
+  foreach ($candidate in $pwshCandidates) {
+    if (Test-Path -LiteralPath $candidate) {
+      return 'PowerShell'
+    }
+  }
+
+  return 'Windows PowerShell'
 }
 
 $settingsPaths = @(Resolve-WindowsTerminalSettingsPaths)

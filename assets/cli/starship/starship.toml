@@ -4,7 +4,7 @@ add_newline = true
 command_timeout = 1200
 
 format = """
-[░▒▓](#232634)\
+[▓▒░](#232634)\
 $directory\
 $git_branch\
 $git_status\
@@ -22,7 +22,7 @@ style = "fg:#c6d0f5 bg:#414559"
 format = "[  $path ]($style)"
 truncation_length = 4
 truncate_to_repo = false
-read_only = " 󰌾"
+read_only = " ro"
 
 [git_branch]
 symbol = ""
@@ -52,13 +52,6 @@ format = "[](fg:#99d1db bg:#e5c890)[  $duration ]($style)[](fg:#e5c890)
 success_symbol = "[❯](bold #a6d189)"
 error_symbol = "[❯](bold #e78284)"
 vimcmd_symbol = "[❮](bold #8caaee)"
-
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Projects" = "󰲋 "
 
 [os]
 disabled = true

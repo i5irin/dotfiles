@@ -68,11 +68,6 @@ configure_neovim() {
 
 configure_vscode() {
   configure_info 'Visual Studio Code'
-  if ! command -v code > /dev/null 2>&1; then
-    echo 'Skip setup because Visual Studio Code is not installed.' >&2
-    return 0
-  fi
-
   "${REPO_ROOT}/modules/cli/vscode/configure.sh"
   finish_configure_message 'Visual Studio Code'
 }
