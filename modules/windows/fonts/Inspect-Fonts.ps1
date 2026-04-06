@@ -11,9 +11,10 @@ Add-Type -AssemblyName System.Drawing
 function Resolve-PreferredTerminalFontFace {
   $installedFonts = [System.Drawing.Text.InstalledFontCollection]::new()
   $availableNames = @($installedFonts.Families | Select-Object -ExpandProperty Name)
-  foreach ($candidate in @('FiraCode Nerd Font Mono', 'FiraCode Nerd Font', 'Fira Code')) {
-    if ($availableNames -contains $candidate) {
-      return $candidate
+  foreach ($candidatePattern in @('FiraCode Nerd Font Mono*', 'FiraCode Nerd Font*', 'Fira Code*')) {
+    $match = @($availableNames | Where-Object { $_ -like $candidatePattern } | Select-Object -First 1)
+    if ($match) {
+      return $match[0]
     }
   }
 

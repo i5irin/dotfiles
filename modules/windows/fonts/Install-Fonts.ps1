@@ -203,22 +203,11 @@ function Resolve-InstalledFontFamilies {
 }
 
 function Resolve-PreferredTerminalFontFace {
-  if (Get-ChildItem -LiteralPath $fontTargetDir -Filter 'FiraCodeNerdFontMono-Regular.ttf' -ErrorAction SilentlyContinue) {
-    return 'FiraCode Nerd Font Mono'
-  }
-
-  if (Get-ChildItem -LiteralPath $fontTargetDir -Filter 'FiraCodeNerdFont-Regular.ttf' -ErrorAction SilentlyContinue) {
-    return 'FiraCode Nerd Font'
-  }
-
-  if (Get-ChildItem -LiteralPath $fontTargetDir -Filter 'FiraCode-Regular.ttf' -ErrorAction SilentlyContinue) {
-    return 'Fira Code'
-  }
-
   $availableNames = Resolve-InstalledFontFamilies
-  foreach ($candidate in @('FiraCode Nerd Font Mono', 'FiraCode Nerd Font', 'Fira Code')) {
-    if ($availableNames -contains $candidate) {
-      return $candidate
+  foreach ($candidatePattern in @('FiraCode Nerd Font Mono*', 'FiraCode Nerd Font*', 'Fira Code*')) {
+    $match = @($availableNames | Where-Object { $_ -like $candidatePattern } | Select-Object -First 1)
+    if ($match) {
+      return $match[0]
     }
   }
 
