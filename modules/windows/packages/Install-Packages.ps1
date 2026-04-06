@@ -65,9 +65,19 @@ function Test-PendingReboot {
 }
 
 function Install-WingetPackages {
+  $noApplicableUpgradeExitCode = -1978335189
   $manifest = Get-Content -LiteralPath $wingetManifestPath -Raw | ConvertFrom-Json
   foreach ($package in $manifest.Sources[0].Packages) {
     & winget install --id $package.PackageIdentifier --exact --source winget --accept-source-agreements --accept-package-agreements --disable-interactivity --silent
+    if ($LASTEXITCODE -eq 0) {
+      continue
+    }
+
+    if ($LASTEXITCODE -eq $noApplicableUpgradeExitCode) {
+      Write-Output "Skip $($package.PackageIdentifier) because the installed package is already current for this machine."
+      continue
+    }
+
     if ($LASTEXITCODE -ne 0) {
       throw "winget install failed for $($package.PackageIdentifier) with exit code $LASTEXITCODE."
     }
