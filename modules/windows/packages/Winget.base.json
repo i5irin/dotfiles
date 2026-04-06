@@ -4,9 +4,6 @@
       "PackageIdentifier": "Git.Git"
     },
     {
-      "PackageIdentifier": "GitHub.GitLFS"
-    },
-    {
       "PackageIdentifier": "Microsoft.PowerShell"
     },
     {
