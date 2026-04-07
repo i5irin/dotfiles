@@ -6,10 +6,18 @@ SCRIPT_DIR="${0:A:h}"
 readonly SCRIPT_DIR
 REPO_ROOT="${DOTFILES_REPO_ROOT:-${SCRIPT_DIR:h:h:h}}"
 readonly REPO_ROOT
+HOMEBREW_PREFIX="${DOTFILES_HOMEBREW_PREFIX:-/opt/homebrew}"
+readonly HOMEBREW_PREFIX
 
 readonly KARABINER_ASSET_DIR="${REPO_ROOT}/assets/macos/karabiner"
 
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
+source "${REPO_ROOT}/modules/shared/utils/posix.sh"
+
+refresh_macos_tool_path() {
+  add_path "${HOMEBREW_PREFIX}/bin" > /dev/null 2>&1 || true
+  add_path "${HOMEBREW_PREFIX}/sbin" > /dev/null 2>&1 || true
+}
 
 configure_karabiner() {
   configure_info 'Karabiner-Elements'
@@ -130,6 +138,7 @@ configure_clipy() {
 }
 
 main() {
+  refresh_macos_tool_path
   configure_karabiner
   configure_git
   configure_tmux
