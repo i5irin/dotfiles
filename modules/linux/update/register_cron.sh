@@ -32,7 +32,7 @@ main() {
 
   current_crontab="$(mktemp "${TMPDIR:-/tmp}/dotfiles-linux-crontab-current.XXXXXX")"
   generated_crontab="$(mktemp "${TMPDIR:-/tmp}/dotfiles-linux-crontab-generated.XXXXXX")"
-  trap 'rm -f "${current_crontab}" "${generated_crontab}"' EXIT
+  trap "rm -f '${current_crontab}' '${generated_crontab}'" EXIT
 
   crontab -l 2>/dev/null | sed '/# BEGIN DOTFILES AUTO UPDATE/,/# END DOTFILES AUTO UPDATE/d' > "${current_crontab}" || true
   sed "s|__DOTFILES_UPDATE_SCRIPT__|${UPDATE_SCRIPT}|g" "${CRON_TEMPLATE}" > "${generated_crontab}"
