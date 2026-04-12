@@ -7,7 +7,11 @@ case $- in
 esac
 
 # Resolve the dotfiles location from the symlinked shell file itself.
-DOTFILES_BASH_MODULE_PATH="$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_BASH_SOURCE_PATH="${BASH_SOURCE[0]}"
+if command -v readlink > /dev/null 2>&1; then
+  DOTFILES_BASH_SOURCE_PATH="$(readlink -f "${DOTFILES_BASH_SOURCE_PATH}" 2>/dev/null || printf '%s' "${DOTFILES_BASH_SOURCE_PATH}")"
+fi
+DOTFILES_BASH_MODULE_PATH="$(CDPATH='' cd -- "$(dirname -- "${DOTFILES_BASH_SOURCE_PATH}")" && pwd)"
 DOTFILES_REPO_ROOT="${DOTFILES_REPO_ROOT:-$(CDPATH='' cd -- "${DOTFILES_BASH_MODULE_PATH}/../../.." && pwd)}"
 DOTFILES_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/dotfiles"
 DOTFILES_GIT_PROMPT_DIR="${DOTFILES_GIT_PROMPT_DIR:-${DOTFILES_DATA_HOME}/git-prompt}"
@@ -21,7 +25,6 @@ export HISTCONTROL
 
 # Share command history across interactive bash sessions.
 PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND:-}"
-export PROMPT_COMMAND
 shopt -u histappend
 
 HISTSIZE=500
@@ -66,7 +69,6 @@ if command -v __git_ps1 > /dev/null 2>&1; then
 else
   PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 fi
-export PS1
 
 # Make less more friendly for non-text input files.
 if command -v lesspipe > /dev/null 2>&1; then

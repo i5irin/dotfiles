@@ -1,5 +1,9 @@
 # Resolve the dotfiles location from the symlinked shell file itself.
-DOTFILES_BASH_PROFILE_PATH="$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_BASH_PROFILE_SOURCE_PATH="${BASH_SOURCE[0]}"
+if command -v readlink > /dev/null 2>&1; then
+  DOTFILES_BASH_PROFILE_SOURCE_PATH="$(readlink -f "${DOTFILES_BASH_PROFILE_SOURCE_PATH}" 2>/dev/null || printf '%s' "${DOTFILES_BASH_PROFILE_SOURCE_PATH}")"
+fi
+DOTFILES_BASH_PROFILE_PATH="$(CDPATH='' cd -- "$(dirname -- "${DOTFILES_BASH_PROFILE_SOURCE_PATH}")" && pwd)"
 DOTFILES_REPO_ROOT="$(CDPATH='' cd -- "${DOTFILES_BASH_PROFILE_PATH}/../../.." && pwd)"
 
 # Load shared shell utilities.
