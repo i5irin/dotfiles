@@ -5,7 +5,7 @@
   "profiles": {
     "defaults": {
       "colorScheme": "Catppuccin Frappe",
-      "fontFace": "Fira Code",
+      "fontFace": "FiraCode Nerd Font Mono",
       "fontSize": 12,
       "historySize": 50000,
       "padding": "10, 10, 10, 10",

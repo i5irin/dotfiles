@@ -160,7 +160,7 @@ function Invoke-BootstrapModules {
     $env:DOTFILES_INCLUDE_WINDOWS_OPTIONAL_PACKAGES = if ($includeOptionalPackages) { '1' } else { '0' }
 
     Invoke-BootstrapStep -Label 'Install Windows packages' -ScriptBlock { & $packagesModule }
-    Invoke-BootstrapStep -Label 'Install terminal/editor fonts' -ScriptBlock { & $fontsModule }
+    Invoke-BootstrapStep -Label 'Validate terminal/editor font prerequisites' -ScriptBlock { & $fontsModule }
     Invoke-BootstrapStep -Label 'Install PowerShell completion modules' -ScriptBlock { & $powerShellModulesInstaller }
     Invoke-BootstrapStep -Label 'Install PowerShell profile' -ScriptBlock { & $profileModule }
     Invoke-BootstrapStep -Label 'Apply Windows preferences' -ScriptBlock { & $preferencesModule }
