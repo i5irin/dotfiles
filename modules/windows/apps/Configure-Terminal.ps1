@@ -49,14 +49,9 @@ function Build-WindowsTerminalSettings {
 }
 
 function Resolve-PreferredTerminalFontFace {
-  if (Test-Path -LiteralPath $fontStatePath) {
-    try {
-      $fontState = Get-Content -LiteralPath $fontStatePath -Raw | ConvertFrom-Json
-      if ($fontState.preferredTerminalFontFace) {
-        return "$($fontState.preferredTerminalFontFace)"
-      }
-    } catch {
-    }
+  $fontState = Read-DotfilesJsonFile -Path $fontStatePath
+  if ($fontState -and $fontState.preferredTerminalFontFace) {
+    return "$($fontState.preferredTerminalFontFace)"
   }
 
   return 'Consolas'
@@ -98,7 +93,7 @@ function Resolve-DefaultProfile {
 
 $settingsPaths = @(Resolve-WindowsTerminalSettingsPaths)
 if (-not $settingsPaths) {
-  Write-Output 'Skip Windows Terminal configuration because the settings path could not be resolved yet.'
+  Write-DotfilesSkip 'Windows Terminal settings path is not available yet.'
   exit 0
 }
 

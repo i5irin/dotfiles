@@ -13,6 +13,7 @@ readonly KARABINER_ASSET_DIR="${REPO_ROOT}/assets/macos/karabiner"
 
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
 source "${REPO_ROOT}/modules/shared/utils/posix.sh"
+source "${REPO_ROOT}/modules/shared/utils/posix_app_config.sh"
 
 refresh_macos_tool_path() {
   add_path "${HOMEBREW_PREFIX}/bin" > /dev/null 2>&1 || true
@@ -26,52 +27,8 @@ configure_karabiner() {
     ln -sfn "${KARABINER_ASSET_DIR}" "${HOME}/.config/karabiner"
     finish_configure_message 'Karabiner-Elements'
   else
-    echo 'Skip setup because Karabiner-Elements is not installed.' >&2
+    skip_info 'Karabiner-Elements is not installed.'
   fi
-}
-
-configure_git() {
-  configure_info 'Git'
-  if ! command -v git > /dev/null 2>&1; then
-    echo 'Skip setup because Git is not installed.' >&2
-    return 0
-  fi
-
-  "${REPO_ROOT}/modules/cli/git/configure.sh"
-  finish_configure_message 'Git'
-}
-
-configure_tmux() {
-  configure_info 'tmux'
-  if ! command -v tmux > /dev/null 2>&1; then
-    echo 'Skip setup because tmux is not installed.' >&2
-    return 0
-  fi
-
-  "${REPO_ROOT}/modules/cli/tmux/configure.sh"
-  finish_configure_message 'tmux'
-}
-
-configure_starship() {
-  configure_info 'Starship'
-  if ! command -v starship > /dev/null 2>&1; then
-    echo 'Skip setup because Starship is not installed.' >&2
-    return 0
-  fi
-
-  "${REPO_ROOT}/modules/cli/starship/configure.sh"
-  finish_configure_message 'Starship'
-}
-
-configure_neovim() {
-  configure_info 'Neovim'
-  if ! command -v nvim > /dev/null 2>&1; then
-    echo 'Skip setup because Neovim is not installed.' >&2
-    return 0
-  fi
-
-  "${REPO_ROOT}/modules/cli/neovim/configure.sh"
-  finish_configure_message 'Neovim'
 }
 
 configure_vscode() {
@@ -83,7 +40,7 @@ configure_vscode() {
 configure_ghostty() {
   configure_info 'Ghostty'
   if [ ! -d /Applications/Ghostty.app ] && ! command -v ghostty > /dev/null 2>&1; then
-    echo 'Skip setup because Ghostty is not installed.' >&2
+    skip_info 'Ghostty is not installed.'
     return 0
   fi
 
@@ -96,7 +53,7 @@ configure_alttab() {
 
   configure_info 'AltTab'
   if [ ! -d /Applications/AltTab.app ]; then
-    echo 'Skip setup because AltTab is not installed.' >&2
+    skip_info 'AltTab is not installed.'
     return 0
   fi
 
@@ -119,7 +76,7 @@ configure_clipy() {
 
   configure_info 'Clipy'
   if [ ! -d /Applications/Clipy.app ]; then
-    echo 'Skip setup because Clipy is not installed.' >&2
+    skip_info 'Clipy is not installed.'
     return 0
   fi
 
@@ -140,10 +97,10 @@ configure_clipy() {
 main() {
   refresh_macos_tool_path
   configure_karabiner
-  configure_git
-  configure_tmux
-  configure_starship
-  configure_neovim
+  configure_posix_git
+  configure_posix_tmux
+  configure_posix_starship
+  configure_posix_neovim
   configure_vscode
   configure_ghostty
   configure_alttab

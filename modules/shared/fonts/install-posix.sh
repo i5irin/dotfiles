@@ -2,10 +2,17 @@
 
 set -eu
 
+SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
+readonly SCRIPT_DIR
+REPO_ROOT="${DOTFILES_REPO_ROOT:-$(CDPATH='' cd -- "${SCRIPT_DIR}/../../.." && pwd)}"
+readonly REPO_ROOT
+
 readonly FIRA_CODE_VERSION="${DOTFILES_FIRA_CODE_VERSION:-6.2}"
 readonly FIRA_CODE_URL="${DOTFILES_FIRA_CODE_URL:-https://github.com/tonsky/FiraCode/releases/download/${FIRA_CODE_VERSION}/Fira_Code_v${FIRA_CODE_VERSION}.zip}"
 readonly NERD_FONTS_VERSION="${DOTFILES_NERD_FONTS_VERSION:-3.4.0}"
 readonly FIRA_CODE_NERD_FONT_URL="${DOTFILES_FIRA_CODE_NERD_FONT_URL:-https://github.com/ryanoasis/nerd-fonts/releases/download/v${NERD_FONTS_VERSION}/FiraCode.zip}"
+
+. "${REPO_ROOT}/modules/shared/utils/message.sh"
 
 resolve_font_target_dir() {
   if [ -n "${DOTFILES_FONT_TARGET_DIR:-}" ]; then
@@ -21,7 +28,7 @@ resolve_font_target_dir() {
       printf '%s\n' "${HOME}/.local/share/fonts"
       ;;
     *)
-      echo 'Unsupported POSIX font target platform.' >&2
+      step_failure 'Unsupported POSIX font target platform.'
       return 1
       ;;
   esac
@@ -43,7 +50,7 @@ install_font_archive() {
   temp_dir=''
 
   if have_font_files "${target_dir}" "${pattern}"; then
-    printf 'Skip %s font installation because matching files already exist in %s.\n' "${label}" "${target_dir}"
+    skip_info "${label} font files already exist in ${target_dir}."
     return 0
   fi
 

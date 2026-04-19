@@ -2,6 +2,11 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
+$repoRoot = $env:DOTFILES_REPO_ROOT
+if ($repoRoot) {
+  Import-Module (Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1') -Force
+}
+
 function Ensure-TrustedPowerShellGallery {
   $gallery = Get-PSRepository -Name 'PSGallery' -ErrorAction SilentlyContinue
   if (-not $gallery) {
@@ -20,7 +25,11 @@ function Ensure-NuGetProvider {
   }
 
   if (-not (Get-Command Install-PackageProvider -ErrorAction SilentlyContinue)) {
-    Write-Warning 'Install-PackageProvider is unavailable. Skip NuGet bootstrap.'
+    if (Get-Command Write-DotfilesWarning -ErrorAction SilentlyContinue) {
+      Write-DotfilesWarning 'Install-PackageProvider is unavailable. NuGet bootstrap will be skipped.'
+    } else {
+      Write-Warning 'Install-PackageProvider is unavailable. NuGet bootstrap will be skipped.'
+    }
     return
   }
 
@@ -34,12 +43,20 @@ function Ensure-ModuleInstalled {
   )
 
   if (Get-Module -ListAvailable -Name $ModuleName) {
-    Write-Output "Skip $ModuleName because it is already installed."
+    if (Get-Command Write-DotfilesSkip -ErrorAction SilentlyContinue) {
+      Write-DotfilesSkip "$ModuleName is already installed."
+    } else {
+      Write-Output "Skip $ModuleName because it is already installed."
+    }
     return
   }
 
   if (-not (Get-Command Install-Module -ErrorAction SilentlyContinue)) {
-    Write-Warning "Install-Module is unavailable. Skip $ModuleName installation."
+    if (Get-Command Write-DotfilesWarning -ErrorAction SilentlyContinue) {
+      Write-DotfilesWarning "Install-Module is unavailable. $ModuleName installation will be skipped."
+    } else {
+      Write-Warning "Install-Module is unavailable. $ModuleName installation will be skipped."
+    }
     return
   }
 

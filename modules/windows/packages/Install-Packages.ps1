@@ -14,6 +14,8 @@ if (-not $wingetManifestPath -or -not (Test-Path -LiteralPath $wingetManifestPat
   throw 'DOTFILES_WINGET_MANIFEST_PATH is required.'
 }
 
+Import-Module (Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1') -Force
+
 function Ensure-WingetAvailable {
   if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     throw 'winget was not found. Install App Installer or use a Windows image that already includes winget.'
@@ -42,7 +44,7 @@ function Ensure-WslInstalled {
 
   $installedDistros = Get-InstalledWslDistros
   if ($installedDistros -contains $DistroName) {
-    Write-Output "Skip WSL distro installation because $DistroName is already installed."
+    Write-DotfilesSkip "WSL distro $DistroName is already installed."
     return
   }
 
@@ -74,7 +76,7 @@ function Install-WingetPackages {
     }
 
     if ($LASTEXITCODE -eq $noApplicableUpgradeExitCode) {
-      Write-Output "Skip $($package.PackageIdentifier) because the installed package is already current for this machine."
+      Write-DotfilesSkip "$($package.PackageIdentifier) is already current for this machine."
       continue
     }
 

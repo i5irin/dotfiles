@@ -1,6 +1,13 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+$repoRoot = $env:DOTFILES_REPO_ROOT
+if (-not $repoRoot) {
+  throw 'DOTFILES_REPO_ROOT is required.'
+}
+
+Import-Module (Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1') -Force
+
 $fontStatePath = Join-Path $env:LOCALAPPDATA 'dotfiles\state\windows-fonts.json'
 $firaCodeNerdFontUrl = if ($env:DOTFILES_FIRA_CODE_NERD_FONT_URL) { $env:DOTFILES_FIRA_CODE_NERD_FONT_URL } else { 'https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip' }
 $fontDirs = @(
@@ -53,12 +60,11 @@ function Write-ManualFontGuidance {
     return
   }
 
-  Write-Warning 'FiraCode Nerd Font Mono is not installed. Terminal glyphs and ligatures depend on the client terminal having that font available.'
-  Write-Host 'Manual setup:'
-  Write-Host "  1. Download and install FiraCode Nerd Font from $firaCodeNerdFontUrl."
-  Write-Host '     Use FiraCode Nerd Font Mono when Windows asks which family to enable.'
-  Write-Host '  2. Sign out and sign back in if Windows does not pick up the new fonts immediately.'
-  Write-Host '  3. Rerun modules/windows/fonts/Install-Fonts.ps1 and modules/windows/apps/Configure-Terminal.ps1.'
+  Write-DotfilesWarning 'FiraCode Nerd Font Mono is not installed. Terminal glyphs and ligatures depend on the client terminal having that font available.'
+  Write-DotfilesNext "Download and install FiraCode Nerd Font from $firaCodeNerdFontUrl."
+  Write-Host '      Use FiraCode Nerd Font Mono when Windows asks which family to enable.'
+  Write-DotfilesNext 'Sign out and sign back in if Windows does not pick up the new fonts immediately.'
+  Write-DotfilesNext 'Rerun modules/windows/fonts/Install-Fonts.ps1 and modules/windows/apps/Configure-Terminal.ps1.'
 }
 
 Write-FontState

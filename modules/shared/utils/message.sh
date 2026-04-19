@@ -1,17 +1,5 @@
 #!/bin/bash
 
-progress_info() {
-  echo "==> $1"
-}
-
-progress_success() {
-  echo "$(color '✔ ' '[32m') $1"
-}
-
-progress_failure() {
-  echo "$(color '✖ ' '[31m') $1" >&2
-}
-
 color() {
   text="$1"
   color="$2"
@@ -20,19 +8,67 @@ color() {
   echo "${ESC}${color}${text}${ESC}[m"
 }
 
+step_info() {
+  echo "==> $1"
+}
+
+step_success() {
+  echo "$(color '✔' '[32m') $1"
+}
+
+step_failure() {
+  echo "$(color '✖' '[31m') $1" >&2
+}
+
+action_info() {
+  echo "--> $1"
+}
+
+action_success() {
+  echo "$(color '✔' '[32m') $1"
+}
+
+action_failure() {
+  echo "$(color '✖' '[31m') $1" >&2
+}
+
+skip_info() {
+  echo "$(color '↷' '[33m') Skip: $1"
+}
+
+warn_info() {
+  echo "$(color '⚠' '[33m') Warning: $1" >&2
+}
+
+next_info() {
+  echo "Next: $1"
+}
+
+progress_info() {
+  step_info "$1"
+}
+
+progress_success() {
+  step_success "$1"
+}
+
+progress_failure() {
+  step_failure "$1"
+}
+
 configure_info() {
   app="$1"
-  echo "⚙️  Start to configure ${app}."
+  action_info "Configure ${app}"
 }
 
 complete_configure_info() {
   app="$1"
-  echo "$(color '✔ ' '[32m') ${app} configuration is complete."
+  action_success "Configure ${app}"
 }
 
 failed_configure_info() {
   app="$1"
-  echo "$(color '💔 ' '[31m') Something went wrong during the configuration of ${app}"
+  action_failure "Configure ${app}"
 }
 
 finish_configure_message() {
@@ -47,15 +83,15 @@ finish_configure_message() {
 
 setup_info() {
   app="$1"
-  echo "⬇  Start to install ${app}."
+  action_info "Install ${app}"
 }
 
 complete_setup_info() {
   app="$1"
-  echo "$(color '✔ ' '[32m') ${app} installation is complete."
+  action_success "Install ${app}"
 }
 
 failed_info() {
   app="$1"
-  echo "$(color '💔' '[31m') Something went wrong during the installation of ${app}."
+  action_failure "Install ${app}"
 }

@@ -11,22 +11,24 @@ readonly CRON_TEMPLATE="${REPO_ROOT}/assets/linux/cron/dotfiles-update.cron"
 readonly UPDATE_SCRIPT="${REPO_ROOT}/modules/linux/update/update_packages.sh"
 readonly AUTO_UPDATE_ENABLED="${DOTFILES_LINUX_ENABLE_AUTO_UPDATE:-0}"
 
+. "${REPO_ROOT}/modules/shared/utils/message.sh"
+
 main() {
   local current_crontab
   local generated_crontab
 
   if [ "${AUTO_UPDATE_ENABLED}" != '1' ]; then
-    echo 'Skip cron registration because DOTFILES_LINUX_ENABLE_AUTO_UPDATE is not enabled.'
+    skip_info 'Linux auto-update is disabled by DOTFILES_LINUX_ENABLE_AUTO_UPDATE.'
     return 0
   fi
 
   if ! command -v crontab > /dev/null 2>&1; then
-    echo 'Skip cron registration because crontab is not installed.' >&2
+    skip_info 'crontab is not installed.'
     return 0
   fi
 
   if ! sudo -n true > /dev/null 2>&1; then
-    echo 'Skip cron registration because passwordless sudo is not configured for unattended apt updates.' >&2
+    skip_info 'Passwordless sudo is not configured for unattended apt updates.'
     return 0
   fi
 

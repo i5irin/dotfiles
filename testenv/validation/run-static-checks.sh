@@ -142,6 +142,9 @@ log_section 'Package composition'
 run_check 'macOS package sources' "${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh" --print-sources
 run_check 'Linux package sources' "${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh" --print-sources
 
+log_section 'Generated assets'
+run_check 'terminal asset sync' "${REPO_ROOT}/modules/cli/terminal/render-assets.sh" --check
+
 printf '\nSummary: failed=%s skipped=%s\n' "${FAILED_CHECKS}" "${SKIPPED_CHECKS}"
 
 if [ "${FAILED_CHECKS}" -ne 0 ]; then

@@ -10,6 +10,7 @@ readonly DOTFILES_DATA_HOME="${DOTFILES_DATA_HOME:-${XDG_DATA_HOME:-${HOME}/.loc
 readonly DOTFILES_STATE_DIR="${DOTFILES_DATA_HOME}/state"
 readonly MACHINE_NAME_STATE_FILE="${DOTFILES_STATE_DIR}/macos-machine-name"
 
+source "${REPO_ROOT}/modules/shared/utils/message.sh"
 source "${REPO_ROOT}/modules/shared/utils/posix.sh"
 
 load_machine_name_from_state() {
@@ -45,7 +46,7 @@ main() {
   local machine_name
 
   if [ "${DOTFILES_SKIP_HOSTNAME_SETUP:-0}" = '1' ]; then
-    echo 'Skip hostname configuration because DOTFILES_SKIP_HOSTNAME_SETUP=1.'
+    skip_info 'Hostname configuration is disabled by DOTFILES_SKIP_HOSTNAME_SETUP=1.'
     return 0
   fi
 
@@ -55,21 +56,21 @@ main() {
   elif machine_name="$(load_machine_name_from_state)"; then
     validate_rfc952_hostname "${machine_name}"
   else
-    echo "macOS machine name is not configured. Set DOTFILES_MAC_MACHINE_NAME in ${DOTFILES_BOOTSTRAP_CONFIG_PATH:-config/macos.env} or in the environment." >&2
+    step_failure "macOS machine name is not configured. Set DOTFILES_MAC_MACHINE_NAME in ${DOTFILES_BOOTSTRAP_CONFIG_PATH:-config/macos.env} or in the environment."
     return 1
   fi
 
   if current_machine_name_matches "${machine_name}"; then
-    echo "Skip hostname configuration because it is already set to ${machine_name}."
+    skip_info "Hostname is already set to ${machine_name}."
     persist_machine_name "${machine_name}"
     return 0
   fi
 
-  echo 'Setting up ComputerName.'
+  action_info 'Set ComputerName'
   sudo scutil --set ComputerName "${machine_name}"
-  echo 'Setting up LocalHostName.'
+  action_info 'Set LocalHostName'
   sudo scutil --set LocalHostName "${machine_name}"
-  echo 'Setting up HostName.'
+  action_info 'Set HostName'
   sudo scutil --set HostName "${machine_name}"
   persist_machine_name "${machine_name}"
 }

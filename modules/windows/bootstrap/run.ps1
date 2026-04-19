@@ -27,30 +27,6 @@ $appsModule = Join-Path $repoRoot 'modules/windows/apps/Configure.ps1'
 $canonicalWingetOverride = Join-Path $repoRoot 'modules/windows/packages/local.Winget.json'
 $script:BootstrapStepFailed = $false
 
-function Write-ProgressInfo {
-  param([Parameter(Mandatory = $true)][string]$Message)
-
-  Write-Host "==> $Message"
-}
-
-function Write-ProgressSuccess {
-  param([Parameter(Mandatory = $true)][string]$Message)
-
-  Write-Host "[OK] $Message"
-}
-
-function Write-ProgressFailure {
-  param([Parameter(Mandatory = $true)][string]$Message)
-
-  Write-Host "[FAIL] $Message"
-}
-
-function Write-NextStepHint {
-  param([Parameter(Mandatory = $true)][string]$Message)
-
-  Write-Host "Next: $Message"
-}
-
 function Invoke-BootstrapStep {
   param(
     [Parameter(Mandatory = $true)]
@@ -59,18 +35,18 @@ function Invoke-BootstrapStep {
     [scriptblock]$ScriptBlock
   )
 
-  Write-ProgressInfo $Label
+  Write-DotfilesStepInfo $Label
   try {
     & $ScriptBlock
-    Write-ProgressSuccess $Label
+    Write-DotfilesStepSuccess $Label
   } catch {
     $script:BootstrapStepFailed = $true
-    Write-ProgressFailure $Label
+    Write-DotfilesStepFailure $Label
     if ($_.Exception -and $_.Exception.Message) {
       Write-Host $_.Exception.Message
 
       if ($_.Exception.Message -like 'WSL installation requested a reboot*') {
-        Write-NextStepHint 'Restart Windows, then rerun bootstrap/windows.ps1 with the same WSL setting. After the Windows bootstrap finishes, launch the distro once manually and run bootstrap/linux.sh inside it.'
+        Write-DotfilesNext 'Restart Windows, then rerun bootstrap/windows.ps1 with the same WSL setting. After the Windows bootstrap finishes, launch the distro once manually and run bootstrap/linux.sh inside it.'
       }
     }
     throw
@@ -192,12 +168,12 @@ try {
     throw 'This bootstrap entry must be run with administrative privileges.'
   }
 
-  Write-ProgressInfo 'Starting Windows bootstrap.'
+  Write-DotfilesStepInfo 'Starting Windows bootstrap.'
   Invoke-BootstrapModules
-  Write-ProgressSuccess 'Windows bootstrap completed.'
+  Write-DotfilesStepSuccess 'Windows bootstrap completed.'
 } catch {
   if (-not $script:BootstrapStepFailed) {
-    Write-ProgressFailure 'Windows bootstrap failed'
+    Write-DotfilesStepFailure 'Windows bootstrap failed'
     if ($_.Exception -and $_.Exception.Message) {
       Write-Host $_.Exception.Message
     }

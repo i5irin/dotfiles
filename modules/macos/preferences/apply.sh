@@ -2,6 +2,13 @@
 
 set -eu
 
+SCRIPT_DIR="${0:A:h}"
+readonly SCRIPT_DIR
+REPO_ROOT="${DOTFILES_REPO_ROOT:-${SCRIPT_DIR:h:h:h}}"
+readonly REPO_ROOT
+
+source "${REPO_ROOT}/modules/shared/utils/message.sh"
+
 # Full Disk Access (System Settings > Privacy & Security > Full Disk Access)
 # must be granted to the terminal where this script is run.
 
@@ -14,7 +21,7 @@ write_optional_default() {
     return 0
   fi
 
-  echo "Warning: skipped optional macOS preference: $*" >&2
+  warn_info "Skipped optional macOS preference: $*"
   cat "${output_file}" >&2
   rm -f "${output_file}"
   return 0

@@ -19,7 +19,7 @@ main() {
 
   setup_info 'zsh-completions'
   if [ -d "${ZSH_COMPLETIONS_DIR}" ]; then
-    echo "Skip installation because \"${ZSH_COMPLETIONS_DIR}\" already existed."
+    skip_info "\"${ZSH_COMPLETIONS_DIR}\" already exists."
   else
     mkdir -p "${DOTFILES_DATA_HOME}"
     git clone https://github.com/zsh-users/zsh-completions.git "${ZSH_COMPLETIONS_DIR}"

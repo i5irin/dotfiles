@@ -1,5 +1,86 @@
 Set-StrictMode -Version Latest
 
+function Write-DotfilesStepInfo {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "==> $Message"
+}
+
+function Write-DotfilesStepSuccess {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "✔ $Message"
+}
+
+function Write-DotfilesStepFailure {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "✖ $Message"
+}
+
+function Write-DotfilesActionInfo {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "--> $Message"
+}
+
+function Write-DotfilesActionSuccess {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "✔ $Message"
+}
+
+function Write-DotfilesActionFailure {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "✖ $Message"
+}
+
+function Write-DotfilesSkip {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Reason
+  )
+
+  Write-Host "↷ Skip: $Reason"
+}
+
+function Write-DotfilesWarning {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "⚠ Warning: $Message"
+}
+
+function Write-DotfilesNext {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Message
+  )
+
+  Write-Host "Next: $Message"
+}
+
 function Test-DotfilesWindowsPlatform {
   return [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
 }
@@ -196,4 +277,41 @@ function Resolve-DotfilesCommandPath {
   return $null
 }
 
-Export-ModuleMember -Function Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Set-DotfilesManagedFile, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey, Import-DotfilesEnvFile, Update-DotfilesProcessPath, Resolve-DotfilesCommandPath
+function Invoke-DotfilesOptionalConfigure {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$CommandName,
+    [string[]]$CandidatePaths = @(),
+    [Parameter(Mandatory = $true)]
+    [string]$SkipMessage,
+    [Parameter(Mandatory = $true)]
+    [scriptblock]$ScriptBlock
+  )
+
+  if (-not (Resolve-DotfilesCommandPath -CommandName $CommandName -CandidatePaths $CandidatePaths)) {
+    Write-DotfilesSkip $SkipMessage
+    return $false
+  }
+
+  & $ScriptBlock
+  return $true
+}
+
+function Read-DotfilesJsonFile {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path
+  )
+
+  if (-not (Test-Path -LiteralPath $Path)) {
+    return $null
+  }
+
+  try {
+    return Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
+  } catch {
+    return $null
+  }
+}
+
+Export-ModuleMember -Function Write-DotfilesStepInfo, Write-DotfilesStepSuccess, Write-DotfilesStepFailure, Write-DotfilesActionInfo, Write-DotfilesActionSuccess, Write-DotfilesActionFailure, Write-DotfilesSkip, Write-DotfilesWarning, Write-DotfilesNext, Test-DotfilesWindowsPlatform, Test-DotfilesAdministrator, Set-DotfilesSymbolicLink, Set-DotfilesManagedFile, Resolve-DotfilesFirstExistingPath, Enable-DotfilesRegistryKey, Import-DotfilesEnvFile, Update-DotfilesProcessPath, Resolve-DotfilesCommandPath, Invoke-DotfilesOptionalConfigure, Read-DotfilesJsonFile
