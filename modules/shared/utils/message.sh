@@ -13,11 +13,11 @@ step_info() {
 }
 
 step_success() {
-  echo "$(color '✔' '[32m') $1"
+  echo "$(color '[OK]' '[32m') $1"
 }
 
 step_failure() {
-  echo "$(color '✖' '[31m') $1" >&2
+  echo "$(color '[FAIL]' '[31m') $1" >&2
 }
 
 action_info() {
@@ -25,19 +25,19 @@ action_info() {
 }
 
 action_success() {
-  echo "$(color '✔' '[32m') $1"
+  echo "$(color '[OK]' '[32m') $1"
 }
 
 action_failure() {
-  echo "$(color '✖' '[31m') $1" >&2
+  echo "$(color '[FAIL]' '[31m') $1" >&2
 }
 
 skip_info() {
-  echo "$(color '↷' '[33m') Skip: $1"
+  echo "$(color '[SKIP]' '[33m') $1"
 }
 
 warn_info() {
-  echo "$(color '⚠' '[33m') Warning: $1" >&2
+  echo "$(color '[WARN]' '[33m') $1" >&2
 }
 
 next_info() {

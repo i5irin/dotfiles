@@ -15,7 +15,7 @@ function Write-DotfilesStepSuccess {
     [string]$Message
   )
 
-  Write-Host "✔ $Message"
+  Write-Host "[OK] $Message"
 }
 
 function Write-DotfilesStepFailure {
@@ -24,7 +24,7 @@ function Write-DotfilesStepFailure {
     [string]$Message
   )
 
-  Write-Host "✖ $Message"
+  Write-Host "[FAIL] $Message"
 }
 
 function Write-DotfilesActionInfo {
@@ -42,7 +42,7 @@ function Write-DotfilesActionSuccess {
     [string]$Message
   )
 
-  Write-Host "✔ $Message"
+  Write-Host "[OK] $Message"
 }
 
 function Write-DotfilesActionFailure {
@@ -51,7 +51,7 @@ function Write-DotfilesActionFailure {
     [string]$Message
   )
 
-  Write-Host "✖ $Message"
+  Write-Host "[FAIL] $Message"
 }
 
 function Write-DotfilesSkip {
@@ -60,7 +60,7 @@ function Write-DotfilesSkip {
     [string]$Reason
   )
 
-  Write-Host "↷ Skip: $Reason"
+  Write-Host "[SKIP] $Reason"
 }
 
 function Write-DotfilesWarning {
@@ -69,7 +69,7 @@ function Write-DotfilesWarning {
     [string]$Message
   )
 
-  Write-Host "⚠ Warning: $Message"
+  Write-Host "[WARN] $Message"
 }
 
 function Write-DotfilesNext {
