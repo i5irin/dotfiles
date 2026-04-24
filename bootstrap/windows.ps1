@@ -1,6 +1,8 @@
 param(
   [switch]$DryRun,
   [switch]$EnableWSL,
+  [ValidateSet('install-apps', 'configure-shell', 'apply-preferences', 'register-update-job', 'configure-apps')]
+  [string]$Only,
   [switch]$Help
 )
 

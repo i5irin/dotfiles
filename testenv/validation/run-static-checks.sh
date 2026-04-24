@@ -82,6 +82,11 @@ run_check 'bash syntax' \
   "${REPO_ROOT}/modules/linux/update/register_cron.sh" \
   "${REPO_ROOT}/modules/linux/update/update_packages.sh" \
   "${REPO_ROOT}/modules/linux/apps/configure.sh" \
+  "${REPO_ROOT}/modules/linux/rerun/install-apps.sh" \
+  "${REPO_ROOT}/modules/linux/rerun/configure-shell.sh" \
+  "${REPO_ROOT}/modules/linux/rerun/apply-preferences.sh" \
+  "${REPO_ROOT}/modules/linux/rerun/register-update-job.sh" \
+  "${REPO_ROOT}/modules/linux/rerun/configure-apps.sh" \
   "${REPO_ROOT}/modules/shell/bash/install.sh" \
   "${REPO_ROOT}/modules/shared/shell/alias.sh" \
   "${REPO_ROOT}/modules/shared/shell/functions.sh" \
@@ -99,6 +104,11 @@ run_check 'zsh syntax' \
   "${REPO_ROOT}/modules/macos/update/register_launch_agent.sh" \
   "${REPO_ROOT}/modules/macos/update/update_applications.sh" \
   "${REPO_ROOT}/modules/macos/apps/configure.sh" \
+  "${REPO_ROOT}/modules/macos/rerun/install-apps.sh" \
+  "${REPO_ROOT}/modules/macos/rerun/configure-shell.sh" \
+  "${REPO_ROOT}/modules/macos/rerun/apply-preferences.sh" \
+  "${REPO_ROOT}/modules/macos/rerun/register-update-job.sh" \
+  "${REPO_ROOT}/modules/macos/rerun/configure-apps.sh" \
   "${REPO_ROOT}/modules/shell/zsh/install.sh"
 
 if run_powershell_parse; then
@@ -117,6 +127,8 @@ fi
 log_section 'Bootstrap entry points'
 run_check 'macOS help output' "${REPO_ROOT}/bootstrap/macos.sh" --help
 run_check 'Linux help output' "${REPO_ROOT}/bootstrap/linux.sh" --help
+run_check 'macOS rerun help output' "${REPO_ROOT}/bootstrap/macos.sh" --only configure-apps --help
+run_check 'Linux rerun help output' "${REPO_ROOT}/bootstrap/linux.sh" --only configure-apps --help
 
 if [ "$(uname -s)" = 'Darwin' ] && [ "$(uname -m)" = 'arm64' ]; then
   run_check 'macOS dry-run output' "${REPO_ROOT}/bootstrap/macos.sh" --dry-run
@@ -132,10 +144,13 @@ fi
 
 if command -v pwsh > /dev/null 2>&1; then
   run_check 'Windows help output' pwsh -NoProfile -NonInteractive -File "${REPO_ROOT}/bootstrap/windows.ps1" -Help
+  run_check 'Windows rerun help output' pwsh -NoProfile -NonInteractive -File "${REPO_ROOT}/bootstrap/windows.ps1" -Only configure-apps -Help
 elif command -v powershell > /dev/null 2>&1; then
   run_check 'Windows help output' powershell -NoProfile -NonInteractive -File "${REPO_ROOT}/bootstrap/windows.ps1" -Help
+  run_check 'Windows rerun help output' powershell -NoProfile -NonInteractive -File "${REPO_ROOT}/bootstrap/windows.ps1" -Only configure-apps -Help
 else
   skip_check 'Windows help output (pwsh/powershell not found)'
+  skip_check 'Windows rerun help output (pwsh/powershell not found)'
 fi
 
 log_section 'Package composition'

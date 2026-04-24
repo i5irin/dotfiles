@@ -1,6 +1,8 @@
 param(
   [switch]$DryRun,
   [switch]$EnableWSL,
+  [ValidateSet('install-apps', 'configure-shell', 'apply-preferences', 'register-update-job', 'configure-apps')]
+  [string]$Only,
   [switch]$Help
 )
 
@@ -55,13 +57,14 @@ function Invoke-BootstrapStep {
 
 function Show-Usage {
   @'
-Usage: bootstrap/windows.ps1 [-DryRun] [-EnableWSL] [-Help]
+Usage: bootstrap/windows.ps1 [-DryRun] [-EnableWSL] [-Only <step>] [-Help]
 
 Windows bootstrap entry point.
 
 Options:
   -DryRun     Print the resolved configuration without executing setup.
   -EnableWSL  Include WSL installation in the setup flow.
+  -Only       Run only one step: install-apps, configure-shell, apply-preferences, register-update-job, configure-apps.
   -Help       Show this help message.
 '@
 }
@@ -100,51 +103,112 @@ function Write-DryRunConfiguration {
 
   New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
   try {
-    & $wingetComposer -OutputPath $wingetManifestPath | Out-Null
+    if (-not $Only -or $Only -eq 'install-apps') {
+      & $wingetComposer -OutputPath $wingetManifestPath | Out-Null
+    }
 
     Write-Output "repo_root=$repoRoot"
     Write-Output "bootstrap_module=$PSScriptRoot"
+    Write-Output "selected_step=$(if ($Only) { $Only } else { 'all' })"
     Write-Output "host_platform=$([System.Environment]::OSVersion.Platform)"
     Write-Output "is_windows_host=$(Test-DotfilesWindowsPlatform)"
     Write-Output "is_admin=$(Test-DotfilesAdministrator)"
     Write-Output "enable_wsl=$($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1')"
     Write-Output "include_optional_packages=$includeOptionalPackages"
-    Write-Output "winget_manifest=$wingetManifestPath"
+    Write-Output "winget_manifest=$(if (Test-Path -LiteralPath $wingetManifestPath) { $wingetManifestPath } else { 'n/a' })"
     Write-Output "bootstrap_config_source=$bootstrapConfigSource"
     Write-Output "winget_local_override_source=$($overrideSource.Winget)"
-    Write-Output 'winget_sources='
-    & $wingetComposer -PrintSources
+    if (-not $Only -or $Only -eq 'install-apps') {
+      Write-Output 'winget_sources='
+      & $wingetComposer -PrintSources
+    }
   } finally {
     Remove-Item -LiteralPath $tempDir -Force -Recurse -ErrorAction SilentlyContinue
   }
 }
 
-function Invoke-BootstrapModules {
+function Set-BootstrapEnvironment {
+  param(
+    [string]$WingetManifestPath = ''
+  )
+
+  $env:DOTFILES_REPO_ROOT = $repoRoot
+  $env:DOTFILES_BOOTSTRAP_CONFIG_PATH = $configEnvPath
+  $env:DOTFILES_WINDOWS_ENABLE_WSL = if ($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1') { '1' } else { '0' }
+  $env:DOTFILES_INCLUDE_WINDOWS_OPTIONAL_PACKAGES = if ($includeOptionalPackages) { '1' } else { '0' }
+
+  if ($WingetManifestPath) {
+    $env:DOTFILES_WINGET_MANIFEST_PATH = $WingetManifestPath
+  } elseif (Test-Path Env:DOTFILES_WINGET_MANIFEST_PATH) {
+    Remove-Item Env:DOTFILES_WINGET_MANIFEST_PATH
+  }
+}
+
+function Invoke-InstallAppsStep {
   $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("dotfiles-windows-{0}" -f [guid]::NewGuid().ToString('N'))
   $wingetManifestPath = Join-Path $tempDir 'Winget.manifest.json'
 
   New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
   try {
-    Invoke-BootstrapStep -Label 'Resolve Windows package manifests' -ScriptBlock {
+    Invoke-BootstrapStep -Label 'Resolve Windows app manifest' -ScriptBlock {
       & $wingetComposer -OutputPath $wingetManifestPath | Out-Null
     }
 
-    $env:DOTFILES_REPO_ROOT = $repoRoot
-    $env:DOTFILES_BOOTSTRAP_CONFIG_PATH = $configEnvPath
-    $env:DOTFILES_WINGET_MANIFEST_PATH = $wingetManifestPath
-    $env:DOTFILES_WINDOWS_ENABLE_WSL = if ($EnableWSL.IsPresent -or $env:DOTFILES_WINDOWS_ENABLE_WSL -eq '1') { '1' } else { '0' }
-    $env:DOTFILES_INCLUDE_WINDOWS_OPTIONAL_PACKAGES = if ($includeOptionalPackages) { '1' } else { '0' }
-
-    Invoke-BootstrapStep -Label 'Install Windows packages' -ScriptBlock { & $packagesModule }
+    Set-BootstrapEnvironment -WingetManifestPath $wingetManifestPath
+    Invoke-BootstrapStep -Label 'Install Windows applications' -ScriptBlock { & $packagesModule }
     Invoke-BootstrapStep -Label 'Validate terminal/editor font prerequisites' -ScriptBlock { & $fontsModule }
-    Invoke-BootstrapStep -Label 'Install PowerShell completion modules' -ScriptBlock { & $powerShellModulesInstaller }
-    Invoke-BootstrapStep -Label 'Install PowerShell profile' -ScriptBlock { & $profileModule }
-    Invoke-BootstrapStep -Label 'Apply Windows preferences' -ScriptBlock { & $preferencesModule }
-    Invoke-BootstrapStep -Label 'Register Windows update task' -ScriptBlock { & $updateModule }
-    Invoke-BootstrapStep -Label 'Configure Windows applications' -ScriptBlock { & $appsModule }
   } finally {
     Remove-Item -LiteralPath $tempDir -Force -Recurse -ErrorAction SilentlyContinue
   }
+}
+
+function Invoke-ConfigureShellStep {
+  Set-BootstrapEnvironment
+  Invoke-BootstrapStep -Label 'Install PowerShell completion modules' -ScriptBlock { & $powerShellModulesInstaller }
+  Invoke-BootstrapStep -Label 'Install PowerShell profile' -ScriptBlock { & $profileModule }
+}
+
+function Invoke-ApplyPreferencesStep {
+  Set-BootstrapEnvironment
+  Invoke-BootstrapStep -Label 'Apply Windows preferences' -ScriptBlock { & $preferencesModule }
+}
+
+function Invoke-RegisterUpdateJobStep {
+  Set-BootstrapEnvironment
+  Invoke-BootstrapStep -Label 'Register Windows update task' -ScriptBlock { & $updateModule }
+}
+
+function Invoke-ConfigureAppsStep {
+  Set-BootstrapEnvironment
+  Invoke-BootstrapStep -Label 'Configure Windows applications' -ScriptBlock { & $appsModule }
+}
+
+function Invoke-BootstrapModules {
+  if ($Only) {
+    switch ($Only) {
+      'install-apps' { Invoke-InstallAppsStep }
+      'configure-shell' { Invoke-ConfigureShellStep }
+      'apply-preferences' { Invoke-ApplyPreferencesStep }
+      'register-update-job' { Invoke-RegisterUpdateJobStep }
+      'configure-apps' { Invoke-ConfigureAppsStep }
+    }
+
+    return
+  }
+
+  Invoke-InstallAppsStep
+  Invoke-ConfigureShellStep
+  Invoke-ApplyPreferencesStep
+  Invoke-RegisterUpdateJobStep
+  Invoke-ConfigureAppsStep
+}
+
+function Test-StepRequiresAdministrator {
+  param(
+    [string]$StepName
+  )
+
+  return $StepName -in @('install-apps', 'apply-preferences', 'register-update-job')
 }
 
 try {
@@ -164,8 +228,12 @@ try {
     throw 'This bootstrap entry only supports Windows.'
   }
 
-  if (-not (Test-DotfilesAdministrator)) {
+  if ((-not $Only) -and (-not (Test-DotfilesAdministrator))) {
     throw 'This bootstrap entry must be run with administrative privileges.'
+  }
+
+  if ($Only -and (Test-StepRequiresAdministrator -StepName $Only) -and (-not (Test-DotfilesAdministrator))) {
+    throw "The $Only step must be run with administrative privileges."
   }
 
   Write-DotfilesStepInfo 'Starting Windows bootstrap.'
