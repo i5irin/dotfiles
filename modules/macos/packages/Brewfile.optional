@@ -1,27 +1,20 @@
 # Optional packages for Apple Silicon macOS.
 cask "1password"
 cask "alfred"
-cask "alt-tab"
 cask "appcleaner"
-cask "bathyscaphe"
-cask "bettertouchtool"
 cask "caffeine"
-cask "chatwork"
 cask "clip-studio-paint"
 cask "clipy"
 cask "discord"
 cask "docker-desktop"
 cask "dropbox"
 cask "firefox"
-cask "geekbench"
 cask "ghostty"
 cask "google-chrome"
 cask "google-japanese-ime"
 cask "karabiner-elements"
 cask "microsoft-office"
-cask "microsoft-teams"
 cask "nvidia-geforce-now"
-cask "postman"
 cask "slack"
 cask "steam"
 cask "tableplus"
@@ -29,7 +22,4 @@ cask "tradingview"
 cask "visual-studio-code"
 cask "zoom"
 mas "LINE", id: 539883307
-mas "SiteSucker", id: 442168834
-mas "Twitter", id: 1482454543
 mas "Xcode", id: 497799835
-mas "Yoink", id: 457622435

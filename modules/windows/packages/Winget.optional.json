@@ -1,40 +1,7 @@
 {
   "Packages": [
     {
-      "PackageIdentifier": "Discord.Discord"
-    },
-    {
-      "PackageIdentifier": "Docker.DockerDesktop"
-    },
-    {
-      "PackageIdentifier": "Dropbox.Dropbox"
-    },
-    {
-      "PackageIdentifier": "Mozilla.Firefox"
-    },
-    {
-      "PackageIdentifier": "PrimateLabs.Geekbench.5"
-    },
-    {
-      "PackageIdentifier": "Google.Chrome"
-    },
-    {
-      "PackageIdentifier": "Microsoft.Teams"
-    },
-    {
-      "PackageIdentifier": "Nvidia.GeForceNow"
-    },
-    {
-      "PackageIdentifier": "Postman.Postman"
-    },
-    {
-      "PackageIdentifier": "SlackTechnologies.Slack"
-    },
-    {
       "PackageIdentifier": "Valve.Steam"
-    },
-    {
-      "PackageIdentifier": "Zoom.Zoom"
     }
   ]
 }

@@ -48,29 +48,6 @@ configure_ghostty() {
   finish_configure_message 'Ghostty'
 }
 
-configure_alttab() {
-  local was_running=1
-
-  configure_info 'AltTab'
-  if [ ! -d /Applications/AltTab.app ]; then
-    skip_info 'AltTab is not installed.'
-    return 0
-  fi
-
-  set +e
-  killall AltTab > /dev/null 2>&1
-  was_running=$?
-  set -e
-
-  defaults write com.lwouis.alt-tab-macos spacesToShow -bool true
-
-  if [ "${was_running}" -eq 0 ]; then
-    open /Applications/AltTab.app
-  fi
-
-  finish_configure_message 'AltTab'
-}
-
 configure_clipy() {
   local was_running=1
 
@@ -103,7 +80,6 @@ main() {
   configure_posix_neovim
   configure_vscode
   configure_ghostty
-  configure_alttab
   configure_clipy
 }
 
