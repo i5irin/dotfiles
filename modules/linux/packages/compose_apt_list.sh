@@ -11,17 +11,33 @@ readonly BASE_APT_LIST="${SCRIPT_DIR}/apt.base.txt"
 readonly OPTIONAL_APT_LIST="${SCRIPT_DIR}/apt.optional.txt"
 readonly CANONICAL_LOCAL_OVERRIDE_APT_LIST="${SCRIPT_DIR}/local.apt.txt"
 
+should_include_optional_packages() {
+  case "${DOTFILES_INCLUDE_LINUX_OPTIONAL_PACKAGES:-0}" in
+    1|true|TRUE|yes|YES)
+      return 0
+      ;;
+  esac
+
+  return 1
+}
+
 usage() {
   cat <<'EOF'
 Usage: compose_apt_list.sh [--print-sources] [--output PATH]
 
 Compose the Linux apt package list from base, optional, and local override layers.
+
+Environment:
+  DOTFILES_INCLUDE_LINUX_OPTIONAL_PACKAGES=1  Include apt.optional.txt.
 EOF
 }
 
 print_sources() {
   printf '%s\n' "${BASE_APT_LIST}"
-  printf '%s\n' "${OPTIONAL_APT_LIST}"
+
+  if should_include_optional_packages; then
+    printf '%s\n' "${OPTIONAL_APT_LIST}"
+  fi
 
   if [ -f "${CANONICAL_LOCAL_OVERRIDE_APT_LIST}" ]; then
     printf '%s\n' "${CANONICAL_LOCAL_OVERRIDE_APT_LIST}"

@@ -1,10 +1,7 @@
 {
   "Packages": [
     {
-      "PackageIdentifier": "Postman.Postman"
-    },
-    {
-      "PackageIdentifier": "ElectronicArts.EADesktop"
+      "PackageIdentifier": "Microsoft.PowerToys"
     }
   ]
 }

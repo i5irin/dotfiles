@@ -25,6 +25,7 @@ readonly BASH_INSTALL_MODULE="${REPO_ROOT}/modules/shell/bash/install.sh"
 readonly UPDATE_MODULE="${REPO_ROOT}/modules/linux/update/register_cron.sh"
 readonly APP_CONFIGURE_MODULE="${REPO_ROOT}/modules/linux/apps/configure.sh"
 readonly CANONICAL_LOCAL_OVERRIDE_APT_LIST="${REPO_ROOT}/modules/linux/packages/local.apt.txt"
+readonly INCLUDE_OPTIONAL_PACKAGES="${DOTFILES_INCLUDE_LINUX_OPTIONAL_PACKAGES:-0}"
 VALID_STEP_NAMES=('install-apps' 'configure-shell' 'apply-preferences' 'register-update-job' 'configure-apps')
 ONLY_STEP=''
 
@@ -117,6 +118,7 @@ bootstrap_module=${SCRIPT_DIR}
 selected_step=${ONLY_STEP:-all}
 package_list=${apt_list_path}
 bootstrap_config_source=${BOOTSTRAP_CONFIG_SOURCE}
+include_optional_packages=${INCLUDE_OPTIONAL_PACKAGES}
 local_override_source=$(resolve_local_override_source)
 dotfiles_data_home=${DOTFILES_DATA_HOME}
 git_prompt_dir=${GIT_PROMPT_DIR}
