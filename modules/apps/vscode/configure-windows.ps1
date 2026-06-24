@@ -8,8 +8,8 @@ if (-not $repoRoot) {
 
 Import-Module (Join-Path $repoRoot 'modules/shared/utils/WindowsDotfiles.psm1') -Force
 
-$settingsAsset = Join-Path $repoRoot 'assets/cli/vscode/settings.json'
-$extensionsFile = Join-Path $repoRoot 'assets/cli/vscode/extensions'
+$settingsAsset = Join-Path $repoRoot 'assets/apps/vscode/settings.json'
+$extensionsFile = Join-Path $repoRoot 'assets/apps/vscode/extensions'
 $userDir = Join-Path $env:APPDATA 'Code\User'
 $settingsPath = Join-Path $userDir 'settings.json'
 

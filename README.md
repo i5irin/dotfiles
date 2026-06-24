@@ -179,8 +179,12 @@ Use the tracked catalog files as the source of truth for the current package set
   - bootstrap config samples
 - `modules/`
   - executable implementation
+  - `modules/cli/` contains CLI-only tools such as git, tmux, starship, and neovim
+  - `modules/apps/` contains app/editor integrations such as Ghostty and VS Code
 - `assets/`
   - tracked static configuration assets
+  - `assets/cli/` contains CLI-focused assets
+  - `assets/apps/` contains app/editor assets
 - `testenv/`
   - static and environment validation helpers
 

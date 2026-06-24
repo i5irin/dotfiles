@@ -25,6 +25,8 @@ This file is for repository maintenance and design intent. User-facing setup ins
 - keep Windows native and Unix-style CLI concerns separate
 - keep Linux focused on CLI behavior, not GUI terminal rendering
 - keep machine-specific additions in untracked local override files
+- keep `modules/cli` and `assets/cli` limited to true CLI tools
+- keep GUI app/editor integrations under `modules/apps` and `assets/apps`
 
 ## Setup Responsibilities
 

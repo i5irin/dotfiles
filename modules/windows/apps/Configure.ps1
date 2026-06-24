@@ -30,4 +30,4 @@ Invoke-DotfilesOptionalConfigure -CommandName 'nvim' -CandidatePaths @(
   & (Join-Path $repoRoot 'modules/cli/neovim/configure-windows.ps1')
 }
 
-& (Join-Path $repoRoot 'modules/cli/vscode/configure-windows.ps1')
+& (Join-Path $repoRoot 'modules/apps/vscode/configure-windows.ps1')

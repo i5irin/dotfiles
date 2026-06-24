@@ -8,9 +8,9 @@ REPO_ROOT="${DOTFILES_REPO_ROOT:-$(CDPATH='' cd -- "${SCRIPT_DIR}/../../.." && p
 readonly REPO_ROOT
 
 readonly BASELINE_JSON="${REPO_ROOT}/assets/cli/terminal/baseline.json"
-readonly GHOSTTY_OUTPUT="${REPO_ROOT}/assets/cli/ghostty/config"
+readonly GHOSTTY_OUTPUT="${REPO_ROOT}/assets/apps/ghostty/config"
 readonly WINDOWS_TERMINAL_OUTPUT="${REPO_ROOT}/assets/windows/terminal/settings.json"
-readonly VSCODE_OUTPUT="${REPO_ROOT}/assets/cli/vscode/settings.json"
+readonly VSCODE_OUTPUT="${REPO_ROOT}/assets/apps/vscode/settings.json"
 
 render_ghostty() {
   jq -r '

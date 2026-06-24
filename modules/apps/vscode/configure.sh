@@ -7,8 +7,8 @@ readonly SCRIPT_DIR
 REPO_ROOT="${DOTFILES_REPO_ROOT:-$(CDPATH='' cd -- "${SCRIPT_DIR}/../../.." && pwd)}"
 readonly REPO_ROOT
 
-readonly VSCODE_SETTINGS_ASSET="${REPO_ROOT}/assets/cli/vscode/settings.json"
-readonly VSCODE_EXTENSIONS_FILE="${REPO_ROOT}/assets/cli/vscode/extensions"
+readonly VSCODE_SETTINGS_ASSET="${REPO_ROOT}/assets/apps/vscode/settings.json"
+readonly VSCODE_EXTENSIONS_FILE="${REPO_ROOT}/assets/apps/vscode/extensions"
 
 resolve_code_command() {
   if command -v code > /dev/null 2>&1; then

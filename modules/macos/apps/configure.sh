@@ -33,7 +33,7 @@ configure_karabiner() {
 
 configure_vscode() {
   configure_info 'Visual Studio Code'
-  "${REPO_ROOT}/modules/cli/vscode/configure.sh"
+  "${REPO_ROOT}/modules/apps/vscode/configure.sh"
   finish_configure_message 'Visual Studio Code'
 }
 
@@ -44,7 +44,7 @@ configure_ghostty() {
     return 0
   fi
 
-  "${REPO_ROOT}/modules/cli/ghostty/configure.sh"
+  "${REPO_ROOT}/modules/apps/ghostty/configure.sh"
   finish_configure_message 'Ghostty'
 }
 
