@@ -101,6 +101,20 @@ Prompt generation still belongs to the target OS environment. That is why Linux 
 - Linux
   - validate in a disposable Ubuntu/Debian-style environment or WSL
 
+Validation flow:
+
+1. run static checks on the host
+2. run `bootstrap/* --dry-run` in the target environment
+3. run the full bootstrap
+4. record any manual setup that still remains
+
+Validation targets:
+
+- macOS and Windows
+  - prefer VM-based validation
+- Linux
+  - prefer a disposable Ubuntu/Debian-style environment, WSL, or a container smoke test
+
 Static checks:
 
 ```bash

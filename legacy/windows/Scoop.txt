@@ -1,8 +1,0 @@
-coreutils
-curl
-gawk
-gcc
-gibo
-sed
-hugo
-jq
