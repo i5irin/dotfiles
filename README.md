@@ -20,6 +20,10 @@ Maintainable dotfiles for Apple Silicon macOS, Windows, and Linux CLI environmen
 - Windows: [bootstrap/windows.ps1](bootstrap/windows.ps1)
 - Linux: [bootstrap/linux.sh](bootstrap/linux.sh)
 
+## Development Environment Architecture
+
+For the design principles behind the cross-platform development environment, including host-first development, repository-scoped project context, container usage, runtime management, remote development, and AI coding tooling, see [docs/development-environment.md](docs/development-environment.md).
+
 ## Quick Start
 
 Before your first full run:
@@ -135,7 +139,7 @@ You can also run the same steps through the main entry points with `--only` or `
 
 ## Package Layers
 
-Each platform uses the same package layering model:
+Each platform uses the same package layering model.
 
 - `base`
   - tracked packages that define the baseline
@@ -187,6 +191,8 @@ Use the tracked catalog files as the source of truth for the current package set
   - `assets/apps/` contains app/editor assets
 - `testenv/`
   - static and environment validation helpers
+- `docs/`
+  - development-environment architecture and related documentation
 
 ## Maintenance
 
