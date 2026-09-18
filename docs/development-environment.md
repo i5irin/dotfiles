@@ -56,6 +56,8 @@ The target state is:
 
 Exact byte-for-byte replication is less important than reproducing an equivalent environment appropriate for the target OS and architecture.
 
+This dotfiles repository owns tracked machine-level bootstrap tooling and common Development Host configuration. Individual project repositories continue to own runtime versions, project dependencies, lockfiles, and service definitions.
+
 ### 2.2 Prefer vendor-neutral boundaries
 
 The important part is not making every tool vendor-neutral.
@@ -140,6 +142,8 @@ Examples include:
 
 Portability and native machine capability are separate concerns. Preserve portable declarations while intentionally allowing machine-native execution where valuable.
 
+Rosetta is not part of the standard Apple Silicon Development Host requirement. Keep it disabled by default and install it only as an explicit compatibility option for Intel-only software.
+
 ---
 
 ## 3. Responsibility Model
@@ -213,7 +217,11 @@ Machine-native Compute
 
 ---
 
-## 4. Current Recommended Tooling
+## 4. Target Tooling and Current Baseline
+
+The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, and Git tooling. Language toolchains, container runtime selection, AI coding-agent installation, and remote-development automation remain later implementation work unless their modules and package declarations are present in this repository.
+
+The macOS `base` package layer is the tracked baseline for the primary daily Development Host. Windows and Linux remain smaller, CLI-oriented secondary environments and are not required to mirror the macOS package set or implementation structure.
 
 ### macOS / shared tools
 

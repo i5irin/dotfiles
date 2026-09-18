@@ -72,6 +72,43 @@ if ($failed) { exit 1 }
   "$shell_command" -NoProfile -NonInteractive -Command "$script"
 }
 
+macos_base_has_package() {
+  local package_name="$1"
+
+  awk -F'"' '/^(brew|cask) / { print $2 }' "${REPO_ROOT}/modules/macos/packages/Brewfile.base" \
+    | grep -Fx "${package_name}" > /dev/null 2>&1
+}
+
+macos_optional_only_has_package() {
+  local package_name="$1"
+
+  ! macos_base_has_package "${package_name}" \
+    && awk -F'"' '/^(brew|cask) / { print $2 }' "${REPO_ROOT}/modules/macos/packages/Brewfile.optional" \
+      | grep -Fx "${package_name}" > /dev/null 2>&1
+}
+
+macos_package_layers_have_no_duplicates() {
+  local duplicates
+
+  duplicates="$(
+    awk -F'"' '/^(brew|cask|mas) / { print $1 ":" $2 }' \
+      "${REPO_ROOT}/modules/macos/packages/Brewfile.base" \
+      "${REPO_ROOT}/modules/macos/packages/Brewfile.optional" \
+      | sort \
+      | uniq -d
+  )"
+
+  [ -z "${duplicates}" ]
+}
+
+macos_rosetta_defaults_off() {
+  grep -Fx 'DOTFILES_INSTALL_ROSETTA=0' "${REPO_ROOT}/config/macos.env.sample" > /dev/null 2>&1 \
+    && grep -F 'readonly INSTALL_ROSETTA="${DOTFILES_INSTALL_ROSETTA:-0}"' \
+      "${REPO_ROOT}/modules/macos/bootstrap/run.sh" > /dev/null 2>&1 \
+    && grep -F 'readonly INSTALL_ROSETTA="${DOTFILES_INSTALL_ROSETTA:-0}"' \
+      "${REPO_ROOT}/modules/macos/packages/install.sh" > /dev/null 2>&1
+}
+
 log_section 'Shell syntax'
 run_check 'bash syntax' \
   bash -n \
@@ -156,6 +193,14 @@ fi
 log_section 'Package composition'
 run_check 'macOS package sources' "${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh" --print-sources
 run_check 'Linux package sources' "${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh" --print-sources
+for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code; do
+  run_check "macOS base package: ${package_name}" macos_base_has_package "${package_name}"
+done
+for package_name in gcc hugo openjdk; do
+  run_check "macOS optional-only package: ${package_name}" macos_optional_only_has_package "${package_name}"
+done
+run_check 'macOS package layers have no duplicates' macos_package_layers_have_no_duplicates
+run_check 'macOS Rosetta default is off' macos_rosetta_defaults_off
 
 log_section 'Generated assets'
 run_check 'terminal asset sync' "${REPO_ROOT}/modules/cli/terminal/render-assets.sh" --check

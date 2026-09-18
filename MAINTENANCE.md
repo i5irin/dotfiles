@@ -27,6 +27,10 @@ This file is for repository maintenance and design intent. User-facing setup ins
 - keep machine-specific additions in untracked local override files
 - keep `modules/cli` and `assets/cli` limited to true CLI tools
 - keep GUI app/editor integrations under `modules/apps` and `assets/apps`
+- allow platform package baselines to differ according to their responsibilities; do not expand Windows or Linux merely to mirror macOS
+- treat the macOS base layer as the tracked baseline for the primary daily Development Host
+- keep Rosetta disabled by default and use it only as an explicit compatibility option for Intel-only software
+- add modules or bootstrap steps only when an existing responsibility cannot express a concrete requirement
 
 ## Setup Responsibilities
 
@@ -44,10 +48,12 @@ This file is for repository maintenance and design intent. User-facing setup ins
 
 `install-apps` must not silently deploy app settings. `configure-apps` must not silently install missing apps.
 
+Keep installation, configuration, and validation separate. Package installation belongs to `install-apps`, shell wiring belongs to `configure-shell`, application settings belong to `configure-apps`, and declarative repository checks belong under `testenv/validation`.
+
 ## Package Catalog Policy
 
 - `base`
-  - minimum tracked baseline for that platform
+  - tracked baseline required for that platform's intended role
 - `optional`
   - tracked packages that are useful but disabled by default
 - `local override`
@@ -58,6 +64,8 @@ Optional packages are disabled by default on all platforms.
 - macOS: `DOTFILES_INCLUDE_MACOS_OPTIONAL_PACKAGES=1`
 - Windows: `DOTFILES_INCLUDE_WINDOWS_OPTIONAL_PACKAGES=1`
 - Linux: `DOTFILES_INCLUDE_LINUX_OPTIONAL_PACKAGES=1`
+
+The macOS base is intentionally broader because macOS is the primary Development Host. Workload-specific compilers, runtimes, and applications should remain optional unless they are required across the standard host workflow.
 
 When considering a new tracked package:
 

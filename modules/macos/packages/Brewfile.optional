@@ -1,4 +1,7 @@
 # Optional packages for Apple Silicon macOS.
+brew "gcc"
+brew "hugo"
+brew "openjdk"
 cask "1password"
 cask "alfred"
 cask "appcleaner"
@@ -9,7 +12,6 @@ cask "discord"
 cask "docker-desktop"
 cask "dropbox"
 cask "firefox"
-cask "ghostty"
 cask "google-chrome"
 cask "google-japanese-ime"
 cask "karabiner-elements"
@@ -19,7 +21,6 @@ cask "slack"
 cask "steam"
 cask "tableplus"
 cask "tradingview"
-cask "visual-studio-code"
 cask "zoom"
 mas "LINE", id: 539883307
 mas "Xcode", id: 497799835

@@ -9,14 +9,20 @@ readonly REPO_ROOT
 
 readonly HOMEBREW_PREFIX="${DOTFILES_HOMEBREW_PREFIX:-/opt/homebrew}"
 readonly BREWFILE_PATH="${DOTFILES_BREWFILE:-}"
+readonly INSTALL_ROSETTA="${DOTFILES_INSTALL_ROSETTA:-0}"
 
 source "${REPO_ROOT}/modules/shared/utils/dotfiles.sh"
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
 
-install_rosetta() {
-  if [ "$(uname -m)" = 'arm64' ]; then
-    softwareupdate --install-rosetta --agree-to-license > /dev/null 2>&1 || true
+install_rosetta_if_enabled() {
+  if [ "${INSTALL_ROSETTA}" != '1' ]; then
+    skip_info 'Rosetta installation is disabled.'
+    return 0
   fi
+
+  setup_info 'Rosetta'
+  softwareupdate --install-rosetta --agree-to-license > /dev/null 2>&1 || true
+  complete_setup_info 'Rosetta'
 }
 
 install_homebrew_if_needed() {
@@ -35,9 +41,7 @@ main() {
 
   require_apple_silicon_macos
 
-  setup_info 'Rosetta'
-  install_rosetta
-  complete_setup_info 'Rosetta'
+  install_rosetta_if_enabled
 
   setup_info 'Homebrew'
   install_homebrew_if_needed

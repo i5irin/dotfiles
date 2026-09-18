@@ -33,6 +33,14 @@ configure_karabiner() {
 
 configure_vscode() {
   configure_info 'Visual Studio Code'
+  if [ ! -d '/Applications/Visual Studio Code.app' ] \
+    && [ ! -d "${HOME}/Applications/Visual Studio Code.app" ] \
+    && ! command -v code > /dev/null 2>&1
+  then
+    skip_info 'Visual Studio Code is not installed.'
+    return 0
+  fi
+
   "${REPO_ROOT}/modules/apps/vscode/configure.sh"
   finish_configure_message 'Visual Studio Code'
 }

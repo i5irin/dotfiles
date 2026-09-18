@@ -8,6 +8,8 @@ Maintainable dotfiles for Apple Silicon macOS, Windows, and Linux CLI environmen
 - Windows is a secondary environment for VM validation, WSL, gaming, and Windows-native workflows.
 - Linux is a secondary CLI environment for WSL, SSH targets, and disposable development environments.
 
+The tracked macOS base package layer defines the standard Apple Silicon Development Host baseline. Windows and Linux intentionally remain smaller and more CLI-oriented; their package sets do not need to mirror macOS.
+
 ## Supported Platforms
 
 - Apple Silicon macOS only
@@ -36,6 +38,7 @@ Before your first full run:
   - macOS: [modules/macos/packages/local.Brewfile.sample](modules/macos/packages/local.Brewfile.sample)
   - Windows: [modules/windows/packages/local.Winget.json.sample](modules/windows/packages/local.Winget.json.sample)
   - Linux: [modules/linux/packages/local.apt.txt.sample](modules/linux/packages/local.apt.txt.sample)
+- Rosetta is disabled by default on macOS; set `DOTFILES_INSTALL_ROSETTA=1` only when Intel-only software requires it
 
 ### macOS
 
@@ -147,6 +150,8 @@ Each platform uses the same package layering model.
   - tracked packages that are disabled by default
 - `local override`
   - untracked, additive-only machine-specific package additions
+
+On macOS, `base` is the tracked daily Development Host baseline, including Ghostty and Visual Studio Code. It is intentionally broader than the Windows and Linux base layers.
 
 ## Terminal and Editor Baseline
 
