@@ -33,7 +33,7 @@ fi
 
 # Select the fnm-managed Node.js version declared by the current project.
 if type fnm > /dev/null 2>&1; then
-  eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+  eval "$(fnm env --use-on-cd --version-file-strategy=recursive --resolve-engines=false --shell zsh)"
 fi
 
 # Make OpenJDK installed by Homebrew available as the default JDK.

@@ -214,7 +214,7 @@ for package_name in gcc hugo openjdk; do
 done
 run_check 'macOS package layers have no duplicates' macos_package_layers_have_no_duplicates
 run_check 'fnm shell integration uses project-aware stable options' \
-  grep -Fq 'fnm env --use-on-cd --version-file-strategy=recursive --shell zsh' \
+  grep -Fq 'fnm env --use-on-cd --version-file-strategy=recursive --resolve-engines=false --shell zsh' \
     "${REPO_ROOT}/modules/shell/zsh/.zshrc"
 run_check 'Go-installed commands use the default GOPATH bin directory' \
   grep -Fq 'add_path "${HOME}/go/bin"' "${REPO_ROOT}/modules/shell/zsh/.zprofile"
