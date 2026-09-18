@@ -219,7 +219,7 @@ Machine-native Compute
 
 ## 4. Target Tooling and Current Baseline
 
-The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, and Git tooling. Language toolchains, container runtime selection, AI coding-agent installation, and remote-development automation remain later implementation work unless their modules and package declarations are present in this repository.
+The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, and the runtime/toolchain foundation described in section 5. Container runtime selection, AI coding-agent installation, and remote-development automation remain later implementation work.
 
 The macOS `base` package layer is the tracked baseline for the primary daily Development Host. Windows and Linux remain smaller, CLI-oriented secondary environments and are not required to mirror the macOS package set or implementation structure.
 
@@ -275,6 +275,10 @@ Use `package.json` for application-level requirements, including compatible Node
 
 Avoid accumulating global npm packages. Prefer project dependencies for project-specific tools.
 
+The implemented macOS baseline installs `fnm` and the native `pnpm` executable through Homebrew. The tracked zsh configuration enables `fnm`'s stable directory-change integration and recursively discovers version files from nested directories. It does not enable experimental Corepack integration or infer runtime versions from `package.json#engines`.
+
+Bootstrap does not install a global default Node.js runtime. Projects own `.node-version`, Node compatibility metadata, the `packageManager` declaration, and `pnpm-lock.yaml`. The selected `pnpm` package does not depend on Homebrew Node.js, so runtime selection remains owned by `fnm`; Corepack is not the bootstrap mechanism.
+
 ### 5.2 Python
 
 Use `uv` as the primary Python environment tool.
@@ -299,6 +303,8 @@ Do not install project dependencies into a shared global Python environment.
 
 Apple Silicon-specific libraries such as MLX should remain usable from the native Python environment.
 
+The implemented macOS baseline installs `uv` through Homebrew and adds no shell hook. `uv` discovers `.python-version`, obtains Python on demand when a project requires it, and manages the project `.venv`; bootstrap does not preinstall an arbitrary Python runtime.
+
 ### 5.3 Go
 
 Use Go's native toolchain and module model.
@@ -315,6 +321,8 @@ Declare version / toolchain requirements in repository-level Go files.
 Shared module download caches are acceptable.
 
 Keep logical dependency state repository-scoped while allowing machine-scoped download caches, following Go's normal model.
+
+The implemented macOS baseline installs the Homebrew `go` formula as the bootstrap Go distribution and makes the default `GOPATH` binary directory (`$HOME/go/bin`) available. It does not set `GOROOT`, `GOPATH`, or `GOTOOLCHAIN`; project `go` and `toolchain` directives retain Go's native `GOTOOLCHAIN=auto` selection behavior.
 
 ### 5.4 Rust
 
@@ -341,6 +349,8 @@ cargo
 ```
 
 Prefer Rust's own mature tooling rather than introducing a general-purpose version manager solely for Rust.
+
+The implemented macOS baseline installs Homebrew `rustup`, not Homebrew `rust`. Because the formula is keg-only, the tracked login-shell configuration adds its proxy directory to `PATH`. Bootstrap does not set `CARGO_HOME` or `RUSTUP_HOME` and does not install a global default toolchain; the nearest project `rust-toolchain.toml` selects the toolchain and rustup obtains it as needed.
 
 ---
 
@@ -626,7 +636,7 @@ The environment prioritizes:
 
 ---
 
-## 13. Current Standard Layout
+## 13. Target Standard Layout
 
 ```text
 MacBook Pro / macOS

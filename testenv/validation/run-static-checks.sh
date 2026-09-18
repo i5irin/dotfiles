@@ -87,6 +87,17 @@ macos_optional_only_has_package() {
       | grep -Fx "${package_name}" > /dev/null 2>&1
 }
 
+macos_base_lacks_package() {
+  local package_name="$1"
+
+  ! macos_base_has_package "${package_name}"
+}
+
+macos_base_lacks_node_formula() {
+  ! awk -F'"' '/^brew / { print $2 }' "${REPO_ROOT}/modules/macos/packages/Brewfile.base" \
+    | grep -Eq '^node(@.*)?$'
+}
+
 macos_package_layers_have_no_duplicates() {
   local duplicates
 
@@ -193,13 +204,23 @@ fi
 log_section 'Package composition'
 run_check 'macOS package sources' "${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh" --print-sources
 run_check 'Linux package sources' "${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh" --print-sources
-for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code; do
+for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code fnm pnpm uv go rustup; do
   run_check "macOS base package: ${package_name}" macos_base_has_package "${package_name}"
 done
+run_check 'macOS base excludes Homebrew Node.js' macos_base_lacks_node_formula
+run_check 'macOS base excludes Homebrew Rust' macos_base_lacks_package rust
 for package_name in gcc hugo openjdk; do
   run_check "macOS optional-only package: ${package_name}" macos_optional_only_has_package "${package_name}"
 done
 run_check 'macOS package layers have no duplicates' macos_package_layers_have_no_duplicates
+run_check 'fnm shell integration uses project-aware stable options' \
+  grep -Fq 'fnm env --use-on-cd --version-file-strategy=recursive --shell zsh' \
+    "${REPO_ROOT}/modules/shell/zsh/.zshrc"
+run_check 'Go-installed commands use the default GOPATH bin directory' \
+  grep -Fq 'add_path "${HOME}/go/bin"' "${REPO_ROOT}/modules/shell/zsh/.zprofile"
+run_check 'Homebrew rustup proxies are on PATH' \
+  grep -Fq 'add_path "${HOMEBREW_PREFIX}/opt/rustup/bin"' \
+    "${REPO_ROOT}/modules/shell/zsh/.zprofile"
 run_check 'macOS Rosetta default is off' macos_rosetta_defaults_off
 
 log_section 'Generated assets'

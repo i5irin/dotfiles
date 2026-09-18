@@ -50,6 +50,17 @@ This file is for repository maintenance and design intent. User-facing setup ins
 
 Keep installation, configuration, and validation separate. Package installation belongs to `install-apps`, shell wiring belongs to `configure-shell`, application settings belong to `configure-apps`, and declarative repository checks belong under `testenv/validation`.
 
+## Runtime and Toolchain Policy
+
+- Homebrew owns machine-level manager and bootstrap executables on macOS: `fnm`, `pnpm`, `uv`, Go, and `rustup`.
+- Language-native managers own language runtimes and toolchains. Homebrew must not also provide baseline Node.js or Rust compiler installations that compete with `fnm` or `rustup`.
+- Project repositories own runtime declarations, dependency manifests, and lockfiles. Dotfiles must not install project dependencies.
+- Shell configuration owns only stable manager initialization and required `PATH` entries. Installers must not edit dotfiles-managed shell files.
+- Runtime downloads, virtual environments, package stores, build output, and caches are machine-local state and must remain untracked.
+- A project dependency manager must not silently replace its runtime manager. In particular, retain a `pnpm` installation method that does not introduce Homebrew Node.js.
+- Leave Go's standard `GOTOOLCHAIN=auto` behavior intact and do not set `GOROOT` or `GOPATH` without a concrete need.
+- Do not set global default Node.js, Python, or Rust versions solely for bootstrap convenience; repository declarations remain the normal selection boundary.
+
 ## Package Catalog Policy
 
 - `base`

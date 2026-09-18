@@ -153,6 +153,12 @@ Each platform uses the same package layering model.
 
 On macOS, `base` is the tracked daily Development Host baseline, including Ghostty and Visual Studio Code. It is intentionally broader than the Windows and Linux base layers.
 
+## Runtime and Toolchain Baseline
+
+The macOS base installs `fnm`, `pnpm`, `uv`, Go, and `rustup`. The dotfiles provide the machine-level managers and shell wiring; each project declares its own runtime and dependency requirements through files such as `.node-version`, `package.json`, `.python-version`, `pyproject.toml`, `go.mod`, and `rust-toolchain.toml`.
+
+Bootstrap does not install arbitrary global Node.js, Python, or Rust versions. Runtime downloads, virtual environments, dependency stores, build output, and caches remain machine-local and untracked.
+
 ## Terminal and Editor Baseline
 
 - macOS terminal: Ghostty

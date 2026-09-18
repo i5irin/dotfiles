@@ -31,6 +31,11 @@ if [ -x "${HOMEBREW_PREFIX}/bin/brew" ]; then
   eval "$("${HOMEBREW_PREFIX}/bin/brew" shellenv)"
 fi
 
+# Select the fnm-managed Node.js version declared by the current project.
+if type fnm > /dev/null 2>&1; then
+  eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+fi
+
 # Make OpenJDK installed by Homebrew available as the default JDK.
 if type brew > /dev/null 2>&1; then
   add_path "$(brew --prefix)/opt/openjdk/bin" 2> /dev/null
