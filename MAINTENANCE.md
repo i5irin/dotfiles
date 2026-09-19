@@ -146,6 +146,19 @@ Validation targets:
 - Linux
   - prefer a disposable Ubuntu/Debian-style environment, WSL, or a container smoke test
 
+Container runtime validation on Apple Silicon macOS is split by virtualization capability:
+
+- macOS VM
+  - validate fresh bootstrap and any required Full Disk Access flow
+  - validate the second bootstrap plus `install-apps` and `configure-apps` reruns
+  - validate package presence, Docker Compose plugin wiring, and that bootstrap does not start Colima
+  - do not require Colima runtime capability when the VM environment does not provide nested virtualization
+- physical Apple Silicon Mac
+  - validate Colima VZ startup with VirtioFS
+  - validate Docker daemon connectivity, `docker run`, Docker Compose, and localhost-to-container integration
+
+Physical-host runtime acceptance should avoid disturbing an existing Docker environment. Use an isolated named Colima profile, `--activate=false`, an explicit Docker context, and a temporary `DOCKER_CONFIG`; keep all resulting runtime state machine-local and clean up the test profile afterward.
+
 Static checks:
 
 ```bash
