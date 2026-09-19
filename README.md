@@ -175,7 +175,7 @@ The macOS Development Host includes Codex CLI and the stable Claude Code channel
 
 ## Remote Development Baseline
 
-The macOS Development Host includes the Tailscale app for private-network reachability. Bootstrap does not sign in to Tailscale or enable macOS Remote Login; both are explicit human actions. The normal remote path is an iPad or iPhone using a standard SSH client such as Termius over Tailscale, followed by `tmux` on the Mac.
+The macOS Development Host includes the Tailscale app for private-network reachability. Bootstrap does not sign in to Tailscale or enable macOS Remote Login. When remote access is needed, sign in through the Tailscale app, then enable `System Settings` > `General` > `Sharing` > `Remote Login` and limit access to the required local users. The normal path is an iPad or iPhone using a standard SSH client such as Termius over Tailscale, followed by `tmux` on the Mac.
 
 ## Terminal and Editor Baseline
 

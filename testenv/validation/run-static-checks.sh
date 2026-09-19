@@ -132,6 +132,12 @@ macos_bootstrap_does_not_start_colima() {
     "${REPO_ROOT}/bootstrap" "${REPO_ROOT}/modules/macos" > /dev/null 2>&1
 }
 
+macos_bootstrap_does_not_configure_remote_access() {
+  ! grep -R -E \
+    'tailscale[[:space:]]+(up|login|auth|set|ssh)|systemsetup.*setremotelogin|brew services.*tailscale' \
+    "${REPO_ROOT}/bootstrap" "${REPO_ROOT}/modules/macos" > /dev/null 2>&1
+}
+
 macos_package_layers_have_no_duplicates() {
   local duplicates
 
@@ -247,6 +253,8 @@ run_check 'macOS base excludes Homebrew Node.js' macos_base_lacks_node_formula
 run_check 'macOS base excludes Homebrew Rust' macos_base_lacks_package rust
 run_check 'macOS tracked catalogs exclude Docker Desktop' \
   macos_tracked_catalogs_lack_package docker-desktop
+run_check 'macOS tracked catalogs exclude CLI-only Tailscale' \
+  macos_tracked_catalogs_lack_package tailscale
 for package_name in gcc hugo openjdk; do
   run_check "macOS optional-only package: ${package_name}" macos_optional_only_has_package "${package_name}"
 done
@@ -263,6 +271,8 @@ run_check 'Homebrew rustup proxies are on PATH' \
 run_check 'Docker Compose CLI plugin wiring is tracked without config.json ownership' \
   docker_compose_plugin_contract_is_tracked
 run_check 'macOS bootstrap does not start Colima' macos_bootstrap_does_not_start_colima
+run_check 'macOS bootstrap leaves remote access enrollment to the user' \
+  macos_bootstrap_does_not_configure_remote_access
 run_check 'macOS Rosetta default is off' macos_rosetta_defaults_off
 
 log_section 'Generated assets'

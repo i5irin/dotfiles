@@ -11,12 +11,6 @@ This file is for repository maintenance and design intent. User-facing setup ins
 - tracked assets and modules
   - executable source of truth for actual behavior
 
-## Documentation Sync
-
-- keep `README.md` aligned with the current bootstrap behavior
-- keep `MAINTENANCE.md` aligned with the current maintenance policy
-- when maintaining localized copies, update them in the same change set when practical
-
 ## Design Principles
 
 - prefer stable, OS-native setup mechanisms

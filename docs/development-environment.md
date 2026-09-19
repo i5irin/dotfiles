@@ -7,7 +7,7 @@
 
 The development environment should remain lightweight, fast, understandable, and reconstructable.
 
-The target properties are:
+The durable properties are:
 
 - day-to-day development is simple and fast
 - each repository declares the runtime and dependencies it needs
@@ -50,7 +50,7 @@ Do not commit machine-local runtime state such as:
 - credentials
 - personal agent sessions or memory
 
-The target state is:
+The responsibility model is:
 
 > clone the repository, provide standard bootstrap tooling, and reconstruct an equivalent environment from declarations.
 
@@ -151,12 +151,10 @@ Rosetta is not part of the standard Apple Silicon Development Host requirement. 
 ```text
 iPad / iPhone
     │
-    │ Termius
-    │ SSH
+    │ Termius / Standard SSH
+    │ over
     ▼
-Private Overlay Network
-    │
-    │ Tailscale
+Tailscale Private Network
     ▼
 ────────────────────────────────────
 macOS Development Host
@@ -217,9 +215,9 @@ Machine-native Compute
 
 ---
 
-## 4. Target Tooling and Current Baseline
+## 4. Current Tooling Baseline
 
-The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, the runtime/toolchain foundation described in section 5, the Colima-based container foundation described in section 6, the remote-development foundation described in section 7, and the AI coding clients described in section 8. Remote authentication and host access enablement remain explicit human actions.
+The tracked macOS base provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, the runtime/toolchain foundation described in section 5, the Colima-based container foundation described in section 6, the remote-development foundation described in section 7, and the AI coding clients described in section 8. Remote authentication and host access enablement remain explicit human actions.
 
 The macOS `base` package layer is the tracked baseline for the primary daily Development Host. Windows and Linux remain smaller, CLI-oriented secondary environments and are not required to mirror the macOS package set or implementation structure.
 
@@ -275,7 +273,7 @@ Use `package.json` for application-level requirements, including compatible Node
 
 Avoid accumulating global npm packages. Prefer project dependencies for project-specific tools.
 
-The implemented macOS baseline installs `fnm` and the native `pnpm` executable through Homebrew. The tracked zsh configuration initializes `fnm`, then runs `fnm use` on shell startup and directory changes only when `.node-version` or `.nvmrc` exists in the current or a parent directory. Unversioned directories do not fall back to a global default. Runtime versions are not inferred from `package.json#engines`, and Corepack integration is not enabled.
+The macOS baseline installs `fnm` and the native `pnpm` executable through Homebrew. The tracked zsh configuration initializes `fnm`, then runs `fnm use` on shell startup and directory changes only when `.node-version` or `.nvmrc` exists in the current or a parent directory. Unversioned directories do not fall back to a global default. Runtime versions are not inferred from `package.json#engines`, and Corepack integration is not enabled.
 
 Bootstrap does not install a global default Node.js runtime. Projects own `.node-version`, Node compatibility metadata, the `packageManager` declaration, and `pnpm-lock.yaml`. The selected `pnpm` package does not depend on Homebrew Node.js, so runtime selection remains owned by `fnm`; Corepack is not the bootstrap mechanism.
 
@@ -303,7 +301,7 @@ Do not install project dependencies into a shared global Python environment.
 
 Apple Silicon-specific libraries such as MLX should remain usable from the native Python environment.
 
-The implemented macOS baseline installs `uv` through Homebrew and adds no shell hook. `uv` discovers `.python-version`, obtains Python on demand when a project requires it, and manages the project `.venv`; bootstrap does not preinstall an arbitrary Python runtime.
+The macOS baseline installs `uv` through Homebrew and adds no shell hook. `uv` discovers `.python-version`, obtains Python on demand when a project requires it, and manages the project `.venv`; bootstrap does not preinstall an arbitrary Python runtime.
 
 ### 5.3 Go
 
@@ -322,7 +320,7 @@ Shared module download caches are acceptable.
 
 Keep logical dependency state repository-scoped while allowing machine-scoped download caches, following Go's normal model.
 
-The implemented macOS baseline installs the Homebrew `go` formula as the bootstrap Go distribution and makes the default `GOPATH` binary directory (`$HOME/go/bin`) available. It does not set `GOROOT`, `GOPATH`, or `GOTOOLCHAIN`; project `go` and `toolchain` directives retain Go's native `GOTOOLCHAIN=auto` selection behavior.
+The macOS baseline installs the Homebrew `go` formula as the bootstrap Go distribution and makes the default `GOPATH` binary directory (`$HOME/go/bin`) available. It does not set `GOROOT`, `GOPATH`, or `GOTOOLCHAIN`; project `go` and `toolchain` directives retain Go's native `GOTOOLCHAIN=auto` selection behavior.
 
 ### 5.4 Rust
 
@@ -350,7 +348,7 @@ cargo
 
 Prefer Rust's own mature tooling rather than introducing a general-purpose version manager solely for Rust.
 
-The implemented macOS baseline installs Homebrew `rustup`, not Homebrew `rust`. Because the formula is keg-only, the tracked login-shell configuration adds its proxy directory to `PATH`. Bootstrap does not set `CARGO_HOME` or `RUSTUP_HOME`, explicitly install a Rust toolchain, or configure a default. Rustup's upstream `RUSTUP_AUTO_INSTALL=1` behavior may obtain an active/default toolchain on the first rustup or proxy invocation. Inside a project, the nearest `rust-toolchain.toml` still takes precedence over that default and rustup obtains the declared toolchain as needed.
+The macOS baseline installs Homebrew `rustup`, not Homebrew `rust`. Because the formula is keg-only, the tracked login-shell configuration adds its proxy directory to `PATH`. Bootstrap does not set `CARGO_HOME` or `RUSTUP_HOME`, explicitly install a Rust toolchain, or configure a default. Rustup's upstream `RUSTUP_AUTO_INSTALL=1` behavior may obtain an active/default toolchain on the first rustup or proxy invocation. Inside a project, the nearest `rust-toolchain.toml` still takes precedence over that default and rustup obtains the declared toolchain as needed.
 
 ---
 
@@ -358,7 +356,7 @@ The implemented macOS baseline installs Homebrew `rustup`, not Homebrew `rust`. 
 
 Databases, caches, search engines, brokers, and similar services normally run in containers.
 
-The implemented macOS backend is Colima with Docker CLI and Docker Compose. Colima is a replaceable host implementation; projects must not depend on Colima-specific commands or configuration. Project repositories own portable `Dockerfile`, OCI image references, `compose.yaml`, environment examples, and service initialization files.
+The macOS backend is Colima with Docker CLI and Docker Compose. Colima is a replaceable host implementation; projects must not depend on Colima-specific commands or configuration. Project repositories own portable `Dockerfile`, OCI image references, `compose.yaml`, environment examples, and service initialization files.
 
 Bootstrap installs the host CLI and configures Docker Compose plugin discovery, but it does not create or start the Colima VM. Start it explicitly when a project needs containers:
 
@@ -550,7 +548,7 @@ The exact boundary may vary by repository, but it should be intentional.
 
 Portability does not mean copying a development machine disk image.
 
-The target model is:
+The model is:
 
 ```text
 Repository
@@ -606,9 +604,11 @@ Codex / Claude / Human use the same environment
 ```text
 iPad / iPhone
        ↓
-Tailscale
-       ↓
-Termius / SSH
+Termius / Standard SSH
+       │
+       │ over
+       ▼
+Tailscale Private Network
        ↓
 tmux
        ↓
@@ -669,7 +669,7 @@ The environment prioritizes:
 
 ---
 
-## 13. Target Standard Layout
+## 13. Standard Layout
 
 ```text
 MacBook Pro / macOS
