@@ -238,9 +238,11 @@ fi
 log_section 'Package composition'
 run_check 'macOS package sources' "${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh" --print-sources
 run_check 'Linux package sources' "${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh" --print-sources
-for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code fnm pnpm uv go rustup colima docker docker-compose; do
+for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code fnm pnpm uv go rustup colima docker docker-compose codex claude-code; do
   run_check "macOS base package: ${package_name}" macos_base_has_package "${package_name}"
 done
+run_check 'macOS base uses the stable Claude Code channel' \
+  macos_base_lacks_package claude-code@latest
 run_check 'macOS base excludes Homebrew Node.js' macos_base_lacks_node_formula
 run_check 'macOS base excludes Homebrew Rust' macos_base_lacks_package rust
 run_check 'macOS tracked catalogs exclude Docker Desktop' \

@@ -71,6 +71,15 @@ Keep installation, configuration, and validation separate. Package installation 
 - Do not keep Docker Desktop and Colima together in the tracked package baseline. Machine-specific alternatives belong in an untracked local override.
 - Kubernetes and backend-specific container tooling are not baseline requirements.
 
+## AI Coding Tool Policy
+
+- Treat Codex CLI and Claude Code as replaceable machine-level host clients, not as separate development environments.
+- Install and update the tracked clients through Homebrew. Do not add a second agent-specific update mechanism alongside Homebrew ownership.
+- Bootstrap must not authenticate to OpenAI or Anthropic.
+- Keep credentials, API keys, OAuth tokens, sessions, conversation history, memory, machine identity, and caches machine-local and untracked. Do not symlink agent state into this repository.
+- Keep project-specific instructions such as `AGENTS.md`, `CLAUDE.md`, and other project-local agent configuration in the project repository that owns them.
+- Do not add global agent configuration, wrappers, daemons, or bootstrap steps without a concrete shared requirement.
+
 ## Package Catalog Policy
 
 - `base`

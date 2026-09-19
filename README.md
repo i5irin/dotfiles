@@ -169,6 +169,10 @@ colima start --vm-type vz --mount-type virtiofs
 
 Projects remain portable by defining workloads with standard `Dockerfile`, OCI image, and `compose.yaml` boundaries. Bootstrap does not start the Colima VM.
 
+## AI Coding Tools Baseline
+
+The macOS Development Host includes Codex CLI and the stable Claude Code channel as replaceable host clients. Bootstrap installs them without authenticating; sign-in is an explicit human action on first use.
+
 ## Terminal and Editor Baseline
 
 - macOS terminal: Ghostty

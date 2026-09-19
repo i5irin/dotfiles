@@ -219,7 +219,7 @@ Machine-native Compute
 
 ## 4. Target Tooling and Current Baseline
 
-The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, the runtime/toolchain foundation described in section 5, and the Colima-based container foundation described in section 6. AI coding-agent installation and remote-development automation remain later implementation work.
+The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, the runtime/toolchain foundation described in section 5, the Colima-based container foundation described in section 6, and the AI coding clients described in section 8. Remote-development automation remains later implementation work.
 
 The macOS `base` package layer is the tracked baseline for the primary daily Development Host. Windows and Linux remain smaller, CLI-oriented secondary environments and are not required to mirror the macOS package set or implementation structure.
 
@@ -491,7 +491,9 @@ Do not add Mosh or another layer until mobile network switching or reconnect lat
 
 ## 8. AI Coding Agents
 
-Run Codex CLI, Claude Code, and similar agents on the host.
+The macOS base installs Codex CLI and the stable Claude Code channel as native Homebrew-managed host clients. The existing Homebrew update workflow owns their updates; the repository does not add agent-specific update services or depend on project Node.js runtimes.
+
+Bootstrap does not authenticate either client. Initial sign-in is an explicit human action, and authentication remains independent for each service.
 
 ```text
 Codex
@@ -503,7 +505,7 @@ Same Repository
 Same Git
 Same Runtime
 Same Shell
-Same Credentials
+Independent Machine-local Credentials
 ```
 
 Do not create a separate development environment for each agent.
@@ -514,10 +516,11 @@ Persistent project-specific agent rules belong in repository-visible files such 
 
 ```text
 AGENTS.md
+CLAUDE.md
 other project-local agent configuration
 ```
 
-Personal sessions, memories, and credentials stay outside the repository.
+Personal sessions, memories, and credentials stay outside the repository. Codex state under `~/.codex` or the OS keyring and Claude Code state under `~/.claude` and `~/.claude.json` are machine-local and must not be tracked or symlinked into dotfiles.
 
 Where appropriate, use an explicit authority boundary such as:
 
