@@ -219,7 +219,7 @@ Machine-native Compute
 
 ## 4. Target Tooling and Current Baseline
 
-The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, the runtime/toolchain foundation described in section 5, the Colima-based container foundation described in section 6, and the AI coding clients described in section 8. Remote-development automation remains later implementation work.
+The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, the runtime/toolchain foundation described in section 5, the Colima-based container foundation described in section 6, the remote-development foundation described in section 7, and the AI coding clients described in section 8. Remote authentication and host access enablement remain explicit human actions.
 
 The macOS `base` package layer is the tracked baseline for the primary daily Development Host. Windows and Linux remain smaller, CLI-oriented secondary environments and are not required to mirror the macOS package set or implementation structure.
 
@@ -426,11 +426,11 @@ The normal path is:
 ```text
 iPad / iPhone
         │
-     Termius
+Termius / Standard SSH
         │
-      SSH
+       over
         │
-    Tailscale
+Tailscale Private Network
         │
         ▼
       macOS
@@ -444,9 +444,11 @@ Codex  Claude    Shell
 
 ### 7.1 Tailscale
 
-Tailscale provides private-network reachability.
+The tracked macOS base installs the standalone Tailscale app through the Homebrew `tailscale-app` cask. Tailscale provides private-network reachability and stable addressing through a Tailscale IP or MagicDNS name.
 
-It does not replace SSH.
+Bootstrap does not launch the app, sign in, register the Mac with a tailnet, or manage the app through a custom daemon or LaunchAgent. System-extension approval, sign-in, device authorization, and tailnet membership are explicit human actions and remain machine-local.
+
+Tailscale does not replace SSH. The baseline does not enable Tailscale SSH or use its managed SSH authentication and port 22 interception.
 
 Do not expose the Mac's SSH port directly to the public Internet when Tailnet access is available.
 
@@ -456,15 +458,15 @@ A future WireGuard-style replacement should not require redesigning the SSH work
 
 Use SSH as the standard remote-shell protocol.
 
-Use macOS Remote Login / OpenSSH Server on the host.
+Use macOS Remote Login / OpenSSH Server on the host. Enable it manually through `System Settings` > `General` > `Sharing` > `Remote Login`, and prefer `Allow access for` > `Only these users` with only the required local accounts.
 
-Prefer separate SSH keys per iPad / iPhone device rather than reusing a single private key everywhere.
+Bootstrap does not enable Remote Login or modify `/etc/ssh/sshd_config`. Prefer separate SSH keys per iPad / iPhone device rather than reusing a single private key everywhere; private keys stay on their originating devices, and public-key enrollment is a human responsibility.
 
 ### 7.3 Termius
 
 Termius is the current SSH client on iPad / iPhone.
 
-Keep dependence on Termius-specific features low so another standard SSH client can replace it.
+Connect it to the Mac's Tailscale IP or MagicDNS name using standard SSH. Keep dependence on Termius-specific features low so another standard SSH client can replace it.
 
 ### 7.4 tmux
 

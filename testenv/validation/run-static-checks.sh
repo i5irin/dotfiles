@@ -238,7 +238,7 @@ fi
 log_section 'Package composition'
 run_check 'macOS package sources' "${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh" --print-sources
 run_check 'Linux package sources' "${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh" --print-sources
-for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code fnm pnpm uv go rustup colima docker docker-compose codex claude-code; do
+for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code fnm pnpm uv go rustup colima docker docker-compose codex claude-code tailscale-app; do
   run_check "macOS base package: ${package_name}" macos_base_has_package "${package_name}"
 done
 run_check 'macOS base uses the stable Claude Code channel' \

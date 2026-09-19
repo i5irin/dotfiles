@@ -80,6 +80,17 @@ Keep installation, configuration, and validation separate. Package installation 
 - Keep project-specific instructions such as `AGENTS.md`, `CLAUDE.md`, and other project-local agent configuration in the project repository that owns them.
 - Do not add global agent configuration, wrappers, daemons, or bootstrap steps without a concrete shared requirement.
 
+## Remote Development Policy
+
+- Keep the layers separate: Tailscale provides private-network reachability, macOS OpenSSH provides the remote-shell protocol, and tmux provides session persistence. Termius is the current replaceable client implementation.
+- Install the standalone Tailscale macOS app through Homebrew, while leaving its normal macOS lifecycle to the vendor app. Do not add a separate daemon wrapper, LaunchAgent, or `brew services` ownership.
+- Bootstrap must not authenticate Tailscale, register the device with a tailnet, or enable macOS Remote Login. Those security-sensitive operations require explicit human action.
+- Prefer `System Settings` > `General` > `Sharing` > `Remote Login` with access limited to only the required local users.
+- Keep Tailscale login, node identity, device authorization, auth keys, OAuth state, tailnet membership, preferences, and network state machine-local and untracked.
+- Do not generate, distribute, or synchronize SSH private keys through dotfiles. Device-specific public-key enrollment and `authorized_keys` changes are human responsibilities.
+- Use standard OpenSSH over the Tailscale private network. Tailscale SSH, public SSH exposure, custom `sshd` configuration, and firewall automation are not baseline responsibilities.
+- Do not add Mosh, sleep-prevention automation, or remote-specific agent services until a concrete operational problem requires them.
+
 ## Package Catalog Policy
 
 - `base`

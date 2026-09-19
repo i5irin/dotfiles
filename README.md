@@ -173,6 +173,10 @@ Projects remain portable by defining workloads with standard `Dockerfile`, OCI i
 
 The macOS Development Host includes Codex CLI and the stable Claude Code channel as replaceable host clients. Bootstrap installs them without authenticating; sign-in is an explicit human action on first use.
 
+## Remote Development Baseline
+
+The macOS Development Host includes the Tailscale app for private-network reachability. Bootstrap does not sign in to Tailscale or enable macOS Remote Login; both are explicit human actions. The normal remote path is an iPad or iPhone using a standard SSH client such as Termius over Tailscale, followed by `tmux` on the Mac.
+
 ## Terminal and Editor Baseline
 
 - macOS terminal: Ghostty
