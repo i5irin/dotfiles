@@ -159,6 +159,16 @@ The macOS base installs `fnm`, `pnpm`, `uv`, Go, and `rustup`. The dotfiles prov
 
 Bootstrap does not install arbitrary global Node.js, Python, or Rust versions. Runtime downloads, virtual environments, dependency stores, build output, and caches remain machine-local and untracked.
 
+## Container Runtime Baseline
+
+The macOS Development Host includes Colima, Docker CLI, and Docker Compose. Start the runtime explicitly only when containers are needed:
+
+```bash
+colima start --vm-type vz --mount-type virtiofs
+```
+
+Projects remain portable by defining workloads with standard `Dockerfile`, OCI image, and `compose.yaml` boundaries. Bootstrap does not start the Colima VM.
+
 ## Terminal and Editor Baseline
 
 - macOS terminal: Ghostty

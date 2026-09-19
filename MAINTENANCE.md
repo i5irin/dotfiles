@@ -61,6 +61,16 @@ Keep installation, configuration, and validation separate. Package installation 
 - Leave Go's standard `GOTOOLCHAIN=auto` behavior intact and do not set `GOROOT` or `GOPATH` without a concrete need.
 - Do not set global default Node.js, Python, or Rust versions solely for bootstrap convenience; repository declarations remain the normal selection boundary.
 
+## Container Runtime Policy
+
+- Keep Docker CLI, OCI images, `Dockerfile`, and Compose definitions as the project-facing interfaces.
+- Treat Colima as the current macOS backend implementation, not as a project-level dependency.
+- Keep backend lifecycle separate from project definitions. Bootstrap installs and configures CLI wiring but never starts the Colima VM.
+- Keep Colima VM state, images, volumes, Docker contexts, registry credentials, authentication state, and runtime caches machine-local and untracked.
+- Do not manage or replace `~/.docker/config.json`; Docker Compose plugin discovery uses a dedicated symlink under `~/.docker/cli-plugins`.
+- Do not keep Docker Desktop and Colima together in the tracked package baseline. Machine-specific alternatives belong in an untracked local override.
+- Kubernetes and backend-specific container tooling are not baseline requirements.
+
 ## Package Catalog Policy
 
 - `base`

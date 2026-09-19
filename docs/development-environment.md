@@ -219,7 +219,7 @@ Machine-native Compute
 
 ## 4. Target Tooling and Current Baseline
 
-The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, and the runtime/toolchain foundation described in section 5. Container runtime selection, AI coding-agent installation, and remote-development automation remain later implementation work.
+The tool choices below describe the target Development Host architecture. The tracked macOS base currently provides Homebrew, the common CLI baseline, Ghostty, Visual Studio Code, zsh, tmux, Git tooling, the runtime/toolchain foundation described in section 5, and the Colima-based container foundation described in section 6. AI coding-agent installation and remote-development automation remain later implementation work.
 
 The macOS `base` package layer is the tracked baseline for the primary daily Development Host. Windows and Linux remain smaller, CLI-oriented secondary environments and are not required to mirror the macOS package set or implementation structure.
 
@@ -237,7 +237,7 @@ The macOS `base` package layer is the tracked baseline for the primary daily Dev
 | Remote client | Termius | Used from iPad / iPhone |
 | Remote protocol | SSH | Primary replaceable boundary |
 | Private network | Tailscale | Avoid exposing SSH directly to the public Internet |
-| Container runtime | Docker-compatible environment | Implementation should remain replaceable |
+| Container runtime | Colima with Docker CLI / Compose | Project boundary remains Docker / OCI / Compose |
 
 Homebrew should not become the package manager for every project dependency.
 
@@ -358,6 +358,16 @@ The implemented macOS baseline installs Homebrew `rustup`, not Homebrew `rust`. 
 
 Databases, caches, search engines, brokers, and similar services normally run in containers.
 
+The implemented macOS backend is Colima with Docker CLI and Docker Compose. Colima is a replaceable host implementation; projects must not depend on Colima-specific commands or configuration. Project repositories own portable `Dockerfile`, OCI image references, `compose.yaml`, environment examples, and service initialization files.
+
+Bootstrap installs the host CLI and configures Docker Compose plugin discovery, but it does not create or start the Colima VM. Start it explicitly when a project needs containers:
+
+```bash
+colima start --vm-type vz --mount-type virtiofs
+```
+
+Kubernetes, Rosetta inside the Colima VM, and fixed CPU, memory, or disk allocations are not part of the baseline. Colima VM state, images, volumes, Docker contexts, registry credentials, authentication state, caches, and container filesystems remain machine-local.
+
 Example:
 
 ```text
@@ -386,6 +396,24 @@ Benefits include:
 Different repositories can use different service versions without installing several host daemons.
 
 The application itself does not need to be containerized merely because its external services are.
+
+The durable responsibility split is:
+
+```text
+Host
+├─ Application
+├─ Editor
+├─ Language Toolchain
+└─ AI Coding Agent
+
+Container
+├─ Database
+├─ Cache
+├─ Search Engine
+├─ Message Broker
+├─ Linux compatibility workload
+└─ Production-like runtime verification
+```
 
 ---
 
@@ -670,7 +698,8 @@ MacBook Pro / macOS
 ├── Native Compute
 │    └─ MLX / Metal / Core ML etc.
 │
-└── Container Runtime
+└── Container Runtime (Colima)
+     ├─ Docker CLI / Docker Compose
      ├─ MySQL / PostgreSQL
      ├─ Redis
      ├─ Elasticsearch

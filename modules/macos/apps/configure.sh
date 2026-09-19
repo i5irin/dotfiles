@@ -56,6 +56,32 @@ configure_ghostty() {
   finish_configure_message 'Ghostty'
 }
 
+configure_docker_compose_plugin() {
+  local compose_plugin_source="${HOMEBREW_PREFIX}/lib/docker/cli-plugins/docker-compose"
+  local docker_plugin_dir="${HOME}/.docker/cli-plugins"
+  local compose_plugin_link="${docker_plugin_dir}/docker-compose"
+
+  configure_info 'Docker Compose CLI plugin'
+  if ! command -v docker > /dev/null 2>&1; then
+    skip_info 'Docker CLI is not installed.'
+    return 0
+  fi
+
+  if [ ! -x "${compose_plugin_source}" ]; then
+    skip_info 'Docker Compose is not installed by Homebrew.'
+    return 0
+  fi
+
+  if [ -e "${compose_plugin_link}" ] && [ ! -L "${compose_plugin_link}" ]; then
+    skip_info "${compose_plugin_link} exists and is not a symbolic link."
+    return 0
+  fi
+
+  mkdir -p "${docker_plugin_dir}"
+  ln -sfn "${compose_plugin_source}" "${compose_plugin_link}"
+  finish_configure_message 'Docker Compose CLI plugin'
+}
+
 configure_clipy() {
   local was_running=1
 
@@ -88,6 +114,7 @@ main() {
   configure_posix_neovim
   configure_vscode
   configure_ghostty
+  configure_docker_compose_plugin
   configure_clipy
 }
 

@@ -93,6 +93,15 @@ macos_base_lacks_package() {
   ! macos_base_has_package "${package_name}"
 }
 
+macos_tracked_catalogs_lack_package() {
+  local package_name="$1"
+
+  ! awk -F'"' '/^(brew|cask) / { print $2 }' \
+    "${REPO_ROOT}/modules/macos/packages/Brewfile.base" \
+    "${REPO_ROOT}/modules/macos/packages/Brewfile.optional" \
+    | grep -Fx "${package_name}" > /dev/null 2>&1
+}
+
 macos_base_lacks_node_formula() {
   ! awk -F'"' '/^brew / { print $2 }' "${REPO_ROOT}/modules/macos/packages/Brewfile.base" \
     | grep -Eq '^node(@.*)?$'
@@ -107,6 +116,20 @@ fnm_shell_contract_is_tracked() {
     && grep -Fq 'fnm use --silent-if-unchanged' "${zshrc}" \
     && grep -Fq 'add-zsh-hook chpwd _dotfiles_fnm_use_project_version' "${zshrc}" \
     && grep -Fq '_dotfiles_fnm_use_project_version' "${zshrc}"
+}
+
+docker_compose_plugin_contract_is_tracked() {
+  local configure_script="${REPO_ROOT}/modules/macos/apps/configure.sh"
+
+  grep -Fq '${HOMEBREW_PREFIX}/lib/docker/cli-plugins/docker-compose' "${configure_script}" \
+    && grep -Fq '${HOME}/.docker/cli-plugins' "${configure_script}" \
+    && grep -Fq 'ln -sfn "${compose_plugin_source}" "${compose_plugin_link}"' "${configure_script}" \
+    && ! grep -Fq '.docker/config.json' "${configure_script}"
+}
+
+macos_bootstrap_does_not_start_colima() {
+  ! grep -R -E 'colima start|brew services start colima' \
+    "${REPO_ROOT}/bootstrap" "${REPO_ROOT}/modules/macos" > /dev/null 2>&1
 }
 
 macos_package_layers_have_no_duplicates() {
@@ -215,11 +238,13 @@ fi
 log_section 'Package composition'
 run_check 'macOS package sources' "${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh" --print-sources
 run_check 'Linux package sources' "${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh" --print-sources
-for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code fnm pnpm uv go rustup; do
+for package_name in git git-lfs gh curl jq ripgrep fd tree tmux starship neovim ghostty visual-studio-code fnm pnpm uv go rustup colima docker docker-compose; do
   run_check "macOS base package: ${package_name}" macos_base_has_package "${package_name}"
 done
 run_check 'macOS base excludes Homebrew Node.js' macos_base_lacks_node_formula
 run_check 'macOS base excludes Homebrew Rust' macos_base_lacks_package rust
+run_check 'macOS tracked catalogs exclude Docker Desktop' \
+  macos_tracked_catalogs_lack_package docker-desktop
 for package_name in gcc hugo openjdk; do
   run_check "macOS optional-only package: ${package_name}" macos_optional_only_has_package "${package_name}"
 done
@@ -233,6 +258,9 @@ run_check 'Go-installed commands use the default GOPATH bin directory' \
 run_check 'Homebrew rustup proxies are on PATH' \
   grep -Fq 'add_path "${HOMEBREW_PREFIX}/opt/rustup/bin"' \
     "${REPO_ROOT}/modules/shell/zsh/.zprofile"
+run_check 'Docker Compose CLI plugin wiring is tracked without config.json ownership' \
+  docker_compose_plugin_contract_is_tracked
+run_check 'macOS bootstrap does not start Colima' macos_bootstrap_does_not_start_colima
 run_check 'macOS Rosetta default is off' macos_rosetta_defaults_off
 
 log_section 'Generated assets'
