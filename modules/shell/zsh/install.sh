@@ -14,6 +14,8 @@ readonly ZSH_ASSET_DIR="${REPO_ROOT}/modules/shell/zsh"
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
 
 main() {
+  mkdir -p "${HOME}/.local/bin"
+
   ln -sfn "${ZSH_ASSET_DIR}/.zprofile" "${HOME}/.zprofile"
   ln -sfn "${ZSH_ASSET_DIR}/.zshrc" "${HOME}/.zshrc"
 

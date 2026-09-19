@@ -275,7 +275,7 @@ Use `package.json` for application-level requirements, including compatible Node
 
 Avoid accumulating global npm packages. Prefer project dependencies for project-specific tools.
 
-The implemented macOS baseline installs `fnm` and the native `pnpm` executable through Homebrew. The tracked zsh configuration enables `fnm`'s stable directory-change integration and recursively discovers version files from nested directories. It does not enable experimental Corepack integration or infer runtime versions from `package.json#engines`.
+The implemented macOS baseline installs `fnm` and the native `pnpm` executable through Homebrew. The tracked zsh configuration initializes `fnm`, then runs `fnm use` on shell startup and directory changes only when `.node-version` or `.nvmrc` exists in the current or a parent directory. Unversioned directories do not fall back to a global default. Runtime versions are not inferred from `package.json#engines`, and Corepack integration is not enabled.
 
 Bootstrap does not install a global default Node.js runtime. Projects own `.node-version`, Node compatibility metadata, the `packageManager` declaration, and `pnpm-lock.yaml`. The selected `pnpm` package does not depend on Homebrew Node.js, so runtime selection remains owned by `fnm`; Corepack is not the bootstrap mechanism.
 
@@ -350,7 +350,7 @@ cargo
 
 Prefer Rust's own mature tooling rather than introducing a general-purpose version manager solely for Rust.
 
-The implemented macOS baseline installs Homebrew `rustup`, not Homebrew `rust`. Because the formula is keg-only, the tracked login-shell configuration adds its proxy directory to `PATH`. Bootstrap does not set `CARGO_HOME` or `RUSTUP_HOME` and does not install a global default toolchain; the nearest project `rust-toolchain.toml` selects the toolchain and rustup obtains it as needed.
+The implemented macOS baseline installs Homebrew `rustup`, not Homebrew `rust`. Because the formula is keg-only, the tracked login-shell configuration adds its proxy directory to `PATH`. Bootstrap does not set `CARGO_HOME` or `RUSTUP_HOME`, explicitly install a Rust toolchain, or configure a default. Rustup's upstream `RUSTUP_AUTO_INSTALL=1` behavior may obtain an active/default toolchain on the first rustup or proxy invocation. Inside a project, the nearest `rust-toolchain.toml` still takes precedence over that default and rustup obtains the declared toolchain as needed.
 
 ---
 

@@ -31,9 +31,28 @@ if [ -x "${HOMEBREW_PREFIX}/bin/brew" ]; then
   eval "$("${HOMEBREW_PREFIX}/bin/brew" shellenv)"
 fi
 
-# Select the fnm-managed Node.js version declared by the current project.
+# Initialize fnm without selecting a global default Node.js version.
 if type fnm > /dev/null 2>&1; then
-  eval "$(fnm env --use-on-cd --version-file-strategy=recursive --resolve-engines=false --shell zsh)"
+  eval "$(fnm env --version-file-strategy=recursive --resolve-engines=false --shell zsh)"
+
+  _dotfiles_fnm_use_project_version() {
+    local search_dir="${PWD}"
+
+    while true; do
+      if [[ -f "${search_dir}/.node-version" || -f "${search_dir}/.nvmrc" ]]; then
+        fnm use --silent-if-unchanged
+        return
+      fi
+
+      [[ "${search_dir}" == / ]] && return
+      search_dir="${search_dir:h}"
+    done
+  }
+
+  autoload -Uz add-zsh-hook
+  add-zsh-hook -d chpwd _dotfiles_fnm_use_project_version 2> /dev/null || true
+  add-zsh-hook chpwd _dotfiles_fnm_use_project_version
+  _dotfiles_fnm_use_project_version
 fi
 
 # Make OpenJDK installed by Homebrew available as the default JDK.

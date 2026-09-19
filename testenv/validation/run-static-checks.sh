@@ -98,6 +98,17 @@ macos_base_lacks_node_formula() {
     | grep -Eq '^node(@.*)?$'
 }
 
+fnm_shell_contract_is_tracked() {
+  local zshrc="${REPO_ROOT}/modules/shell/zsh/.zshrc"
+
+  grep -Fq 'fnm env --version-file-strategy=recursive --resolve-engines=false --shell zsh' "${zshrc}" \
+    && ! grep -Fq 'fnm env --use-on-cd' "${zshrc}" \
+    && grep -Fq '[[ -f "${search_dir}/.node-version" || -f "${search_dir}/.nvmrc" ]]' "${zshrc}" \
+    && grep -Fq 'fnm use --silent-if-unchanged' "${zshrc}" \
+    && grep -Fq 'add-zsh-hook chpwd _dotfiles_fnm_use_project_version' "${zshrc}" \
+    && grep -Fq '_dotfiles_fnm_use_project_version' "${zshrc}"
+}
+
 macos_package_layers_have_no_duplicates() {
   local duplicates
 
@@ -213,9 +224,10 @@ for package_name in gcc hugo openjdk; do
   run_check "macOS optional-only package: ${package_name}" macos_optional_only_has_package "${package_name}"
 done
 run_check 'macOS package layers have no duplicates' macos_package_layers_have_no_duplicates
-run_check 'fnm shell integration uses project-aware stable options' \
-  grep -Fq 'fnm env --use-on-cd --version-file-strategy=recursive --resolve-engines=false --shell zsh' \
-    "${REPO_ROOT}/modules/shell/zsh/.zshrc"
+run_check 'fnm shell integration only selects declared project versions' \
+  fnm_shell_contract_is_tracked
+run_check 'configure-shell prepares the user executable directory' \
+  grep -Fq 'mkdir -p "${HOME}/.local/bin"' "${REPO_ROOT}/modules/shell/zsh/install.sh"
 run_check 'Go-installed commands use the default GOPATH bin directory' \
   grep -Fq 'add_path "${HOME}/go/bin"' "${REPO_ROOT}/modules/shell/zsh/.zprofile"
 run_check 'Homebrew rustup proxies are on PATH' \
