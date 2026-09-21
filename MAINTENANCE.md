@@ -71,8 +71,9 @@ Keep installation, configuration, and validation separate. Package installation 
 - Install and update the tracked clients through Homebrew. Do not add a second agent-specific update mechanism alongside Homebrew ownership.
 - Bootstrap must not authenticate to OpenAI or Anthropic.
 - Keep credentials, API keys, OAuth tokens, sessions, conversation history, memory, machine identity, and caches machine-local and untracked. Do not symlink agent state into this repository.
+- Keep cross-project agent instructions and reusable skills as vendor-neutral tracked assets under `assets/agents`; deploy only the provider-specific entry points that have a concrete requirement.
 - Keep project-specific instructions such as `AGENTS.md`, `CLAUDE.md`, and other project-local agent configuration in the project repository that owns them.
-- Do not add global agent configuration, wrappers, daemons, or bootstrap steps without a concrete shared requirement.
+- Do not treat an agent as a canonical source for project knowledge, and do not add agent-specific abstractions, wrappers, daemons, or bootstrap steps without a concrete shared requirement.
 
 ## Remote Development Policy
 

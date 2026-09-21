@@ -127,6 +127,24 @@ docker_compose_plugin_contract_is_tracked() {
     && ! grep -Fq '.docker/config.json' "${configure_script}"
 }
 
+agent_assets_contract_is_tracked() {
+  local configure_script="${REPO_ROOT}/modules/macos/apps/configure.sh"
+  local global_instructions="${REPO_ROOT}/assets/agents/instructions/global.md"
+  local skill_file="${REPO_ROOT}/assets/agents/skills/constraint-first-review/SKILL.md"
+
+  [ -s "${global_instructions}" ] \
+    && [ -s "${REPO_ROOT}/assets/agents/instructions/global.ja.md" ] \
+    && [ -s "${skill_file}" ] \
+    && [ -s "${REPO_ROOT}/assets/agents/translations/constraint-first-review.ja.md" ] \
+    && grep -Fq 'name: constraint-first-review' "${skill_file}" \
+    && grep -Fq '${HOME}/.codex/AGENTS.md' "${configure_script}" \
+    && grep -Fq '${HOME}/.agents/skills/constraint-first-review' "${configure_script}" \
+    && grep -Fq 'exists and is not a symbolic link.' "${configure_script}" \
+    && grep -Fq 'points to an unexpected target.' "${configure_script}" \
+    && ! grep -Fq 'global.ja.md' "${configure_script}" \
+    && ! grep -Fq 'constraint-first-review.ja.md' "${configure_script}"
+}
+
 macos_bootstrap_does_not_start_colima() {
   ! grep -R -E 'colima start|brew services start colima' \
     "${REPO_ROOT}/bootstrap" "${REPO_ROOT}/modules/macos" > /dev/null 2>&1
@@ -270,6 +288,8 @@ run_check 'Homebrew rustup proxies are on PATH' \
     "${REPO_ROOT}/modules/shell/zsh/.zprofile"
 run_check 'Docker Compose CLI plugin wiring is tracked without config.json ownership' \
   docker_compose_plugin_contract_is_tracked
+run_check 'global agent assets are tracked with safe Codex symlink deployment' \
+  agent_assets_contract_is_tracked
 run_check 'macOS bootstrap does not start Colima' macos_bootstrap_does_not_start_colima
 run_check 'macOS bootstrap leaves remote access enrollment to the user' \
   macos_bootstrap_does_not_configure_remote_access

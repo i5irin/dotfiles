@@ -10,6 +10,8 @@ HOMEBREW_PREFIX="${DOTFILES_HOMEBREW_PREFIX:-/opt/homebrew}"
 readonly HOMEBREW_PREFIX
 
 readonly KARABINER_ASSET_DIR="${REPO_ROOT}/assets/macos/karabiner"
+readonly GLOBAL_AGENT_INSTRUCTIONS="${REPO_ROOT}/assets/agents/instructions/global.md"
+readonly CONSTRAINT_FIRST_REVIEW_SKILL="${REPO_ROOT}/assets/agents/skills/constraint-first-review"
 
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
 source "${REPO_ROOT}/modules/shared/utils/posix.sh"
@@ -82,6 +84,49 @@ configure_docker_compose_plugin() {
   finish_configure_message 'Docker Compose CLI plugin'
 }
 
+configure_managed_symlink() {
+  local label="$1"
+  local source_path="$2"
+  local target_path="$3"
+
+  configure_info "${label}"
+
+  if [ -L "${target_path}" ]; then
+    if [ "$(readlink "${target_path}")" = "${source_path}" ]; then
+      finish_configure_message "${label}"
+    else
+      skip_info "${target_path} points to an unexpected target."
+    fi
+    return 0
+  fi
+
+  if [ -e "${target_path}" ]; then
+    skip_info "${target_path} exists and is not a symbolic link."
+    return 0
+  fi
+
+  mkdir -p "${target_path:h}"
+  ln -s "${source_path}" "${target_path}"
+  finish_configure_message "${label}"
+}
+
+configure_codex_agent_assets() {
+  if ! command -v codex > /dev/null 2>&1; then
+    configure_info 'Codex agent assets'
+    skip_info 'Codex is not installed.'
+    return 0
+  fi
+
+  configure_managed_symlink \
+    'Codex global instructions' \
+    "${GLOBAL_AGENT_INSTRUCTIONS}" \
+    "${HOME}/.codex/AGENTS.md"
+  configure_managed_symlink \
+    'Constraint-first review skill' \
+    "${CONSTRAINT_FIRST_REVIEW_SKILL}" \
+    "${HOME}/.agents/skills/constraint-first-review"
+}
+
 configure_clipy() {
   local was_running=1
 
@@ -115,6 +160,7 @@ main() {
   configure_vscode
   configure_ghostty
   configure_docker_compose_plugin
+  configure_codex_agent_assets
   configure_clipy
 }
 

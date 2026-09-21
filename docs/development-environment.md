@@ -520,7 +520,11 @@ CLAUDE.md
 other project-local agent configuration
 ```
 
-Personal sessions, memories, and credentials stay outside the repository. Codex state under `~/.codex` or the OS keyring and Claude Code state under `~/.claude` and `~/.claude.json` are machine-local and must not be tracked or symlinked into dotfiles.
+Cross-project agent instructions and reusable skills may be tracked as vendor-neutral Development Environment assets. Project-specific instructions remain owned by each project repository, and agents do not become canonical sources for project knowledge.
+
+The current Codex deployment links `~/.codex/AGENTS.md` and the `constraint-first-review` user skill to their tracked canonical assets. Japanese translations are human-readable references and are not deployed to Codex.
+
+Personal sessions, memories, credentials, machine identity, and caches stay outside the repository. Codex state other than explicitly managed instruction and skill entry points, including OS keyring data, and Claude Code state under `~/.claude` and `~/.claude.json` are machine-local and must not be tracked or symlinked into dotfiles.
 
 Where appropriate, use an explicit authority boundary such as:
 
