@@ -45,7 +45,7 @@ function Invoke-BootstrapStep {
     $script:BootstrapStepFailed = $true
     Write-DotfilesStepFailure $Label
     if ($_.Exception -and $_.Exception.Message) {
-      Write-Host $_.Exception.Message
+      [Console]::Error.WriteLine($_.Exception.Message)
 
       if ($_.Exception.Message -like 'WSL installation requested a reboot*') {
         Write-DotfilesNext 'Restart Windows, then rerun bootstrap/windows.ps1 with the same WSL setting. After the Windows bootstrap finishes, launch the distro once manually and run bootstrap/linux.sh inside it.'
@@ -243,7 +243,7 @@ try {
   if (-not $script:BootstrapStepFailed) {
     Write-DotfilesStepFailure 'Windows bootstrap failed'
     if ($_.Exception -and $_.Exception.Message) {
-      Write-Host $_.Exception.Message
+      [Console]::Error.WriteLine($_.Exception.Message)
     }
   }
 

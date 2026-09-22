@@ -110,33 +110,30 @@ render_vscode_settings() {
 }
 
 write_or_check() {
-  target_path="$1"
-  temp_path="$2"
-  mode="$3"
-
-  if [ "${mode}" = '--check' ]; then
-    if cmp -s "${temp_path}" "${target_path}"; then
+  if [ "$3" = '--check' ]; then
+    if cmp -s "$2" "$1"; then
       return 0
     fi
 
-    echo "Generated asset is out of date: ${target_path}" >&2
+    echo "Generated asset is out of date: $1" >&2
     return 1
   fi
 
-  mv "${temp_path}" "${target_path}"
+  mv "$2" "$1"
 }
 
-main() {
+main() (
   mode="${1:-}"
   if [ -n "${mode}" ] && [ "${mode}" != '--check' ]; then
     echo "Unsupported option: ${mode}" >&2
     exit 1
   fi
 
-  ghostty_temp="$(mktemp "${TMPDIR:-/tmp}/dotfiles-ghostty.XXXXXX")"
-  windows_temp="$(mktemp "${TMPDIR:-/tmp}/dotfiles-wt.XXXXXX")"
-  vscode_temp="$(mktemp "${TMPDIR:-/tmp}/dotfiles-vscode.XXXXXX")"
-  trap "rm -f '${ghostty_temp}' '${windows_temp}' '${vscode_temp}'" EXIT
+  temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/dotfiles-terminal-assets.XXXXXX")"
+  trap 'rm -rf "${temp_dir}"' EXIT
+  ghostty_temp="${temp_dir}/ghostty"
+  windows_temp="${temp_dir}/windows-terminal"
+  vscode_temp="${temp_dir}/vscode"
 
   render_ghostty > "${ghostty_temp}"
   render_windows_terminal > "${windows_temp}"
@@ -145,6 +142,6 @@ main() {
   write_or_check "${GHOSTTY_OUTPUT}" "${ghostty_temp}" "${mode:-write}"
   write_or_check "${WINDOWS_TERMINAL_OUTPUT}" "${windows_temp}" "${mode:-write}"
   write_or_check "${VSCODE_OUTPUT}" "${vscode_temp}" "${mode:-write}"
-}
+)
 
 main "$@"

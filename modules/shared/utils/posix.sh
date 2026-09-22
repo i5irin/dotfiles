@@ -1,4 +1,4 @@
-#!bin/sh
+# POSIX shell library. Source this file; do not execute it directly.
 
 ########################################################################
 # Add the path to the PATH environment variable without duplication.
@@ -8,20 +8,19 @@
 #   Status of whether the path has been added to the PATH environment variable
 ########################################################################
 add_path() {
-  directory="$1"
-  if [ -d "${directory}" ] ; then
+  if [ -d "$1" ]; then
     case ":${PATH}:" in
-      *:$directory:*)
-        echo "The path you specifed already exists in the PATH." 1>&2
+      *:"$1":*)
+        printf '%s\n' 'The specified path already exists in PATH.' >&2
         return 1
         ;;
       *)
-        PATH="${directory}:${PATH}"
+        PATH="$1:${PATH}"
         return 0
         ;;
     esac
   else
-    echo "The path you specifed does not exist." 1>&2
+    printf '%s\n' 'The specified path does not exist.' >&2
     return 1
   fi
 }
@@ -38,9 +37,9 @@ add_path() {
 #   This function is based on ko1nksm's readlinkf. See this following link for more details.
 #   https://github.com/ko1nksm/readlinkf
 ########################################################################
-readlinkf() {
+readlinkf() (
   if [ $# -eq 0 ]; then
-    echo "readlink: missing operand" >&2
+    printf '%s\n' 'readlink: missing operand' >&2
     return 1
   fi
 
@@ -73,19 +72,18 @@ readlinkf() {
       #   <file mode>, <number of links>, <owner name>, <group name>,
       #   <size>, <date and time>, <pathname of link>, <contents of link>
       # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ls.html
-      link=$(ls -dl -- "$target" 2>/dev/null) || break
-      target=${link#*" $target -> "}
+      link=$(ls -dl "./$target" 2>/dev/null) || break
+      target=${link#*" ./$target -> "}
     done
     return 1
   }
 
-  ex=0
-  for i; do
-    (readlinkf_one_path "$i") || ex=1
+  exit_code=0
+  for input_path; do
+    (readlinkf_one_path "$input_path") || exit_code=1
   done
-  unset readlinkf_one_path
-  return "$ex"
-}
+  return "$exit_code"
+)
 
 ########################################################################
 # Validate hostname with RFC 952 format.
@@ -97,9 +95,9 @@ readlinkf() {
 #   Support for hostnames containing periods.
 ########################################################################
 validate_rfc952_hostname() {
-  if echo "$1" | grep -q -E '^[a-zA-Z][0-9a-zA-Z\-]{0,22}[0-9a-zA-Z]$'; then
+  if printf '%s\n' "$1" | grep -q -E '^[a-zA-Z][0-9a-zA-Z-]{0,22}[0-9a-zA-Z]$'; then
     return 0
   fi
-  echo "The hostname you entered is invalid for RFC 952." 1>&2
+  printf '%s\n' 'The hostname you entered is invalid for RFC 952.' >&2
   return 1
 }

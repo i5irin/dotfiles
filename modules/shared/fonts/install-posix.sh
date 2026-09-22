@@ -41,7 +41,7 @@ have_font_files() {
   find "${target_dir}" -maxdepth 1 -type f \( -name "${pattern}" -o -name "${pattern%.ttf}.otf" \) | grep -q .
 }
 
-install_font_archive() {
+install_font_archive() (
   label="$1"
   url="$2"
   target_dir="$3"
@@ -55,6 +55,8 @@ install_font_archive() {
   fi
 
   temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/dotfiles-fonts.XXXXXX")"
+  trap 'rm -rf "${temp_dir}"' EXIT
+  trap 'exit 1' HUP INT TERM
   archive_path="${temp_dir}/${archive_name}"
   extract_dir="${temp_dir}/extract"
 
@@ -62,12 +64,15 @@ install_font_archive() {
   curl -fsSL "${url}" -o "${archive_path}"
   unzip -oq "${archive_path}" -d "${extract_dir}"
 
-  find "${extract_dir}" -type f \( -name '*.ttf' -o -name '*.otf' \) -print | while IFS= read -r font_file; do
-    install -m 0644 "${font_file}" "${target_dir}/$(basename "${font_file}")"
-  done
-
-  rm -rf "${temp_dir}"
-}
+  find "${extract_dir}" -type f \( -name '*.ttf' -o -name '*.otf' \) \
+    -exec sh -c '
+      target_dir=$1
+      shift
+      for font_file do
+        install -m 0644 "$font_file" "$target_dir/$(basename "$font_file")" || exit 1
+      done
+    ' sh "${target_dir}" {} +
+)
 
 refresh_font_cache() {
   case "$(uname -s)" in

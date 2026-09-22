@@ -1,4 +1,4 @@
-#!/bin/zsh
+# zsh library for Apple Silicon macOS modules.
 
 source "${${(%):-%N}:A:h}/sudo.sh"
 
@@ -8,12 +8,12 @@ default_homebrew_prefix() {
 
 require_apple_silicon_macos() {
   if [ "$(uname -s)" != 'Darwin' ]; then
-    echo 'This bootstrap entry only supports macOS.' >&2
+    printf '%s\n' 'This bootstrap entry only supports macOS.' >&2
     return 1
   fi
 
   if [ "$(uname -m)" != 'arm64' ]; then
-    echo 'This bootstrap entry only supports Apple Silicon macOS.' >&2
+    printf '%s\n' 'This bootstrap entry only supports Apple Silicon macOS.' >&2
     return 1
   fi
 }

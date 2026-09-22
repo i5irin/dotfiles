@@ -24,7 +24,7 @@ function Write-DotfilesStepFailure {
     [string]$Message
   )
 
-  Write-Host "[FAIL] $Message"
+  [Console]::Error.WriteLine("[FAIL] $Message")
 }
 
 function Write-DotfilesActionInfo {
@@ -51,7 +51,7 @@ function Write-DotfilesActionFailure {
     [string]$Message
   )
 
-  Write-Host "[FAIL] $Message"
+  [Console]::Error.WriteLine("[FAIL] $Message")
 }
 
 function Write-DotfilesSkip {

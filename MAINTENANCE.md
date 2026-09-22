@@ -44,6 +44,15 @@ This file is for repository maintenance and design intent. User-facing setup ins
 
 Keep installation, configuration, and validation separate. Package installation belongs to `install-apps`, shell wiring belongs to `configure-shell`, application settings belong to `configure-apps`, and declarative repository checks belong under `testenv/validation`.
 
+## Shell Dialect Boundaries
+
+- macOS entry points and platform modules use zsh when they rely on zsh path expansion or arrays
+- Linux entry points and platform modules use Bash when they rely on Bash arrays or `mapfile`
+- portable executable modules use POSIX sh
+- shell libraries under `modules/shared/utils` are source-only; `dotfiles.sh` is zsh-specific and the other shell utilities are POSIX-compatible
+- `modules/shared/shell/alias.sh` and `modules/shared/shell/functions.sh` are source-only interactive libraries shared by Bash and zsh, not POSIX sh libraries
+- source-only libraries do not carry executable shebangs or executable permissions
+
 ## Runtime and Toolchain Policy
 
 - Homebrew owns machine-level manager and bootstrap executables on macOS: `fnm`, `pnpm`, `uv`, Go, and `rustup`.

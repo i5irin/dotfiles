@@ -13,7 +13,7 @@ readonly AUTO_UPDATE_ENABLED="${DOTFILES_LINUX_ENABLE_AUTO_UPDATE:-0}"
 
 . "${REPO_ROOT}/modules/shared/utils/message.sh"
 
-main() {
+main() (
   local current_crontab
   local generated_crontab
 
@@ -33,12 +33,13 @@ main() {
   fi
 
   current_crontab="$(mktemp "${TMPDIR:-/tmp}/dotfiles-linux-crontab-current.XXXXXX")"
+  generated_crontab=''
+  trap 'rm -f "${current_crontab}"; if [ -n "${generated_crontab}" ]; then rm -f "${generated_crontab}"; fi' EXIT
   generated_crontab="$(mktemp "${TMPDIR:-/tmp}/dotfiles-linux-crontab-generated.XXXXXX")"
-  trap "rm -f '${current_crontab}' '${generated_crontab}'" EXIT
 
   crontab -l 2>/dev/null | sed '/# BEGIN DOTFILES AUTO UPDATE/,/# END DOTFILES AUTO UPDATE/d' > "${current_crontab}" || true
   sed "s|__DOTFILES_UPDATE_SCRIPT__|${UPDATE_SCRIPT}|g" "${CRON_TEMPLATE}" > "${generated_crontab}"
   cat "${current_crontab}" "${generated_crontab}" | crontab -
-}
+)
 
 main "$@"

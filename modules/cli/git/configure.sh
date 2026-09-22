@@ -61,7 +61,7 @@ load_identity_from_state() {
 
 persist_git_identity() {
   mkdir -p "${DOTFILES_STATE_DIR}"
-  umask 077 && printf '%s\n%s\n' "$1" "$2" > "${GIT_IDENTITY_STATE_FILE}"
+  (umask 077 && printf '%s\n%s\n' "$1" "$2" > "${GIT_IDENTITY_STATE_FILE}")
 }
 
 configure_include_path() {
@@ -80,7 +80,7 @@ install_git_prompt() {
     -o "${GIT_PROMPT_DIR}/git-prompt.sh"
 }
 
-main() {
+main() (
   git_user_name=''
   git_user_email=''
   identity_lines=''
@@ -106,6 +106,6 @@ main() {
   git config --global user.email "${git_user_email}"
   persist_git_identity "${git_user_name}" "${git_user_email}"
   install_git_prompt
-}
+)
 
 main "$@"

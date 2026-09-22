@@ -76,13 +76,12 @@ install_extensions() {
   done < "${VSCODE_EXTENSIONS_FILE}"
 }
 
-main() {
-  VSCODE_USER_DIR="$(resolve_vscode_user_dir)"
-  readonly VSCODE_USER_DIR
+main() (
+  vscode_user_dir="$(resolve_vscode_user_dir)"
 
-  mkdir -p "${VSCODE_USER_DIR}"
+  mkdir -p "${vscode_user_dir}"
   install_extensions
-  ln -sfn "${VSCODE_SETTINGS_ASSET}" "${VSCODE_USER_DIR}/settings.json"
-}
+  ln -sfn "${VSCODE_SETTINGS_ASSET}" "${vscode_user_dir}/settings.json"
+)
 
 main "$@"

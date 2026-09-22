@@ -27,7 +27,7 @@ configure_karabiner() {
   if [ -d /Applications/Karabiner-Elements.app ]; then
     mkdir -p "${HOME}/.config"
     ln -sfn "${KARABINER_ASSET_DIR}" "${HOME}/.config/karabiner"
-    finish_configure_message 'Karabiner-Elements'
+    complete_configure_info 'Karabiner-Elements'
   else
     skip_info 'Karabiner-Elements is not installed.'
   fi
@@ -44,7 +44,7 @@ configure_vscode() {
   fi
 
   "${REPO_ROOT}/modules/apps/vscode/configure.sh"
-  finish_configure_message 'Visual Studio Code'
+  complete_configure_info 'Visual Studio Code'
 }
 
 configure_ghostty() {
@@ -55,7 +55,7 @@ configure_ghostty() {
   fi
 
   "${REPO_ROOT}/modules/apps/ghostty/configure.sh"
-  finish_configure_message 'Ghostty'
+  complete_configure_info 'Ghostty'
 }
 
 configure_docker_compose_plugin() {
@@ -81,7 +81,7 @@ configure_docker_compose_plugin() {
 
   mkdir -p "${docker_plugin_dir}"
   ln -sfn "${compose_plugin_source}" "${compose_plugin_link}"
-  finish_configure_message 'Docker Compose CLI plugin'
+  complete_configure_info 'Docker Compose CLI plugin'
 }
 
 configure_managed_symlink() {
@@ -136,10 +136,9 @@ configure_clipy() {
     return 0
   fi
 
-  set +e
-  killall Clipy > /dev/null 2>&1
-  was_running=$?
-  set -e
+  if killall Clipy > /dev/null 2>&1; then
+    was_running=0
+  fi
 
   defaults write com.clipy-app.Clipy loginItem -bool true
 
@@ -147,7 +146,7 @@ configure_clipy() {
     open /Applications/Clipy.app
   fi
 
-  finish_configure_message 'Clipy'
+  complete_configure_info 'Clipy'
 }
 
 main() {

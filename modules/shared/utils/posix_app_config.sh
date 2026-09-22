@@ -1,19 +1,14 @@
-#!/bin/sh
+# POSIX shell library. Source this file; do not execute it directly.
 
 configure_optional_posix_module() {
-  label="$1"
-  command_name="$2"
-  module_path="$3"
-  skip_message="$4"
-
-  configure_info "${label}"
-  if ! command -v "${command_name}" > /dev/null 2>&1; then
-    skip_info "${skip_message}"
+  configure_info "$1"
+  if ! command -v "$2" > /dev/null 2>&1; then
+    skip_info "$4"
     return 0
   fi
 
-  "${module_path}"
-  finish_configure_message "${label}"
+  "$3" || return $?
+  complete_configure_info "$1"
 }
 
 configure_posix_git() {

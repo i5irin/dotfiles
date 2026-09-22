@@ -9,8 +9,10 @@ RUN apt-get update \
     cron \
     curl \
     git \
+    jq \
     sudo \
     tmux \
+    zsh \
   && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -s /bin/bash dotfiles \

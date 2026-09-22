@@ -1,47 +1,39 @@
-#!/bin/bash
+# POSIX shell library. Source this file; do not execute it directly.
 
 color() {
-  text="$1"
-  color="$2"
-  # reference https://qiita.com/ko1nksm/items/095bdb8f0eca6d327233#1-echo-%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8F-printf-%E3%82%92%E4%BD%BF%E3%81%86
-  ESC=$(printf '\033')
-  echo "${ESC}${color}${text}${ESC}[m"
+  printf '\033%s%s\033[m\n' "$2" "$1"
 }
 
 step_info() {
-  echo "==> $1"
+  printf '==> %s\n' "$1"
 }
 
 step_success() {
-  echo "$(color '[OK]' '[32m') $1"
+  printf '%s %s\n' "$(color '[OK]' '[32m')" "$1"
 }
 
 step_failure() {
-  echo "$(color '[FAIL]' '[31m') $1" >&2
+  printf '%s %s\n' "$(color '[FAIL]' '[31m')" "$1" >&2
 }
 
 action_info() {
-  echo "--> $1"
+  printf '%s\n' "--> $1"
 }
 
 action_success() {
-  echo "$(color '[OK]' '[32m') $1"
-}
-
-action_failure() {
-  echo "$(color '[FAIL]' '[31m') $1" >&2
+  printf '%s %s\n' "$(color '[OK]' '[32m')" "$1"
 }
 
 skip_info() {
-  echo "$(color '[SKIP]' '[33m') $1"
+  printf '%s %s\n' "$(color '[SKIP]' '[33m')" "$1"
 }
 
 warn_info() {
-  echo "$(color '[WARN]' '[33m') $1" >&2
+  printf '%s %s\n' "$(color '[WARN]' '[33m')" "$1" >&2
 }
 
 next_info() {
-  echo "Next: $1"
+  printf 'Next: %s\n' "$1"
 }
 
 progress_info() {
@@ -57,41 +49,17 @@ progress_failure() {
 }
 
 configure_info() {
-  app="$1"
-  action_info "Configure ${app}"
+  action_info "Configure $1"
 }
 
 complete_configure_info() {
-  app="$1"
-  action_success "Configure ${app}"
-}
-
-failed_configure_info() {
-  app="$1"
-  action_failure "Configure ${app}"
-}
-
-finish_configure_message() {
-  exit_code="$?"
-  app="$1"
-  if [ "$exit_code" = 0 ]; then
-    complete_configure_info "$app"
-  else
-    failed_configure_info "$app"
-  fi
+  action_success "Configure $1"
 }
 
 setup_info() {
-  app="$1"
-  action_info "Install ${app}"
+  action_info "Install $1"
 }
 
 complete_setup_info() {
-  app="$1"
-  action_success "Install ${app}"
-}
-
-failed_info() {
-  app="$1"
-  action_failure "Install ${app}"
+  action_success "Install $1"
 }

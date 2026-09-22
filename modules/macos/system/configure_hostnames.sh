@@ -14,6 +14,8 @@ source "${REPO_ROOT}/modules/shared/utils/message.sh"
 source "${REPO_ROOT}/modules/shared/utils/posix.sh"
 
 load_machine_name_from_state() {
+  local state_machine_name
+
   if [ ! -f "${MACHINE_NAME_STATE_FILE}" ]; then
     return 1
   fi
@@ -33,6 +35,10 @@ persist_machine_name() {
 }
 
 current_machine_name_matches() {
+  local current_computer_name
+  local current_local_host_name
+  local current_host_name
+
   current_computer_name="$(scutil --get ComputerName 2> /dev/null || true)"
   current_local_host_name="$(scutil --get LocalHostName 2> /dev/null || true)"
   current_host_name="$(scutil --get HostName 2> /dev/null || true)"

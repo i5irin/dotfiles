@@ -8,7 +8,7 @@
 #   None
 #######################################
 function mkcd() {
-  mkdir -p $1 && cd $_
+  mkdir -p -- "$1" && cd -- "$1"
 }
 
 #######################################
@@ -22,8 +22,8 @@ function mkcd() {
 #   None
 #######################################
 function git_commit_at() {
-  at="$1"
-  comment="$2"
+  local at="$1"
+  local comment="$2"
   GIT_COMMITTER_DATE="${at}" git commit --date="${at}" -m "${comment}"
 }
 
@@ -38,9 +38,9 @@ function git_commit_at() {
 #   Std-Out: Number of lines and total for files with the specified extension
 #######################################
 function line_count() {
-  extension="$1"
-  exclude="$2"
-  find ./ -name "*.${extension}" ! -path "*${exclude}*" | xargs wc -l
+  local extension="$1"
+  local exclude="$2"
+  find . -type f -name "*.${extension}" ! -path "*${exclude}*" -exec wc -l {} +
 }
 
 #######################################
@@ -53,16 +53,16 @@ function line_count() {
 #   None
 #######################################
 function tmux_start() {
-  session_name="${1:-localhost}"
-  tmux has-session -t=$session_name 2> /dev/null
-  # Create the session if it doesn't exists. (Only create!)
-  if [ "$?" -ne 0 ]; then
-    TMUX='' tmux new-session -d -s "$session_name"
+  local session_name="${1:-localhost}"
+
+  if ! tmux has-session -t "${session_name}" 2> /dev/null; then
+    TMUX='' tmux new-session -d -s "${session_name}"
   fi
+
   # Attach if outside of tmux, switch if you're in tmux.
-  if [ -z "$TMUX" ]; then
-    tmux attach -t "$session_name"
+  if [ -z "${TMUX:-}" ]; then
+    tmux attach -t "${session_name}"
   else
-    tmux switch-client -t "$session_name"
+    tmux switch-client -t "${session_name}"
   fi
 }

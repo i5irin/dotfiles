@@ -28,6 +28,7 @@ readonly CANONICAL_LOCAL_OVERRIDE_APT_LIST="${REPO_ROOT}/modules/linux/packages/
 readonly INCLUDE_OPTIONAL_PACKAGES="${DOTFILES_INCLUDE_LINUX_OPTIONAL_PACKAGES:-0}"
 VALID_STEP_NAMES=('install-apps' 'configure-shell' 'apply-preferences' 'register-update-job' 'configure-apps')
 ONLY_STEP=''
+ACTIVE_APT_LIST_PATH=''
 
 . "${REPO_ROOT}/modules/shared/utils/message.sh"
 
@@ -99,24 +100,28 @@ resolve_apt_list() {
   local temp_apt_list
 
   temp_apt_list="$(mktemp "${TMPDIR:-/tmp}/dotfiles-linux-apt.XXXXXX")"
-  "${PACKAGE_COMPOSE_HELPER}" --output "${temp_apt_list}"
+  if ! "${PACKAGE_COMPOSE_HELPER}" --output "${temp_apt_list}"; then
+    rm -f "${temp_apt_list}"
+    return 1
+  fi
   printf '%s\n' "${temp_apt_list}"
 }
 
-print_config() {
+print_config() (
   local apt_list_path
+
+  apt_list_path=''
+  trap 'if [ -n "${apt_list_path}" ]; then rm -f "${apt_list_path}"; fi' EXIT
 
   if [ "${ONLY_STEP}" = 'install-apps' ] || [ -z "${ONLY_STEP}" ]; then
     apt_list_path="$(resolve_apt_list)"
-  else
-    apt_list_path='n/a'
   fi
 
   cat <<EOF
 repo_root=${REPO_ROOT}
 bootstrap_module=${SCRIPT_DIR}
 selected_step=${ONLY_STEP:-all}
-package_list=${apt_list_path}
+package_list=${apt_list_path:-n/a}
 bootstrap_config_source=${BOOTSTRAP_CONFIG_SOURCE}
 include_optional_packages=${INCLUDE_OPTIONAL_PACKAGES}
 local_override_source=$(resolve_local_override_source)
@@ -126,11 +131,10 @@ linux_auto_update=${DOTFILES_LINUX_ENABLE_AUTO_UPDATE:-0}
 requires_sudo=true
 apt_sources=
 EOF
-  if [ -f "${apt_list_path}" ]; then
+  if [ -n "${apt_list_path}" ] && [ -f "${apt_list_path}" ]; then
     "${PACKAGE_COMPOSE_HELPER}" --print-sources
-    rm -f "${apt_list_path}"
   fi
-}
+)
 
 validate_linux_privileges() {
   prime_sudo_session 'sudo privileges are required for the Linux bootstrap.'
@@ -156,7 +160,7 @@ prepare_apt_list_context() {
   progress_info 'Resolving Linux app catalog.'
   apt_list_path="$(resolve_apt_list)"
   progress_success 'Resolved Linux app catalog.'
-  export DOTFILES_ACTIVE_APT_LIST_PATH="${apt_list_path}"
+  ACTIVE_APT_LIST_PATH="${apt_list_path}"
   export_bootstrap_environment "${apt_list_path}"
 }
 
@@ -220,7 +224,7 @@ run_selected_step() {
 }
 
 run_modules() {
-  trap 'stop_sudo_keepalive; rm -f "${DOTFILES_ACTIVE_APT_LIST_PATH:-}"' EXIT
+  trap 'stop_sudo_keepalive; if [ -n "${ACTIVE_APT_LIST_PATH}" ]; then rm -f "${ACTIVE_APT_LIST_PATH}"; fi' EXIT
 
   if [ -n "${ONLY_STEP}" ]; then
     run_selected_step

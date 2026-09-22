@@ -33,6 +33,7 @@ readonly APP_CONFIGURE_MODULE="${REPO_ROOT}/modules/macos/apps/configure.sh"
 readonly LOCAL_OVERRIDE_BREWFILE="${REPO_ROOT}/modules/macos/packages/local.Brewfile"
 VALID_STEP_NAMES=('install-apps' 'configure-shell' 'apply-preferences' 'register-update-job' 'configure-apps')
 ONLY_STEP=''
+ACTIVE_BREWFILE_PATH=''
 
 source "${REPO_ROOT}/modules/shared/utils/dotfiles.sh"
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
@@ -67,7 +68,10 @@ resolve_brewfile() {
   local temp_brewfile
 
   temp_brewfile="$(mktemp "${TMPDIR:-/tmp}/dotfiles-macos-brewfile.XXXXXX")"
-  "${PACKAGE_COMPOSE_HELPER}" --output "${temp_brewfile}"
+  if ! "${PACKAGE_COMPOSE_HELPER}" --output "${temp_brewfile}"; then
+    rm -f "${temp_brewfile}"
+    return 1
+  fi
   printf '%s\n' "${temp_brewfile}"
 }
 
@@ -101,13 +105,14 @@ validate_layout() {
   done
 }
 
-print_config() {
+print_config() (
   local brewfile_path
+
+  brewfile_path=''
+  trap 'if [ -n "${brewfile_path}" ]; then rm -f "${brewfile_path}"; fi' EXIT
 
   if [ "${ONLY_STEP}" = 'install-apps' ] || [ -z "${ONLY_STEP}" ]; then
     brewfile_path="$(resolve_brewfile)"
-  else
-    brewfile_path='n/a'
   fi
 
   cat <<EOF
@@ -117,7 +122,7 @@ homebrew_prefix=${HOMEBREW_PREFIX}
 include_optional_packages=${INCLUDE_OPTIONAL_PACKAGES}
 install_rosetta=${INSTALL_ROSETTA}
 selected_step=${ONLY_STEP:-all}
-brewfile=${brewfile_path}
+brewfile=${brewfile_path:-n/a}
 bootstrap_config_source=${BOOTSTRAP_CONFIG_SOURCE}
 requires_admin=true
 local_override_source=$(resolve_local_override_source)
@@ -126,11 +131,10 @@ zsh_completions_dir=${ZSH_COMPLETIONS_DIR}
 git_prompt_dir=${GIT_PROMPT_DIR}
 brewfile_sources=
 EOF
-  if [ -f "${brewfile_path}" ]; then
+  if [ -n "${brewfile_path}" ] && [ -f "${brewfile_path}" ]; then
     "${PACKAGE_COMPOSE_HELPER}" --print-sources
-    rm -f "${brewfile_path}"
   fi
-}
+)
 
 validate_macos_privileges() {
   if ! is_macos_admin_user; then
@@ -165,7 +169,7 @@ prepare_brewfile_context() {
   progress_info 'Resolving macOS app catalog.'
   brewfile_path="$(resolve_brewfile)"
   progress_success 'Resolved macOS app catalog.'
-  export DOTFILES_ACTIVE_BREWFILE_PATH="${brewfile_path}"
+  ACTIVE_BREWFILE_PATH="${brewfile_path}"
   export_bootstrap_environment "${brewfile_path}"
 }
 
@@ -239,7 +243,7 @@ run_selected_step() {
 }
 
 run_modules() {
-  trap 'stop_sudo_keepalive; rm -f "${DOTFILES_ACTIVE_BREWFILE_PATH:-}"' EXIT
+  trap 'stop_sudo_keepalive; if [ -n "${ACTIVE_BREWFILE_PATH}" ]; then rm -f "${ACTIVE_BREWFILE_PATH}"; fi' EXIT
 
   if [ -n "${ONLY_STEP}" ]; then
     run_selected_step

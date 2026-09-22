@@ -18,10 +18,13 @@ install_starship() {
   curl -fsSL https://starship.rs/install.sh | sh -s -- -y
 }
 
-main() {
+main() (
   local apt_list_path
   local created_temp_list=0
   local packages
+
+  apt_list_path=''
+  trap 'if [ "${created_temp_list}" -eq 1 ]; then rm -f "${apt_list_path}"; fi' EXIT
 
   if [ "$(uname -s)" != 'Linux' ]; then
     echo 'Linux package installation only supports Linux hosts.' >&2
@@ -49,10 +52,6 @@ main() {
   fi
 
   install_starship
-
-  if [ "${created_temp_list}" -eq 1 ]; then
-    rm -f "${apt_list_path}"
-  fi
-}
+)
 
 main "$@"

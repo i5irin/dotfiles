@@ -72,6 +72,111 @@ if ($failed) { exit 1 }
   "$shell_command" -NoProfile -NonInteractive -Command "$script"
 }
 
+source_posix_libraries() {
+  local shell_command="$1"
+
+  "$shell_command" -c '
+    set -eu
+    . "$1"
+    . "$2"
+    . "$3"
+    . "$4"
+    . "$5"
+    original_path=$PATH
+    readlinkf . > /dev/null
+    [ "$PATH" = "$original_path" ]
+    load_dotfiles_env_file "$6"
+    case $- in *a*) exit 1;; esac
+    set -a
+    load_dotfiles_env_file "$6"
+    case $- in *a*) :;; *) exit 1;; esac
+  ' validation-shell \
+    "${REPO_ROOT}/modules/shared/utils/load_env.sh" \
+    "${REPO_ROOT}/modules/shared/utils/message.sh" \
+    "${REPO_ROOT}/modules/shared/utils/posix.sh" \
+    "${REPO_ROOT}/modules/shared/utils/posix_app_config.sh" \
+    "${REPO_ROOT}/modules/shared/utils/sudo.sh" \
+    "${REPO_ROOT}/config/linux.env.sample"
+}
+
+source_interactive_shell_library() {
+  local shell_command="$1"
+
+  "$shell_command" -c '
+    set -eu
+    . "$1"
+    . "$2"
+  ' validation-shell \
+    "${REPO_ROOT}/modules/shared/shell/functions.sh" \
+    "${REPO_ROOT}/modules/shared/shell/alias.sh"
+}
+
+source_only_libraries_are_clear() {
+  local library_path
+
+  for library_path in \
+    "${REPO_ROOT}/modules/shared/shell/alias.sh" \
+    "${REPO_ROOT}/modules/shared/shell/functions.sh" \
+    "${REPO_ROOT}/modules/shared/utils/dotfiles.sh" \
+    "${REPO_ROOT}/modules/shared/utils/load_env.sh" \
+    "${REPO_ROOT}/modules/shared/utils/message.sh" \
+    "${REPO_ROOT}/modules/shared/utils/posix.sh" \
+    "${REPO_ROOT}/modules/shared/utils/posix_app_config.sh" \
+    "${REPO_ROOT}/modules/shared/utils/sudo.sh"
+  do
+    if [ -x "${library_path}" ] || head -n 1 "${library_path}" | grep -q '^#!'; then
+      return 1
+    fi
+  done
+}
+
+rerun_wrappers_show_help() {
+  local wrapper_path
+
+  for wrapper_path in \
+    "${REPO_ROOT}/modules/macos/rerun/install-apps.sh" \
+    "${REPO_ROOT}/modules/macos/rerun/configure-shell.sh" \
+    "${REPO_ROOT}/modules/macos/rerun/apply-preferences.sh" \
+    "${REPO_ROOT}/modules/macos/rerun/register-update-job.sh" \
+    "${REPO_ROOT}/modules/macos/rerun/configure-apps.sh" \
+    "${REPO_ROOT}/modules/linux/rerun/install-apps.sh" \
+    "${REPO_ROOT}/modules/linux/rerun/configure-shell.sh" \
+    "${REPO_ROOT}/modules/linux/rerun/apply-preferences.sh" \
+    "${REPO_ROOT}/modules/linux/rerun/register-update-job.sh" \
+    "${REPO_ROOT}/modules/linux/rerun/configure-apps.sh"
+  do
+    "${wrapper_path}" --help > /dev/null
+  done
+}
+
+readme_entry_points_exist() {
+  local entry_point
+
+  for entry_point in bootstrap/macos.sh bootstrap/windows.ps1 bootstrap/linux.sh; do
+    [ -f "${REPO_ROOT}/${entry_point}" ] \
+      && grep -Fq "(${entry_point})" "${REPO_ROOT}/README.md" \
+      || return 1
+  done
+}
+
+local_override_paths_are_ignored() {
+  local override_path
+
+  for override_path in \
+    config/macos.env \
+    config/windows.env \
+    config/linux.env \
+    modules/macos/packages/local.Brewfile \
+    modules/windows/packages/local.Winget.json \
+    modules/linux/packages/local.apt.txt \
+    modules/shell/zsh/.zshrc.local \
+    modules/shell/bash/.bashrc.local \
+    modules/shell/powershell/Microsoft.PowerShell_profile.local.ps1
+  do
+    git -C "${REPO_ROOT}" check-ignore -q -- "${override_path}" || return 1
+  done
+}
+
 macos_base_has_package() {
   local package_name="$1"
 
@@ -170,6 +275,40 @@ macos_package_layers_have_no_duplicates() {
   [ -z "${duplicates}" ]
 }
 
+linux_package_layers_have_no_duplicates() {
+  local duplicates
+
+  duplicates="$(
+    sed -e 's/[[:space:]]*#.*$//' -e '/^[[:space:]]*$/d' \
+      "${REPO_ROOT}/modules/linux/packages/apt.base.txt" \
+      "${REPO_ROOT}/modules/linux/packages/apt.optional.txt" \
+      | sort \
+      | uniq -d
+  )"
+
+  [ -z "${duplicates}" ]
+}
+
+windows_package_layers_have_no_duplicates() {
+  local duplicates
+
+  duplicates="$(
+    jq -r '.Packages[]?.PackageIdentifier' \
+      "${REPO_ROOT}/modules/windows/packages/Winget.base.json" \
+      "${REPO_ROOT}/modules/windows/packages/Winget.optional.json" \
+      | sort \
+      | uniq -d
+  )"
+
+  [ -z "${duplicates}" ]
+}
+
+bootstrap_does_not_authenticate_ai_tools() {
+  ! grep -R -i -E \
+    '(codex|openai|claude|anthropic).*(login|auth)|(login|auth).*(codex|openai|claude|anthropic)' \
+    "${REPO_ROOT}/bootstrap" "${REPO_ROOT}/modules" > /dev/null 2>&1
+}
+
 macos_rosetta_defaults_off() {
   grep -Fx 'DOTFILES_INSTALL_ROSETTA=0' "${REPO_ROOT}/config/macos.env.sample" > /dev/null 2>&1 \
     && grep -F 'readonly INSTALL_ROSETTA="${DOTFILES_INSTALL_ROSETTA:-0}"' \
@@ -179,7 +318,23 @@ macos_rosetta_defaults_off() {
 }
 
 log_section 'Shell syntax'
-run_check 'bash syntax' \
+run_check 'POSIX shell syntax' \
+  sh -n \
+  "${REPO_ROOT}/modules/apps/ghostty/configure.sh" \
+  "${REPO_ROOT}/modules/apps/vscode/configure.sh" \
+  "${REPO_ROOT}/modules/cli/git/configure.sh" \
+  "${REPO_ROOT}/modules/cli/neovim/configure.sh" \
+  "${REPO_ROOT}/modules/cli/starship/configure.sh" \
+  "${REPO_ROOT}/modules/cli/terminal/render-assets.sh" \
+  "${REPO_ROOT}/modules/cli/tmux/configure.sh" \
+  "${REPO_ROOT}/modules/shared/fonts/install-posix.sh" \
+  "${REPO_ROOT}/modules/shared/utils/load_env.sh" \
+  "${REPO_ROOT}/modules/shared/utils/message.sh" \
+  "${REPO_ROOT}/modules/shared/utils/posix.sh" \
+  "${REPO_ROOT}/modules/shared/utils/posix_app_config.sh" \
+  "${REPO_ROOT}/modules/shared/utils/sudo.sh"
+
+run_check 'Bash syntax' \
   bash -n \
   "${REPO_ROOT}/bootstrap/linux.sh" \
   "${REPO_ROOT}/modules/linux/bootstrap/run.sh" \
@@ -193,11 +348,14 @@ run_check 'bash syntax' \
   "${REPO_ROOT}/modules/linux/rerun/apply-preferences.sh" \
   "${REPO_ROOT}/modules/linux/rerun/register-update-job.sh" \
   "${REPO_ROOT}/modules/linux/rerun/configure-apps.sh" \
+  "${REPO_ROOT}/testenv/linux-container/ubuntu-24.04/run-validation.sh" \
+  "${REPO_ROOT}/testenv/parallels/preflight.sh" \
+  "${REPO_ROOT}/testenv/validation/run-static-checks.sh" \
+  "${REPO_ROOT}/modules/shell/bash/.bash_profile" \
+  "${REPO_ROOT}/modules/shell/bash/.bashrc" \
   "${REPO_ROOT}/modules/shell/bash/install.sh" \
   "${REPO_ROOT}/modules/shared/shell/alias.sh" \
-  "${REPO_ROOT}/modules/shared/shell/functions.sh" \
-  "${REPO_ROOT}/modules/shared/utils/message.sh" \
-  "${REPO_ROOT}/modules/shared/utils/posix.sh"
+  "${REPO_ROOT}/modules/shared/shell/functions.sh"
 
 run_check 'zsh syntax' \
   zsh -n \
@@ -215,7 +373,19 @@ run_check 'zsh syntax' \
   "${REPO_ROOT}/modules/macos/rerun/apply-preferences.sh" \
   "${REPO_ROOT}/modules/macos/rerun/register-update-job.sh" \
   "${REPO_ROOT}/modules/macos/rerun/configure-apps.sh" \
-  "${REPO_ROOT}/modules/shell/zsh/install.sh"
+  "${REPO_ROOT}/modules/shell/zsh/.zprofile" \
+  "${REPO_ROOT}/modules/shell/zsh/.zshrc" \
+  "${REPO_ROOT}/modules/shell/zsh/install.sh" \
+  "${REPO_ROOT}/modules/shared/shell/alias.sh" \
+  "${REPO_ROOT}/modules/shared/shell/functions.sh" \
+  "${REPO_ROOT}/modules/shared/utils/dotfiles.sh"
+
+run_check 'POSIX libraries load in sh' source_posix_libraries sh
+run_check 'POSIX libraries load in Bash' source_posix_libraries bash
+run_check 'POSIX libraries load in zsh' source_posix_libraries zsh
+run_check 'interactive library loads in Bash' source_interactive_shell_library bash
+run_check 'interactive library loads in zsh' source_interactive_shell_library zsh
+run_check 'sourced libraries are non-executable and have no shebang' source_only_libraries_are_clear
 
 if run_powershell_parse; then
   pass_check 'PowerShell parse'
@@ -233,8 +403,8 @@ fi
 log_section 'Bootstrap entry points'
 run_check 'macOS help output' "${REPO_ROOT}/bootstrap/macos.sh" --help
 run_check 'Linux help output' "${REPO_ROOT}/bootstrap/linux.sh" --help
-run_check 'macOS rerun help output' "${REPO_ROOT}/bootstrap/macos.sh" --only configure-apps --help
-run_check 'Linux rerun help output' "${REPO_ROOT}/bootstrap/linux.sh" --only configure-apps --help
+run_check 'macOS and Linux rerun wrapper help output' rerun_wrappers_show_help
+run_check 'README entry points exist' readme_entry_points_exist
 
 if [ "$(uname -s)" = 'Darwin' ] && [ "$(uname -m)" = 'arm64' ]; then
   run_check 'macOS dry-run output' "${REPO_ROOT}/bootstrap/macos.sh" --dry-run
@@ -242,11 +412,7 @@ else
   skip_check 'macOS dry-run output (host is not Apple Silicon macOS)'
 fi
 
-if [ "$(uname -s)" = 'Linux' ] && command -v apt-get > /dev/null 2>&1; then
-  run_check 'Linux dry-run output' "${REPO_ROOT}/bootstrap/linux.sh" --dry-run
-else
-  skip_check 'Linux dry-run output (host is not Ubuntu/Debian-family Linux)'
-fi
+run_check 'Linux dry-run output' "${REPO_ROOT}/bootstrap/linux.sh" --dry-run
 
 if command -v pwsh > /dev/null 2>&1; then
   run_check 'Windows help output' pwsh -NoProfile -NonInteractive -File "${REPO_ROOT}/bootstrap/windows.ps1" -Help
@@ -277,6 +443,11 @@ for package_name in gcc hugo openjdk; do
   run_check "macOS optional-only package: ${package_name}" macos_optional_only_has_package "${package_name}"
 done
 run_check 'macOS package layers have no duplicates' macos_package_layers_have_no_duplicates
+run_check 'Linux package layers have no duplicates' linux_package_layers_have_no_duplicates
+run_check 'Windows package layers have no duplicates' windows_package_layers_have_no_duplicates
+run_check 'local configuration and package overrides stay untracked' local_override_paths_are_ignored
+
+log_section 'Development environment contracts'
 run_check 'fnm shell integration only selects declared project versions' \
   fnm_shell_contract_is_tracked
 run_check 'configure-shell prepares the user executable directory' \
@@ -293,6 +464,8 @@ run_check 'global agent assets are tracked with safe Codex symlink deployment' \
 run_check 'macOS bootstrap does not start Colima' macos_bootstrap_does_not_start_colima
 run_check 'macOS bootstrap leaves remote access enrollment to the user' \
   macos_bootstrap_does_not_configure_remote_access
+run_check 'bootstrap does not authenticate AI coding tools' \
+  bootstrap_does_not_authenticate_ai_tools
 run_check 'macOS Rosetta default is off' macos_rosetta_defaults_off
 
 log_section 'Generated assets'
