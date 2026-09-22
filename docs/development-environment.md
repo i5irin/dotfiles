@@ -522,7 +522,7 @@ other project-local agent configuration
 
 Cross-project agent instructions and reusable skills may be tracked as vendor-neutral Development Environment assets. Project-specific instructions remain owned by each project repository, and agents do not become canonical sources for project knowledge.
 
-The current Codex deployment links `~/.codex/AGENTS.md` and the `constraint-first-review` user skill to their tracked canonical assets. Japanese translations are human-readable references and are not deployed to Codex.
+The current Codex deployment links `~/.codex/AGENTS.md` and the `constraint-first-review` user skill to their tracked canonical assets.
 
 Personal sessions, memories, credentials, machine identity, and caches stay outside the repository. Codex state other than explicitly managed instruction and skill entry points, including OS keyring data, and Claude Code state under `~/.claude` and `~/.claude.json` are machine-local and must not be tracked or symlinked into dotfiles.
 

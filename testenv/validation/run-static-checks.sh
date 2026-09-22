@@ -238,16 +238,70 @@ agent_assets_contract_is_tracked() {
   local skill_file="${REPO_ROOT}/assets/agents/skills/constraint-first-review/SKILL.md"
 
   [ -s "${global_instructions}" ] \
-    && [ -s "${REPO_ROOT}/assets/agents/instructions/global.ja.md" ] \
     && [ -s "${skill_file}" ] \
-    && [ -s "${REPO_ROOT}/assets/agents/translations/constraint-first-review.ja.md" ] \
     && grep -Fq 'name: constraint-first-review' "${skill_file}" \
     && grep -Fq '${HOME}/.codex/AGENTS.md' "${configure_script}" \
     && grep -Fq '${HOME}/.agents/skills/constraint-first-review' "${configure_script}" \
     && grep -Fq 'exists and is not a symbolic link.' "${configure_script}" \
-    && grep -Fq 'points to an unexpected target.' "${configure_script}" \
-    && ! grep -Fq 'global.ja.md' "${configure_script}" \
-    && ! grep -Fq 'constraint-first-review.ja.md' "${configure_script}"
+    && grep -Fq 'points to an unexpected target.' "${configure_script}"
+}
+
+package_sources_match_selection() {
+  local composer="$1"
+  local optional_variable="$2"
+  local optional_name="$3"
+  local base_sources
+  local optional_sources
+
+  base_sources="$(env "${optional_variable}=0" "${composer}" --print-sources)" || return 1
+  optional_sources="$(env "${optional_variable}=1" "${composer}" --print-sources)" || return 1
+
+  case "${base_sources}" in
+    *"${optional_name}"*) return 1 ;;
+  esac
+  case "${optional_sources}" in
+    *"${optional_name}"*) return 0 ;;
+  esac
+  return 1
+}
+
+linux_dry_run_cleans_temporary_list() {
+  local output
+  local list_path
+
+  output="$("${REPO_ROOT}/bootstrap/linux.sh" --dry-run)" || return 1
+  list_path="$(printf '%s\n' "${output}" | sed -n 's/^package_list=//p')"
+  [ -n "${list_path}" ] && [ ! -e "${list_path}" ]
+}
+
+macos_dry_run_cleans_temporary_brewfile() {
+  local output
+  local brewfile_path
+
+  output="$("${REPO_ROOT}/bootstrap/macos.sh" --dry-run)" || return 1
+  brewfile_path="$(printf '%s\n' "${output}" | sed -n 's/^brewfile=//p')"
+  [ -n "${brewfile_path}" ] && [ ! -e "${brewfile_path}" ]
+}
+
+invalid_bootstrap_step_fails() {
+  if "${REPO_ROOT}/bootstrap/linux.sh" --only unknown-step > /dev/null 2>&1; then
+    return 1
+  fi
+  if "${REPO_ROOT}/bootstrap/macos.sh" --only unknown-step > /dev/null 2>&1; then
+    return 1
+  fi
+}
+
+tracked_assets_are_not_executable() {
+  local tracked_path
+
+  while IFS= read -r tracked_path; do
+    case "${tracked_path}" in
+      assets/*|.editorconfig)
+        [ ! -x "${REPO_ROOT}/${tracked_path}" ] || return 1
+        ;;
+    esac
+  done < <(git -C "${REPO_ROOT}" ls-files)
 }
 
 macos_bootstrap_does_not_start_colima() {
@@ -408,11 +462,14 @@ run_check 'README entry points exist' readme_entry_points_exist
 
 if [ "$(uname -s)" = 'Darwin' ] && [ "$(uname -m)" = 'arm64' ]; then
   run_check 'macOS dry-run output' "${REPO_ROOT}/bootstrap/macos.sh" --dry-run
+  run_check 'macOS dry-run removes its temporary Brewfile' macos_dry_run_cleans_temporary_brewfile
 else
   skip_check 'macOS dry-run output (host is not Apple Silicon macOS)'
 fi
 
 run_check 'Linux dry-run output' "${REPO_ROOT}/bootstrap/linux.sh" --dry-run
+run_check 'Linux dry-run removes its temporary package list' linux_dry_run_cleans_temporary_list
+run_check 'invalid bootstrap steps fail' invalid_bootstrap_step_fails
 
 if command -v pwsh > /dev/null 2>&1; then
   run_check 'Windows help output' pwsh -NoProfile -NonInteractive -File "${REPO_ROOT}/bootstrap/windows.ps1" -Help
@@ -445,7 +502,14 @@ done
 run_check 'macOS package layers have no duplicates' macos_package_layers_have_no_duplicates
 run_check 'Linux package layers have no duplicates' linux_package_layers_have_no_duplicates
 run_check 'Windows package layers have no duplicates' windows_package_layers_have_no_duplicates
+run_check 'macOS optional packages follow selection' package_sources_match_selection \
+  "${REPO_ROOT}/modules/macos/packages/compose_brewfile.sh" \
+  DOTFILES_INCLUDE_MACOS_OPTIONAL_PACKAGES Brewfile.optional
+run_check 'Linux optional packages follow selection' package_sources_match_selection \
+  "${REPO_ROOT}/modules/linux/packages/compose_apt_list.sh" \
+  DOTFILES_INCLUDE_LINUX_OPTIONAL_PACKAGES apt.optional.txt
 run_check 'local configuration and package overrides stay untracked' local_override_paths_are_ignored
+run_check 'tracked configuration assets are non-executable' tracked_assets_are_not_executable
 
 log_section 'Development environment contracts'
 run_check 'fnm shell integration only selects declared project versions' \

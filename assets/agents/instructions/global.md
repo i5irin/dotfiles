@@ -37,3 +37,10 @@ Repository-specific product rules and canonical sources remain in the repository
 
 - After changes, run the minimum relevant checks that can reasonably verify the work.
 - Summarize what changed, what was verified, and any remaining uncertainty or blocker.
+
+## Communication and maintenance
+
+- Respond in the language explicitly requested by the user. Otherwise use the main language of the conversation, then an available interface preference, then English.
+- Write code comments and committed repository documentation in English unless the user explicitly requests another language.
+- Prefer readable, direct code and stable tools. Add dependencies only when their lasting value outweighs their maintenance cost.
+- Let code explain mechanics; use comments for reasons, constraints, and non-obvious tradeoffs.
