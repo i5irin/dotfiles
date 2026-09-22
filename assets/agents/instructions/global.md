@@ -17,6 +17,9 @@ Ask before the following unless the user has explicitly authorized that exact ac
 ## Git
 
 - Do not create commits, branches, tags, pull requests, or push to remotes unless explicitly asked.
+- Unless the user explicitly requests another format or language, suggest commit messages in English using Conventional Commits syntax.
+- Unless the user explicitly requests another format or language, write PR titles and bodies in English. PR titles need Conventional Commits syntax only when the repository requires it.
+- Ground PR descriptions in the actual repository state: inspect available Git status, diff, relevant commit log, and base-branch diff when practical; do not claim unsupported changes.
 
 ## Constraint-first decision making
 
