@@ -12,6 +12,7 @@ readonly HOMEBREW_PREFIX
 readonly KARABINER_ASSET_DIR="${REPO_ROOT}/assets/macos/karabiner"
 readonly GLOBAL_AGENT_INSTRUCTIONS="${REPO_ROOT}/assets/agents/instructions/global.md"
 readonly CONSTRAINT_FIRST_REVIEW_SKILL="${REPO_ROOT}/assets/agents/skills/constraint-first-review"
+readonly READABLE_TECHNICAL_EXPLANATION_SKILL="${REPO_ROOT}/assets/agents/skills/readable-technical-explanation"
 
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
 source "${REPO_ROOT}/modules/shared/utils/posix.sh"
@@ -125,6 +126,10 @@ configure_codex_agent_assets() {
     'Constraint-first review skill' \
     "${CONSTRAINT_FIRST_REVIEW_SKILL}" \
     "${HOME}/.agents/skills/constraint-first-review"
+  configure_managed_symlink \
+    'Readable technical explanation skill' \
+    "${READABLE_TECHNICAL_EXPLANATION_SKILL}" \
+    "${HOME}/.agents/skills/readable-technical-explanation"
 }
 
 configure_clipy() {

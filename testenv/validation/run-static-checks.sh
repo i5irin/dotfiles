@@ -236,12 +236,16 @@ agent_assets_contract_is_tracked() {
   local configure_script="${REPO_ROOT}/modules/macos/apps/configure.sh"
   local global_instructions="${REPO_ROOT}/assets/agents/instructions/global.md"
   local skill_file="${REPO_ROOT}/assets/agents/skills/constraint-first-review/SKILL.md"
+  local explanation_skill_file="${REPO_ROOT}/assets/agents/skills/readable-technical-explanation/SKILL.md"
 
   [ -s "${global_instructions}" ] \
     && [ -s "${skill_file}" ] \
+    && [ -s "${explanation_skill_file}" ] \
     && grep -Fq 'name: constraint-first-review' "${skill_file}" \
+    && grep -Fq 'name: readable-technical-explanation' "${explanation_skill_file}" \
     && grep -Fq '${HOME}/.codex/AGENTS.md' "${configure_script}" \
     && grep -Fq '${HOME}/.agents/skills/constraint-first-review' "${configure_script}" \
+    && grep -Fq '${HOME}/.agents/skills/readable-technical-explanation' "${configure_script}" \
     && grep -Fq 'exists and is not a symbolic link.' "${configure_script}" \
     && grep -Fq 'points to an unexpected target.' "${configure_script}"
 }
