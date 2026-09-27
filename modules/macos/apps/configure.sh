@@ -13,6 +13,7 @@ readonly KARABINER_ASSET_DIR="${REPO_ROOT}/assets/macos/karabiner"
 readonly GLOBAL_AGENT_INSTRUCTIONS="${REPO_ROOT}/assets/agents/instructions/global.md"
 readonly CONSTRAINT_FIRST_REVIEW_SKILL="${REPO_ROOT}/assets/agents/skills/constraint-first-review"
 readonly READABLE_TECHNICAL_EXPLANATION_SKILL="${REPO_ROOT}/assets/agents/skills/readable-technical-explanation"
+readonly READER_ORIENTED_PROJECT_WRITING_SKILL="${REPO_ROOT}/assets/agents/skills/reader-oriented-project-writing"
 
 source "${REPO_ROOT}/modules/shared/utils/message.sh"
 source "${REPO_ROOT}/modules/shared/utils/posix.sh"
@@ -130,6 +131,10 @@ configure_codex_agent_assets() {
     'Readable technical explanation skill' \
     "${READABLE_TECHNICAL_EXPLANATION_SKILL}" \
     "${HOME}/.agents/skills/readable-technical-explanation"
+  configure_managed_symlink \
+    'Reader-oriented project writing skill' \
+    "${READER_ORIENTED_PROJECT_WRITING_SKILL}" \
+    "${HOME}/.agents/skills/reader-oriented-project-writing"
 }
 
 configure_clipy() {
