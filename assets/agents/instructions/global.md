@@ -50,5 +50,6 @@ Repository-specific product rules and canonical sources remain in the repository
 - When introducing a dense or unfamiliar concept, explain the meaning in plain language before relying on a concise technical term.
 - In non-English communication, prefer natural expressions in that language over unnecessary English workflow labels or literal translations of internal terminology.
 - In durable documents, define shared concepts once and avoid repeating the same caveat, status explanation, or evidence narrative across sections when a clear owning section can carry it.
+- Treat durable documents as maintained current knowledge, not append-only records. Deleting, replacing, merging, or moving stale, duplicated, superseded, misowned, or process-only text is a normal edit; use version control and durable work items for history instead of preserving obsolete prose in the current document.
 - Prefer readable, direct code and stable tools. Add dependencies only when their lasting value outweighs their maintenance cost.
 - Let code explain mechanics; use comments for reasons, constraints, and non-obvious tradeoffs.

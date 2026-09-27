@@ -80,7 +80,35 @@ Each durable document should have a clear job.
 
 Define a shared rule once in the most appropriate section. Later sections should refer to or apply it instead of re-explaining the full rule unless repetition is necessary for independent understanding.
 
-## 6. Compress repetition, not meaning
+## 6. Treat canonical documents as maintained state, not append-only history
+
+A canonical document represents the best current durable understanding of its subject. It does not need to preserve every sentence, section, example, caveat, or explanation that was useful earlier.
+
+During maintenance, deleting content is a first-class editing operation.
+
+Delete, merge, rewrite, or move content when its current meaning is:
+
+- duplicated elsewhere in the same artifact;
+- superseded by a later accepted decision;
+- wrong or no longer applicable;
+- better owned by another canonical artifact;
+- process history, review scaffolding, or research chronology rather than current durable knowledge;
+- an example or explanation that no longer adds a unique check or understanding.
+
+Version control, Issues, PRs, and durable decision records preserve history. Do not keep stale or duplicated prose in a canonical document merely so that nothing ever disappears.
+
+Preserve:
+
+- unique current product or engineering meaning;
+- material unresolved questions;
+- source traceability that the current artifact actually needs;
+- examples that test a distinct interaction or boundary.
+
+If a paragraph, subsection, example, or list item adds no unique current meaning after the surrounding document is understood, prefer deleting it over rewriting it more compactly.
+
+A shorter document is not automatically better. The goal is that every remaining part has a clear current responsibility.
+
+## 7. Compress repetition, not meaning
 
 When a document becomes long, first look for repeated:
 
@@ -102,7 +130,7 @@ Worked examples and specification checks should usually contain:
 
 They should not repeat the full rule text already defined earlier unless the example would otherwise be ambiguous.
 
-## 7. Make state and action obvious
+## 8. Make state and action obvious
 
 For reviews, handoffs, and issue updates, the reader should be able to answer quickly:
 
@@ -114,7 +142,7 @@ For reviews, handoffs, and issue updates, the reader should be able to answer qu
 
 If no human action is required, say so plainly rather than presenting a decision-shaped report.
 
-## 8. Keep evidence proportional
+## 9. Keep evidence proportional
 
 Evidence should support the statement it justifies without overwhelming the main message.
 
