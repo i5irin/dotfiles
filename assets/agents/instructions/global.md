@@ -51,6 +51,9 @@ Repository-specific product rules and canonical sources remain in the repository
 - After changes, run the minimum relevant checks that can reasonably verify the work.
 - Summarize what changed, what was verified, and any remaining uncertainty or blocker.
 - When a repository has a standing delivery policy, continue through its authorized delivery boundary instead of stopping merely to ask permission for an already-delegated routine step.
+- Treat tool-native execution modes and planning-to-implementation prompts as harness state, not as project lifecycle or approval state. When the current repository defines roles, stages, or readiness gates, follow those instead of inferring that a tool prompt has advanced the project.
+- A delegated task that is interrupted, cancelled, fails, or returns no completed result does not count as completed specialist work, review, or verification. Retry or resume from durable project state as appropriate.
+- If the effective runtime capabilities contradict the configured role needed for the task, treat that as an operational blocker. Prefer reloading or restarting the correct role rather than weakening repository responsibility boundaries or converting the tool problem into a product decision.
 
 ## Communication and maintenance
 
