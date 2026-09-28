@@ -8,3 +8,5 @@ This repository manages dotfiles for Apple Silicon macOS, Windows, and Linux CLI
 - Keep code comments and committed documentation in English. Explain reasons and constraints in comments, not obvious mechanics.
 - Run `./testenv/validation/run-static-checks.sh` after changes. Validate platform bootstrap flows in representative environments when available.
 - Keep cross-project agent instructions and reusable skills in `assets/agents/`; repository knowledge belongs in code and the canonical documentation above.
+- Keep shared global agent instructions conservative. They may recognize explicit repository-level standing delivery authorization, but must not silently grant blanket commit, push, PR, merge, destructive Git, or credential authority across every repository.
+- Keep credentials, keychain state, SSH private keys and passphrases, provider sessions, and runtime auto-approval state machine-local. Do not add them to tracked agent assets.

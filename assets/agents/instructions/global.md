@@ -10,16 +10,25 @@ Ask before the following unless the user has explicitly authorized that exact ac
 
 - deleting large numbers of files
 - forceful or broad operations such as `rm -rf`, `sudo`, broad `chmod` / `chown`, or disk / system changes
-- destructive Git operations such as `git reset --hard`, `git clean -fd`, or force push
+- destructive Git operations such as `git reset --hard`, `git clean -fd`, force push, or published-history rewriting
 - editing files outside the current workspace
 - accessing secrets, keychains, SSH config, shell profiles, or system settings
+- entering, exposing, storing, or transmitting credentials or passphrases
 
 ## Git
 
-- Do not create commits, branches, tags, pull requests, or push to remotes unless explicitly asked.
+- Do not create commits, branches, tags, pull requests, or push to remotes unless either:
+  - the user explicitly asks for that action and scope; or
+  - the current repository contains a clear user-approved standing delivery policy that explicitly delegates the action and scope.
+- A repository standing delivery policy may authorize ordinary reversible work such as short-lived branch creation, coherent commits, branch pushes, Pull Request creation or updates, and Issue / PR state maintenance.
+- Do not infer from a repository standing policy that you may merge Pull Requests, push directly to the default branch, force push, rewrite published history, create tags or releases, perform destructive Git cleanup, or modify credentials. Those remain separately gated unless the repository policy explicitly delegates the specific action.
+- Before a Git mutation, inspect the current branch and working-tree state. Do not discard, overwrite, stage, or hide unrelated human changes.
+- Before committing, stage only task-owned paths and review the staged diff when practical.
+- Before pushing or creating a PR, inspect the relevant base-branch diff and commit history when practical.
 - Unless the user explicitly requests another format or language, suggest commit messages in English using Conventional Commits syntax.
 - Unless the user explicitly requests another format or language, write PR titles and bodies in English. PR titles need Conventional Commits syntax only when the repository requires it.
-- Ground PR descriptions in the actual repository state: inspect available Git status, diff, relevant commit log, and base-branch diff when practical; do not claim unsupported changes.
+- Ground PR descriptions in the actual repository state and observed verification evidence; do not claim unsupported changes.
+- If a Git or GitHub operation requires a credential, SSH passphrase, keychain unlock, account authorization, or other secret-bearing interaction, stop at that boundary. Ask the user to perform the authentication action without asking them to paste the secret into chat.
 
 ## Constraint-aware decision making
 
@@ -41,6 +50,7 @@ Repository-specific product rules and canonical sources remain in the repository
 
 - After changes, run the minimum relevant checks that can reasonably verify the work.
 - Summarize what changed, what was verified, and any remaining uncertainty or blocker.
+- When a repository has a standing delivery policy, continue through its authorized delivery boundary instead of stopping merely to ask permission for an already-delegated routine step.
 
 ## Communication and maintenance
 
