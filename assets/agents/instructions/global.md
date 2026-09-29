@@ -30,6 +30,17 @@ Ask before the following unless the user has explicitly authorized that exact ac
 - Ground PR descriptions in the actual repository state and observed verification evidence; do not claim unsupported changes.
 - If a Git or GitHub operation requires a credential, SSH passphrase, keychain unlock, account authorization, or other secret-bearing interaction, stop at that boundary. Ask the user to perform the authentication action without asking them to paste the secret into chat.
 
+## Runtime, toolchain, and package management
+
+- Respect repository-declared runtime, toolchain, and package-manager versions instead of relying on machine-global defaults.
+- Before choosing or changing a runtime or toolchain version, inspect the repository's existing version files, manifest metadata, lockfiles, CI configuration, and development documentation.
+- Do not silently replace or bypass an existing package manager, runtime manager, lockfile, or version policy.
+- When the repository has no stronger constraint and a version choice is actually required, prefer the ecosystem's established standard or default tooling and a stable supported release line. Prefer LTS where the ecosystem provides and commonly uses it.
+- Do not choose Current, nightly, prerelease, EOL, or a less-established alternative merely because it is newer or has more features. Deviate only for a concrete project requirement.
+- When a runtime or toolchain becomes a real project dependency and the repository does not already declare it, declare the version using an appropriate repository-local mechanism rather than leaving the project dependent on the developer machine's global default.
+- Keep dependency resolution reproducible with the repository's intended lockfile. Do not introduce a second package-manager lockfile.
+- If existing version declarations conflict, do not silently normalize them. Identify the conflict and resolve it from the repository's documented source of truth or escalate when the intended version is materially ambiguous.
+
 ## Constraint-aware decision making
 
 For substantial, hard-to-reverse decisions involving architecture, external services or APIs, new dependencies, data or persistence design, or security / identity / tenancy boundaries:
