@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "i5irin/macos"
+  config.vm.boot_timeout = 600
+  config.vm.graceful_halt_timeout = 600
+  config.vm.synced_folder "../", "/VagrantShare"
+  config.vm.provider "virtualbox" do |virtualbox|
+    virtualbox.gui = true
+    virtualbox.memory = "8192"
+    virtualbox.cpus = "2"
+    # virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    # virtualbox.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+  end
+  config.trigger.after :"VagrantPlugins::ProviderVirtualBox::Action::Import", type: :action do |t|
+        t.ruby do |env, machine|
+            FileUtils.cp(
+                machine.box.directory.join("include").join("macOS.nvram").to_s,
+                machine.provider.driver.execute_command(["showvminfo", machine.id, "--machinereadable"]).
+                    split(/\n/).
+                    map {|line| line.partition(/=/)}.
+                    select {|partition| partition.first == "BIOS NVRAM File"}.
+                    last.
+                    last[1..-2]
+            )
+        end
+    end
+end
