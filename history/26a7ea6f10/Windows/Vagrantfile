@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "i5irin/windows10-enterprise"
+  config.vm.box_version = "19044.1.0"
+  config.vm.guest = :windows
+  config.vm.communicator = "winrm"
+  config.vm.boot_timeout = 600
+  config.vm.graceful_halt_timeout = 600
+  config.vm.synced_folder "../", "/VagrantShare"
+  # port forward WinRM and RDP
+  config.vm.network :forwarded_port, guest: 3389, host: 3389
+  config.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct: true
+  config.winrm.username = "vagrant"
+  config.winrm.password = "vagrant"
+  config.vm.provider "virtualbox" do |virtualbox|
+    virtualbox.gui = true
+    virtualbox.memory = "8192"
+    virtualbox.cpus = "2"
+    virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    virtualbox.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+  end
+end

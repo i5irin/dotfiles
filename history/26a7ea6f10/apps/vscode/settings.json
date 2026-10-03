@@ -1,0 +1,27 @@
+{
+  "editor.fontSize": 17,
+  "editor.fontFamily": "'Fira Code'",
+  "editor.fontLigatures": true,
+  "editor.fontWeight": "400",
+
+  "workbench.colorTheme": "Monokai Pro",
+
+  "editor.formatOnPaste": true,
+
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true
+  },
+  "git.autofetch": true,
+  "git.path": "/usr/local/bin/git",
+
+  "liveServer.settings.donotShowInfoMsg": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDelete": false,
+  "editor.bracketPairColorization.enabled": true,
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font",
+  "markdown-pdf.headerTemplate": "<div style=\"font-size: 9px; margin-left: 1cm;\"> <span class='title'></span></div>",
+  "explorer.confirmDragAndDrop": false,
+  "editor.unicodeHighlight.allowedCharacters": {
+    "﻿": true
+  }
+}
