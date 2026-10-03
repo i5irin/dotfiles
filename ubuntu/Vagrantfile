@@ -1,0 +1,14 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "chenhan/ubuntu-desktop-20.04"
+  config.vm.synced_folder "../", "/vagrant_share"
+  config.vm.provider "virtualbox" do |virtualbox|
+    virtualbox.gui = true
+    virtualbox.memory = "8192"
+    virtualbox.cpus = "2"
+    virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    # virtualbox.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+  end
+end

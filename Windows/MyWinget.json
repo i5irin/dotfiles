@@ -1,0 +1,10 @@
+{
+  "Packages": [
+    {
+      "PackageIdentifier": "Postman.Postman"
+    },
+    {
+      "PackageIdentifier": "ElectronicArts.EADesktop"
+    }
+  ]
+}

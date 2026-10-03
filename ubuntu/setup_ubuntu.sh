@@ -92,6 +92,7 @@ ln -is "${DOTFILES_PATH}/.inputrc" ~/.inputrc
 # Install applications
 # ---------------------------------------------------------
 
+echo 'Upgrade packages.'
 sudo apt-get -qq update
 sudo apt-get -qq upgrade -y > /dev/null
 
@@ -123,8 +124,10 @@ curl -fsSL https://starship.rs/install.sh | sh /dev/stdin -y > /dev/null
 complete_setup_info 'Starship'
 
 # Reload shell config
+set +eu
 source ~/.bashrc
 source ~/.bash_profile
+set -eu
 
 # Update the application to be installed according to the user's apt_installs.txt if it exists.
 if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/my_apt_installs.txt" ]; then
@@ -134,6 +137,7 @@ else
   cat "${INSTALL_SCRIPT_PATH}/ubuntu/apt_installs.txt" | bulk_install_apt
 fi
 
+echo 'Start the installation of the Snap application.'
 if [ -f "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" ]; then
   grep -v ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | bulk_install_snap
   grep ' classic' "${INSTALL_SCRIPT_PATH}/ubuntu/snap.txt" | sed 's/ classic//g' | bulk_install_snap_classic
