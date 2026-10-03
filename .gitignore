@@ -27,6 +27,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+.vagrant/
 
 # Karabiner-Elements config backups
 apps/karabiner/automatic_backups/
@@ -39,5 +40,6 @@ MyBrewfile
 my_apt_installs.txt
 MyWinget.json
 MyScoop.txt
+snap.txt
 
 
