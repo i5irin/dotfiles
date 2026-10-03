@@ -12,6 +12,7 @@ Import-Module "${INSTALL_SCRIPT_PATH}\lib\WindowsDotfilesUtils"
 # Install WSL.
 # Check if the build number is 19041 or later.
 if ((Get-WmiObject Win32_OperatingSystem).BuildNumber -lt 19041) {
+  # (Get-CimInstance -ClassName Win32_OperatingSystem -Namespace root/cimv2).BuildNumber -lt 19041
   Write-Output 'To install WSL2 with this script, Upgrade to Windows build 19041 or later.'
   exit 1
 }
@@ -20,13 +21,33 @@ wsl --install
 # ---------------------------------------------------------
 # Configure PowerShell
 # ---------------------------------------------------------
+if (!(Test-Path -Path ~\Documents\WindowsPowerShell)) {
+  New-Item -ItemType Directory ~\Documents\WindowsPowerShell
+}
 New-Item -Type SymbolicLink ~\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -Value "${INSTALL_SCRIPT_PATH}\Windows\Microsoft.PowerShell_profile.ps1"
+
+if (!(Get-Command winget -errorAction SilentlyContinue))
+{
+  # Install winget
+  Invoke-WebRequest -Uri 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx' -OutFile vclibs.appx -UseBasicParsing
+  Add-AppxPackage -Path vclibs.appx
+  rm vclibs.appx
+  Invoke-WebRequest -Uri 'https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.0' -OutFile microsoft.ui.xaml.2.7.0.zip -UseBasicParsing
+  Expand-Archive -Path microsoft.ui.xaml.2.7.0.zip -DestinationPath microsoft.ui.xaml.2.7.0
+  Add-AppxPackage -Path microsoft.ui.xaml.2.7.0\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx
+  rm -rf microsoft.ui.xaml.2.7.0.zip
+  Remove-Item -Recurse -Force microsoft.ui.xaml.2.7.0
+  rm vclibs.appx
+  Invoke-WebRequest -Uri 'https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle' -OutFile winget.msixbundle -UseBasicParsing
+  Add-AppxPackage -Path winget.msixbundle
+  rm winget.msixbundle
+}
 
 # Install Scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
 
 # Install Nerd Fonts
-if (!(Test-PathTest -Path $Env:LOCALAPPDATA\Microsoft\Windows\Fonts)) {
+if (!(Test-Path -Path $Env:LOCALAPPDATA\Microsoft\Windows\Fonts)) {
   New-Item -ItemType Directory $Env:LOCALAPPDATA\Microsoft\Windows\Fonts
 }
 Set-Location $Env:LOCALAPPDATA\Microsoft\Windows\fonts
@@ -47,14 +68,14 @@ scoop install starship
 # Update the application to be installed according to the user's Winget.json if it exists.
 $baseApplications = (Get-Content -Path "${INSTALL_SCRIPT_PATH}\Windows\Winget.json" | ConvertFrom-Json).Sources[0].Packages | ForEach-Object { $_.PackageIdentifier };
 $installApplications = $baseApplications
-if (Test-PathTest-Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json") {
+if (Test-Path -Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json") {
   $userApplications = (Get-Content -Path "${INSTALL_SCRIPT_PATH}\Windows\MyWinget.json" | ConvertFrom-Json).Packages | ForEach-Object { $_.PackageIdentifier }
   $installApplications = ($baseApplications | Where-Object { $userApplications -notcontains $_ }) + ($userApplications | Where-Object { $baseApplications -notcontains $_ })
 }
 $installApplications | ForEach-Object { winget install --id $_ }
 
 # Update the application to be installed according to the user's Scoop.txt if it exists.
-if (Test-PathTest-Path "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt") {
+if (Test-Path -Path "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt") {
   ((Get-Content -Encoding UTF8 "${INSTALL_SCRIPT_PATH}\Windows\Scoop.txt", "${INSTALL_SCRIPT_PATH}\Windows\MyScoop.txt" | Select-String -NotMatch '^#').Line | Select-String -NotMatch '^$').Line | Sort-Object | Get-Unique | ForEach-Object { scoop install $_ }
 } else {
   Get-Content -Encoding UTF8 "${INSTALL_SCRIPT_PATH}\Windows\Scoop.txt" | ForEach-Object { scoop install $_ }
@@ -73,6 +94,9 @@ Receive-GitConfig -Path "${INSTALL_SCRIPT_PATH}\apps\git\.gitconfig"
 
 # Configure Hyper.js
 & "${INSTALL_SCRIPT_PATH}\apps\hyper\SetupHyper.ps1" "${INSTALL_SCRIPT_PATH}\apps\hyper"
+
+# Configure Visual Studio Code
+& "${INSTALL_SCRIPT_PATH}\apps\vscode\SetupVSCode.ps1" "${INSTALL_SCRIPT_PATH}\apps\vscode"
 
 # Register periodic tasks.
 
