@@ -800,6 +800,29 @@ Do not emulate successful persistence by saying an item was stored when it exist
 
 If the configured provider cannot support efficient append-only writes, preserve this event model and use another authorized writer or adapter rather than changing the information model merely to fit the provider.
 
+### Write capability verification
+
+Before concluding that the configured capture sink
+is not writable:
+
+- Inspect the available writer's actual input contract.
+- Distinguish missing storage paths, missing source
+  file references, authorization failures, and
+  unsupported write capabilities.
+- When an upload requires a source file reference,
+  use a file identifier supported by the current
+  execution environment. Do not assume a local
+  filesystem path is directly accepted.
+- If the write is asynchronous, wait for confirmed
+  completion.
+- Verify persistence by reading the saved record
+  back from the configured sink.
+- Do not claim persistence based only on successful
+  request submission.
+
+Keep provider-specific upload mechanics outside
+this provider-independent skill.
+
 ## 23. Canonical-source boundary
 
 The AI Capture Buffer is upstream of durable ownership.
